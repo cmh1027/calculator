@@ -1,21 +1,55 @@
-#ifndef CALCULATE_H
-#define CALCULATE_H
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
 
-#include <cmath>
-#include <stack>
+#include <QtCore/QQueue>
+#include <QtCore/QMap>
+#include <QtCore/QStack>
 #include <QtCore/QString>
-#include <QtCore/QPair>
+#include <iostream>
+#include "calculate.h"
 
-double calculate(const QString& expr);
+namespace Operator{
+    namespace Normal{
+        const QString Plus = "+";
+        const QString Minus = "-";
+        const QString Mult = "×";
+        const QString Divide = "÷";
+        const QString LeftBracket = "(";
+        const QString RightBracket = ")";
+    }
+    namespace Special{
+        const QString Root = "root";
+        const QString Pow = "pow";
+        const QString Inv = "inv";
+        const QString Sin = "sin";
+        const QString Cos = "cos";
+        const QString Tan = "tan";
+        const QString Asin = "asin";
+        const QString Acos = "acos";
+        const QString Atan = "atan";
+        const QString Log = "log";
+        const QString Mod = "mod";
+        const QString Fac = "fac";
+        const QString sinh = "sinh";
+        const QString cosh = "cosh";
+        const QString tanh = "tanh";
+    }
+    extern QMap<QString, void(*)(QStack<QString>& stack)> operateFuncs;
+}
+
+QString calculate(const QString& expr);
 QString changeToPostfix(const QString& expr);
-double calculatePostfix(const QString& expr);
+QString calculatePostfix(const QString& expr);
 bool isSpecialOperator(const QString& expr);
-QPair<QString, QString> splitOperator(const QString& expr);
-int nextIndex(const QString& expr, int start);
+QQueue<QString> splitOperator(const QString& expr);
+int nextIndex(const QString& expr, int start, const QString& delimiter);
+bool chunking(const QString& expr, QString& chunk, const QString& delimiter, int& start, int& end);
 int precedence(const QString& op);
-void processOp(const QPair<QString, QString>& ops, std::stack<QString>& stack, QString& result);
-void processOp(const QString& op, std::stack<QString>& stack, QString& result);
+void processOp(QQueue<QString>&& ops, QStack<QString>& stack, QString& result);
+void processOp(const QString& op, QStack<QString>& stack, QString& result);
 void processOperand(const QString& operand, QString& result);
-void processOperator(const QString& _operator, std::stack<QString>& stack, QString& result);
+void processOperator(const QString& _operator, QStack<QString>& stack, QString& result);
+void remainOperators(QStack<QString>& stack, QString& result);
+bool isOperand(const QString& expr);
 
 #endif
