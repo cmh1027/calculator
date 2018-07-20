@@ -34,10 +34,10 @@ namespace Operator{
         const QString cosh = "cosh";
         const QString tanh = "tanh";
     }
-    extern QMap<QString, void(*)(QStack<QString>& stack)> operateFuncs;
+    extern const QMap<QString, void(*)(QStack<QString>& stack)> operateFuncs;
 }
 
-QString calculate(const QString& expr);
+QString calculateExpr(const QString& expr);
 QString changeToPostfix(const QString& expr);
 QString calculatePostfix(const QString& expr);
 bool isSpecialOperator(const QString& expr);

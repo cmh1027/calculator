@@ -1,6 +1,6 @@
 #include "calculator.h"
 
-QMap<QString, void(*)(QStack<QString>& stack)> Operator::operateFuncs = {
+const QMap<QString, void(*)(QStack<QString>& stack)> Operator::operateFuncs = {
     {"+", Operation::plus}, {"-", Operation::minus}, {"×", Operation::mult},
     {"÷", Operation::divide}, {"root", Operation::root}, {"pow", Operation::pow},
     {"inv", Operation::inv}, {"sin", Operation::sin}, {"cos", Operation::cos},
@@ -26,7 +26,7 @@ void processOp(QQueue<QString>&& ops, QStack<QString>& stack, QString& result){
 }
 
 void processOp(const QString& op, QStack<QString>& stack, QString& result){
-    if(isOperand((op))){
+    if(isOperand(op)){
         processOperand(op, result);
     }
     else{
@@ -67,8 +67,9 @@ void remainOperators(QStack<QString>& stack, QString& result){
     }
 }
 
-QString calculate(const QString& expr){
-    return calculatePostfix(changeToPostfix(expr));
+QString calculateExpr(const QString& expr){
+    QString result = calculatePostfix(changeToPostfix(expr));
+    return result;
 }
 
 int nextIndex(const QString& expr, int start, const QString& delimiter){
