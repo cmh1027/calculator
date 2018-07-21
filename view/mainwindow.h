@@ -35,8 +35,8 @@ private:
     void removeResult(const int &pos, const int &num);
     QString getResult(const bool &chopDot = true);
     void setInter(const QString &str);
-    void appendInter(const QString &str);
-    void prependInter(const QString &str);
+    void appendInter(const QString &str, const bool &autoSpace = true);
+    void prependInter(const QString &str, const bool &autoSpace = true);
     void chopInter(const int &num);
     void removeInter(const int &num);
     void removeInter(const int &pos, const int &num);
@@ -44,8 +44,11 @@ private:
     QString removeInterOp(const int &num);
     QString getInter() const;
     QString lastOp() const;
+    void closeAllSpecial();
     bool isLastOpArithmetic() const;
+    bool isLastOpOpenedSpecial() const;
     void replaceLastOp(const QString &str);
+    void specialToArithmetic(const QString &op);
     void addNumber(const QString &str);
     void calculate();
     void calculate(const QString &op);
@@ -63,7 +66,7 @@ private:
     void percent();
     void sqrt();
     void sqr();
-    void inverse();
+    void inv();
     void root();
     void pow();
 public slots:

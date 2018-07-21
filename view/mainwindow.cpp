@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     std::make_pair("divide", this->divide), std::make_pair("equal", this->equal), std::make_pair("erase", this->erase),
     std::make_pair("dot", this->dot), std::make_pair("negate", this->negate), std::make_pair("ce", this->ce),
     std::make_pair("c", this->c), std::make_pair("percent", this->percent), std::make_pair("sqrt", this->sqrt),
-    std::make_pair("sqr", this->root), std::make_pair("inverse", this->root)
+    std::make_pair("sqr", this->sqr), std::make_pair("inverse", this->inv)
     }))
 {
     ui->setupUi(this);
@@ -85,12 +85,26 @@ QString MainWindow::getInter() const{
     return this->interLabel->text();
 }
 
-void MainWindow::appendInter(const QString &str){
-    this->setInter(this->getInter() + " " + str);
+void MainWindow::appendInter(const QString &str, const bool &autoSpace){
+    if(this->getInter().isEmpty())
+        this->setInter(str);
+    else{
+        if(autoSpace)
+            this->setInter(this->getInter() + " " + str);
+        else
+            this->setInter(this->getInter() + str);
+    }
 }
 
-void MainWindow::prependInter(const QString &str){
-    this->setInter(str + " " + this->getInter());
+void MainWindow::prependInter(const QString &str, const bool &autoSpace){
+    if(this->getInter().isEmpty())
+        this->setInter(str);
+    else{
+        if(autoSpace)
+            this->setInter(str + " " + this->getInter());
+        else
+            this->setInter(str + this->getInter());
+    }
 }
 
 void MainWindow::chopInter(const int &num){
@@ -144,7 +158,21 @@ bool MainWindow::isLastOpArithmetic() const{
     return op == "+" || op == "-" || op == "×" || op == "÷";
 }
 
+bool MainWindow::isLastOpOpenedSpecial() const{
+    return this->getInter().count("(") > this->getInter().count(")");
+}
+
 void MainWindow::replaceLastOp(const QString &str){
     QString expr = this->getInter();
     this->setInter(expr.replace(expr.lastIndexOf(" ")+1, 1, str));
+}
+
+void MainWindow::closeAllSpecial(){
+    while(this->isLastOpOpenedSpecial())
+        this->appendInter(")", false);
+}
+
+void MainWindow::specialToArithmetic(const QString &op){
+    this->closeAllSpecial();
+    this->calculate(op);
 }

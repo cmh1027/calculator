@@ -23,20 +23,43 @@ void MainWindow::addNumber(const QString &str){
 void MainWindow::calculate(){
     if(this->getInter().isEmpty())
         this->setResult(calculateExpr(this->getResult()));
-    else
-        this->setResult(calculateExpr(this->getInter() + " " + this->getResult()));
+    else{
+        if(this->isLastOpOpenedSpecial()){
+            this->closeAllSpecial();
+            this->setResult(calculateExpr(this->getInter()));
+        }
+        else{
+            if(this->isLastOpArithmetic())
+                this->setResult(calculateExpr(this->getInter() + " " + this->getResult()));
+            else
+                this->setResult(calculateExpr(this->getInter()));
+        }
+    }
     this->setInter("");
     this->calculated = true;
 }
 
 void MainWindow::calculate(const QString &op){
     QString &&result = this->getResult();
-    if(this->getInter().isEmpty())
-        this->setResult(calculateExpr(this->getResult()));
-    else
-        this->setResult(calculateExpr(this->getInter() + " " + this->getResult()));
-    this->appendInter(result);
-    this->appendInter(op);
+    if(this->getInter().isEmpty()) return;
+    else{
+        if(this->isLastOpOpenedSpecial()){
+            this->closeAllSpecial();
+            this->setResult(calculateExpr(this->getInter()));
+            this->appendInter(op);
+        }
+        else{
+            if(this->isLastOpArithmetic()){
+                this->setResult(calculateExpr(this->getInter() + " " + this->getResult()));
+                this->appendInter(result);
+                this->appendInter(op);
+            }
+            else{
+                this->setResult(calculateExpr(this->getInter()));
+                this->appendInter(op);
+            }
+        }
+    }
     this->calculated = true;
 }
 
@@ -51,12 +74,17 @@ void MainWindow::arithmetic(const QString &op){
                 this->appendInter(op);
     }
     else{
-        this->calculated = true;
-        if(this->getInter() == ""){
-            this->setInter(this->getResult() + " " + op);
+        if(this->isLastOpArithmetic()){
+            this->calculated = true;
+            if(this->getInter().isEmpty()){
+                this->setInter(this->getResult() + " " + op);
+            }
+            else{
+                this->calculate(op);
+            }
         }
         else{
-            this->calculate(op);
+            this->specialToArithmetic(op);
         }
     }
 }
@@ -118,26 +146,45 @@ void MainWindow::c(){
 
 void MainWindow::percent(){
     double result = calculateExpr(this->chopInterOp(1)).toDouble() * this->getResult().toDouble() / 100;
-    QString str = QString::fromStdString(doubleToString(result));
+    QString &&str = QString::fromStdString(doubleToString(result));
     this->appendInter(str);
     this->setResult(str);
     this->calculated = true;
 }
 
 void MainWindow::sqrt(){
-
+    if(this->calculated){
+        QString &&expr = std::move(QString("root(%1,2)").arg(this->lastOp()));
+        this->replaceLastOp(expr);
+        this->setResult(this->getInter());
+    }
+    else{
+        QString &&expr = std::move(QString("root(%1,2)").arg(this->getResult()));
+        this->appendInter(expr);
+        this->setResult(calculateExpr(expr));
+        this->calculated = true;
+    }
 }
 
 void MainWindow::sqr(){
-
+    QString &&expr = std::move(QString("pow(%1,2)").arg(this->getResult()));
+    this->appendInter(expr);
+    this->setResult(calculateExpr(expr));
+    this->calculated = true;
 }
 
-void MainWindow::inverse(){
-
+void MainWindow::inv(){
+    QString &&expr = std::move(QString("inv(%1)").arg(this->getResult()));
+    this->appendInter(expr);
+    this->setResult(calculateExpr(expr));
+    this->calculated = true;
 }
 
 void MainWindow::root(){
-
+    QString &&expr = std::move(QString("inv(%1)").arg(this->getResult()));
+    this->appendInter(expr);
+    this->setResult(calculateExpr(expr));
+    this->calculated = true;
 }
 
 void MainWindow::pow(){

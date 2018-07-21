@@ -17,10 +17,9 @@ bool isOperand(const QString& expr){
 }
 
 void processOp(QQueue<QString>&& ops, QStack<QString>& stack, QString& result){
-    processOperator(ops.front(), stack, result);
-    ops.pop_front();
     while(!ops.empty()){
-        processOperand(ops.front(), result);
+        result.append(ops.front());
+        result.append(" ");
         ops.pop_front();
     }
 }
@@ -40,6 +39,10 @@ void processOperand(const QString& operand, QString& result){
 }
 
 void processOperator(const QString& _operator, QStack<QString>& stack, QString& result){
+    //  pow(sqr(2),4) * 6
+    //
+    // 2 sqr 4 pow 6 *
+
     if(stack.empty()) stack.push(_operator);
     else if(_operator == Operator::Normal::RightBracket){
         while(stack.top() != Operator::Normal::LeftBracket){
@@ -135,6 +138,8 @@ QString changeToPostfix(const QString& expr){
     QStack<QString> stack;
     QString chunk, result;
     if(expr.isEmpty()) return "0";
+    // pow(pow(2,2),2)
+    // 2 2 pow 2 pow
     while(chunking(expr, chunk, " ", start, end)){
         if(isSpecialOperator(chunk)){;
             processOp(splitOperator(chunk), stack, result);
@@ -153,7 +158,10 @@ int precedence(const QString& op){
     else if(op == Operator::Normal::Mult) return 3;
     else if(op == Operator::Normal::Divide) return 3;
     else if(op == Operator::Normal::LeftBracket) return 1;
-    else return 4;
+    else{
+        std::cout << "Unknown operator " << op << "\n";
+        exit(1);
+    }
 }
 
 bool isSpecialOperator(const QString& expr){
@@ -167,15 +175,19 @@ bool isSpecialOperator(const QString& expr){
 
 
 QQueue<QString> splitOperator(const QString& expr){
-    int left, right;
     int start = 0, end;
     QQueue<QString> queue;
+    QQueue<QString> stack;
     QString chunk;
-    if((left = expr.indexOf("(")) != -1 && (right = expr.indexOf(")")) != -1){
-        queue.push_back(expr.mid(0, left));
-        while(chunking(expr.mid(left+1, right-left-1), chunk, ",", start, end)){
-            queue.push_back(chunk);
-        }
-    }
+
+
+    // sqr(sqr(sqr(2)))
+    // 2 sqr sqr sqr
+
+    // pow(2,pow(pow(2,2),2))
+    // 2 2 2 pow 2 pow pow
+
+
+
     return queue;
 }
