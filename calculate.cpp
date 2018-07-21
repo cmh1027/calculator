@@ -1,5 +1,5 @@
 #include "calculate.h"
-std::string doubleToString(double number){
+std::string doubleToString(const double &number){
     std::ostringstream strs;
     strs << number;
     std::string str = strs.str();

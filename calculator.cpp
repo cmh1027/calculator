@@ -89,13 +89,19 @@ QString calculatePostfix(const QString& expr){
     int start = 0, end;
     QStack<QString> stack;
     QString chunk;
-    if(expr == "") return QString("0");
+    if(expr.isEmpty()) return QString("0");
     while(chunking(expr, chunk, " ", start, end)){
         if(isOperand(chunk)){
             stack.push(chunk);
         }
         else{
-            Operator::operateFuncs[chunk](stack);
+            if(Operator::operateFuncs.contains(chunk))
+                Operator::operateFuncs[chunk](stack);
+            else{
+                std::cout << "Map operateFuncs does not have a key : " << chunk.toStdString() << "\n";
+                std::cout << "Expression : " << expr.toStdString() << "\n";
+                exit(1);
+            }
         }
     }
     if(stack.top() == "nan"){
@@ -107,13 +113,18 @@ QString calculatePostfix(const QString& expr){
 }
 
 bool chunking(const QString& expr, QString& chunk, const QString& delimiter, int& start, int& end){
-    if(chunk == "")
+    if(chunk.isEmpty())
         start = 0;
     end = nextIndex(expr, start, delimiter);
     if(end == -2)
         return false;
     else{
         chunk = expr.mid(start, end-start);
+        if(chunk.isEmpty()){
+            std::cout << "Chunk is empty!\n";
+            std::cout << "Expression : " << expr.toStdString() << "\n";
+            exit(1);
+        }
         start = end+1;
         return true;
     }
@@ -123,7 +134,7 @@ QString changeToPostfix(const QString& expr){
     int start = 0, end;
     QStack<QString> stack;
     QString chunk, result;
-    if(expr == "") return "0";
+    if(expr.isEmpty()) return "0";
     while(chunking(expr, chunk, " ", start, end)){
         if(isSpecialOperator(chunk)){;
             processOp(splitOperator(chunk), stack, result);

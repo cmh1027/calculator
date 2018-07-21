@@ -7,7 +7,7 @@
 #include <sstream>
 #include <string>
 
-std::string doubleToString(double number);
+std::string doubleToString(const double &number);
 
 namespace Operation{
     void plus(QStack<QString>& stack);
