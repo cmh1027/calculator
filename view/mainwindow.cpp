@@ -1,3 +1,4 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
@@ -10,7 +11,8 @@ MainWindow::MainWindow(QWidget *parent) :
     std::make_pair("divide", this->divide), std::make_pair("equal", this->equal), std::make_pair("erase", this->erase),
     std::make_pair("dot", this->dot), std::make_pair("negate", this->negate), std::make_pair("ce", this->ce),
     std::make_pair("c", this->c), std::make_pair("percent", this->percent), std::make_pair("sqrt", this->sqrt),
-    std::make_pair("sqr", this->sqr), std::make_pair("inverse", this->inv)
+    std::make_pair("sqr", this->sqr), std::make_pair("inverse", this->inv), std::make_pair("pow", this->pow),
+    std::make_pair("sqrt", this->sqrt)
     }))
 {
     ui->setupUi(this);
@@ -42,6 +44,7 @@ void MainWindow::buttonPushed(){
             (this->*(this->Operators[funcName]))();
         else{
             std::cout << "Map Operators does not have a key : " << funcName.toStdString() << "\n";
+            std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
             exit(1);
         }
     }
@@ -120,7 +123,7 @@ void MainWindow::removeInter(const int &pos, const int &num){
 }
 
 QString MainWindow::chopInterOp(const int &num){
-    QString &&inter = this->getInter();
+    QString&& inter = this->getInter();
     int index;
     for(int i=0; i<num; ++i){
         if((index = inter.lastIndexOf(" ")) == -1)
@@ -131,7 +134,7 @@ QString MainWindow::chopInterOp(const int &num){
 }
 
 QString MainWindow::removeInterOp(const int &num){
-    QString &&inter = this->getInter();
+    QString&& inter = this->getInter();
     int index;
     for(int i=0; i<num; ++i)
         if((index = inter.indexOf(" ")) == -1)
@@ -145,16 +148,16 @@ void MainWindow::setInter(const QString &str){
 }
 
 QString MainWindow::lastOp() const{
-    QString inter = this->getInter();
+    QString&& inter = this->getInter();
     int lastIndex;
     if((lastIndex = inter.lastIndexOf(" ")) == -1)
-        return QString("");
+        return inter;
     else
         return inter.remove(0, lastIndex+1);
 }
 
 bool MainWindow::isLastOpArithmetic() const{
-    QString op = this->lastOp();
+    QString&& op = this->lastOp();
     return op == "+" || op == "-" || op == "×" || op == "÷";
 }
 
@@ -163,16 +166,35 @@ bool MainWindow::isLastOpOpenedSpecial() const{
 }
 
 void MainWindow::replaceLastOp(const QString &str){
-    QString expr = this->getInter();
-    this->setInter(expr.replace(expr.lastIndexOf(" ")+1, 1, str));
+    QString&& expr = this->getInter();
+    if(expr.lastIndexOf(" ") == -1)
+        this->setInter(str);
+    else
+        this->setInter(expr.replace(expr.lastIndexOf(" ")+1, expr.length(), str));
 }
 
 void MainWindow::closeAllSpecial(){
+    this->appendInter(this->getResult(), false);
     while(this->isLastOpOpenedSpecial())
         this->appendInter(")", false);
 }
 
-void MainWindow::specialToArithmetic(const QString &op){
-    this->closeAllSpecial();
-    this->calculate(op);
+void MainWindow::specialToArithmetic(const QString &op){ // fix
+    // 2 ^ 2 ^
+    // 2 ^ 2 +
+    // pow(pow(2,2),
+    // pow(2,2) +
+    QString&& expr = this->lastOp();
+    int left = expr.indexOf("(")+1;
+    this->replaceLastOp(QString("%1 %2").arg(expr.mid(left, expr.length()-left-1)).arg(op));
+}
+
+void MainWindow::arithmeticToSpecial(const QString &op){ // fix
+    // 2 ^ 2 +
+    // 2 ^ 2 ^
+    // pow(2, 2) +
+    // pow(pow(2, 2),
+    QString &&expr = this->chopInterOp(1);
+    this->setInter(expr);
+    this->replaceLastOp(QString("%1(%2,").arg(op).arg(this->lastOp()));
 }

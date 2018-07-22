@@ -45,7 +45,7 @@ QQueue<QString> splitOperator(const QString& expr);
 int nextIndex(const QString& expr, int start, const QString& delimiter);
 bool chunking(const QString& expr, QString& chunk, const QString& delimiter, int& start, int& end);
 int precedence(const QString& op);
-void processOp(QQueue<QString>&& ops, QStack<QString>& stack, QString& result);
+void processOp(QQueue<QString>&& ops, QString& result);
 void processOp(const QString& op, QStack<QString>& stack, QString& result);
 void processOperand(const QString& operand, QString& result);
 void processOperator(const QString& _operator, QStack<QString>& stack, QString& result);

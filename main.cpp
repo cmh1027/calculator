@@ -2,6 +2,7 @@
 #include <QApplication>
 #include <QtWidgets/QMainWindow>
 #include <iostream>
+#include <QString>
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

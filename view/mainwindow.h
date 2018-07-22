@@ -49,10 +49,13 @@ private:
     bool isLastOpOpenedSpecial() const;
     void replaceLastOp(const QString &str);
     void specialToArithmetic(const QString &op);
+    void arithmeticToSpecial(const QString &op);
     void addNumber(const QString &str);
     void calculate();
     void calculate(const QString &op);
     void arithmetic(const QString &op);
+    void unarySpecial(const QString &format);
+    void binarySpecial(const QString &format);
     void plus();
     void minus();
     void multiply();

@@ -16,7 +16,7 @@ bool isOperand(const QString& expr){
     return isDouble;
 }
 
-void processOp(QQueue<QString>&& ops, QStack<QString>& stack, QString& result){
+void processOp(QQueue<QString>&& ops, QString& result){
     while(!ops.empty()){
         result.append(ops.front());
         result.append(" ");
@@ -102,6 +102,7 @@ QString calculatePostfix(const QString& expr){
                 Operator::operateFuncs[chunk](stack);
             else{
                 std::cout << "Map operateFuncs does not have a key : " << chunk.toStdString() << "\n";
+                std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
                 std::cout << "Expression : " << expr.toStdString() << "\n";
                 exit(1);
             }
@@ -142,7 +143,7 @@ QString changeToPostfix(const QString& expr){
     // 2 2 pow 2 pow
     while(chunking(expr, chunk, " ", start, end)){
         if(isSpecialOperator(chunk)){;
-            processOp(splitOperator(chunk), stack, result);
+            processOp(splitOperator(chunk), result);
         }
         else{
             processOp(chunk, stack, result);
@@ -159,7 +160,7 @@ int precedence(const QString& op){
     else if(op == Operator::Normal::Divide) return 3;
     else if(op == Operator::Normal::LeftBracket) return 1;
     else{
-        std::cout << "Unknown operator " << op << "\n";
+        std::cout << "Unknown operator " << op.toStdString() << "\n";
         exit(1);
     }
 }
@@ -175,11 +176,28 @@ bool isSpecialOperator(const QString& expr){
 
 
 QQueue<QString> splitOperator(const QString& expr){
-    int start = 0, end;
+    int start = 0;
     QQueue<QString> queue;
     QQueue<QString> stack;
     QString chunk;
-
+    for(int index=0; index<expr.length(); index++){
+        if(expr.at(index) == '('){
+            stack.push_back(expr.mid(start, index-start));
+            start = index+1;
+        }
+        else if(expr.at(index) == ')'){
+            if(start < index)
+                queue.push_back(expr.mid(start, index-start));
+            queue.push_back(stack.back());
+            stack.pop_back();
+            start = index + 1;
+        }
+        else if((expr.at(index) == ',')){
+            if(start < index)
+                queue.push_back(expr.mid(start, index-start));
+            start = index + 1;
+        }
+    }
 
     // sqr(sqr(sqr(2)))
     // 2 sqr sqr sqr
