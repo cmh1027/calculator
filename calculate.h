@@ -14,7 +14,9 @@ namespace Operation{
     void minus(QStack<QString>& stack);
     void mult(QStack<QString>& stack);
     void divide(QStack<QString>& stack);
+    void sqrt(QStack<QString>& stack);
     void root(QStack<QString>& stack);
+    void sqr(QStack<QString>& stack);
     void pow(QStack<QString>& stack);
     void inv(QStack<QString>& stack);
     void sin(QStack<QString>& stack);

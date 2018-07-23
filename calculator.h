@@ -40,7 +40,7 @@ namespace Operator{
 QString calculateExpr(const QString& expr);
 QString changeToPostfix(const QString& expr);
 QString calculatePostfix(const QString& expr);
-bool isSpecialOperator(const QString& expr);
+bool isUnarySpecial(const QString& expr);
 QQueue<QString> splitOperator(const QString& expr);
 int nextIndex(const QString& expr, int start, const QString& delimiter);
 bool chunking(const QString& expr, QString& chunk, const QString& delimiter, int& start, int& end);

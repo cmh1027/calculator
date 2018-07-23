@@ -42,6 +42,13 @@ void Operation::divide(QStack<QString>& stack){
     stack.push(QString::fromStdString(doubleToString(first/second)));
 }
 
+void Operation::sqrt(QStack<QString>& stack){
+    double first;
+    first = stack.top().toDouble();
+    stack.pop();
+    stack.push(QString::fromStdString(doubleToString(std::pow(first, 1/2))));
+}
+
 void Operation::root(QStack<QString>& stack){
     double first, second;
     second = stack.top().toDouble();
@@ -49,6 +56,13 @@ void Operation::root(QStack<QString>& stack){
     first = stack.top().toDouble();
     stack.pop();
     stack.push(QString::fromStdString(doubleToString(std::pow(first, 1/second))));
+}
+
+void Operation::sqr(QStack<QString>& stack){
+    double first;
+    first = stack.top().toDouble();
+    stack.pop();
+    stack.push(QString::fromStdString(doubleToString(std::pow(first, 2))));
 }
 
 void Operation::pow(QStack<QString>& stack){

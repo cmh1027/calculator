@@ -26,6 +26,7 @@ private:
     QLabel *interLabel;
     QLabel *resultLabel;
     bool calculated;
+    bool specialStart;
     const QMap<QString, void(MainWindow::*)()> Operators;
     void setResult(const QString &str);
     void appendResult(const QString &str);
@@ -44,12 +45,11 @@ private:
     QString removeInterOp(const int &num);
     QString getInter() const;
     QString lastOp() const;
-    void closeAllSpecial();
+    bool isBracketUnclosed() const;
+    bool endsWithBracket() const;
+    void closeAllBracket();
     bool isLastOpArithmetic() const;
-    bool isLastOpOpenedSpecial() const;
     void replaceLastOp(const QString &str);
-    void specialToArithmetic(const QString &op);
-    void arithmeticToSpecial(const QString &op);
     void addNumber(const QString &str);
     void calculate();
     void calculate(const QString &op);

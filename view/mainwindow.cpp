@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->interLabel = this->findChild<QLabel*>("intermediateLabel");
     this->resultLabel = this->findChild<QLabel*>("resultLabel");
     this->calculated = false;
+    this->specialStart = false;
 }
 
 MainWindow::~MainWindow()
@@ -161,10 +162,6 @@ bool MainWindow::isLastOpArithmetic() const{
     return op == "+" || op == "-" || op == "×" || op == "÷";
 }
 
-bool MainWindow::isLastOpOpenedSpecial() const{
-    return this->getInter().count("(") > this->getInter().count(")");
-}
-
 void MainWindow::replaceLastOp(const QString &str){
     QString&& expr = this->getInter();
     if(expr.lastIndexOf(" ") == -1)
@@ -173,28 +170,16 @@ void MainWindow::replaceLastOp(const QString &str){
         this->setInter(expr.replace(expr.lastIndexOf(" ")+1, expr.length(), str));
 }
 
-void MainWindow::closeAllSpecial(){
+bool MainWindow::isBracketUnclosed() const{
+    return this->getInter().count("(") > this->getInter().count(")");
+}
+
+bool MainWindow::endsWithBracket() const{
+    return this->getInter().endsWith(")");
+}
+
+void MainWindow::closeAllBracket(){
     this->appendInter(this->getResult(), false);
-    while(this->isLastOpOpenedSpecial())
-        this->appendInter(")", false);
-}
-
-void MainWindow::specialToArithmetic(const QString &op){ // fix
-    // 2 ^ 2 ^
-    // 2 ^ 2 +
-    // pow(pow(2,2),
-    // pow(2,2) +
-    QString&& expr = this->lastOp();
-    int left = expr.indexOf("(")+1;
-    this->replaceLastOp(QString("%1 %2").arg(expr.mid(left, expr.length()-left-1)).arg(op));
-}
-
-void MainWindow::arithmeticToSpecial(const QString &op){ // fix
-    // 2 ^ 2 +
-    // 2 ^ 2 ^
-    // pow(2, 2) +
-    // pow(pow(2, 2),
-    QString &&expr = this->chopInterOp(1);
-    this->setInter(expr);
-    this->replaceLastOp(QString("%1(%2,").arg(op).arg(this->lastOp()));
+    while(this->isBracketUnclosed())
+        this->appendInter(")");
 }

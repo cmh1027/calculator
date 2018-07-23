@@ -2,7 +2,8 @@
 
 const QMap<QString, void(*)(QStack<QString>& stack)> Operator::operateFuncs = {
     {"+", Operation::plus}, {"-", Operation::minus}, {"×", Operation::mult},
-    {"÷", Operation::divide}, {"root", Operation::root}, {"pow", Operation::pow},
+    {"÷", Operation::divide}, {"sqrt", Operation::sqrt}, {"root", Operation::root},
+    {"sqr", Operation::sqr}, {"^", Operation::pow},
     {"inv", Operation::inv}, {"sin", Operation::sin}, {"cos", Operation::cos},
     {"tan", Operation::tan}, {"asin", Operation::asin}, {"acos", Operation::acos},
     {"atan", Operation::atan}, {"log", Operation::log}, {"mod", Operation::mod},
@@ -139,10 +140,8 @@ QString changeToPostfix(const QString& expr){
     QStack<QString> stack;
     QString chunk, result;
     if(expr.isEmpty()) return "0";
-    // pow(pow(2,2),2)
-    // 2 2 pow 2 pow
     while(chunking(expr, chunk, " ", start, end)){
-        if(isSpecialOperator(chunk)){;
+        if(isUnarySpecial(chunk)){;
             processOp(splitOperator(chunk), result);
         }
         else{
@@ -159,13 +158,10 @@ int precedence(const QString& op){
     else if(op == Operator::Normal::Mult) return 3;
     else if(op == Operator::Normal::Divide) return 3;
     else if(op == Operator::Normal::LeftBracket) return 1;
-    else{
-        std::cout << "Unknown operator " << op.toStdString() << "\n";
-        exit(1);
-    }
+    else return 4;
 }
 
-bool isSpecialOperator(const QString& expr){
+bool isUnarySpecial(const QString& expr){
     if(expr.indexOf("(") != -1 && expr.indexOf(")") != -1){
         return true;
     }
@@ -192,20 +188,6 @@ QQueue<QString> splitOperator(const QString& expr){
             stack.pop_back();
             start = index + 1;
         }
-        else if((expr.at(index) == ',')){
-            if(start < index)
-                queue.push_back(expr.mid(start, index-start));
-            start = index + 1;
-        }
     }
-
-    // sqr(sqr(sqr(2)))
-    // 2 sqr sqr sqr
-
-    // pow(2,pow(pow(2,2),2))
-    // 2 2 2 pow 2 pow pow
-
-
-
     return queue;
 }
