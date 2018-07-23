@@ -1,16 +1,5 @@
 #include "calculator.h"
 
-const QMap<QString, void(*)(QStack<QString>& stack)> Operator::operateFuncs = {
-    {"+", Operation::plus}, {"-", Operation::minus}, {"×", Operation::mult},
-    {"÷", Operation::divide}, {"sqrt", Operation::sqrt}, {"root", Operation::root},
-    {"sqr", Operation::sqr}, {"^", Operation::pow},
-    {"inv", Operation::inv}, {"sin", Operation::sin}, {"cos", Operation::cos},
-    {"tan", Operation::tan}, {"asin", Operation::asin}, {"acos", Operation::acos},
-    {"atan", Operation::atan}, {"log", Operation::log}, {"mod", Operation::mod},
-    {"fac", Operation::fac}, {"sinh", Operation::sinh}, {"cosh", Operation::cosh},
-    {"tanh", Operation::tanh}, {"*", Operation::mult}, {"/", Operation::divide}
-};
-
 bool isOperand(const QString& expr){
     bool isDouble;
     expr.toDouble(&isDouble);
@@ -40,13 +29,9 @@ void processOperand(const QString& operand, QString& result){
 }
 
 void processOperator(const QString& _operator, QStack<QString>& stack, QString& result){
-    //  pow(sqr(2),4) * 6
-    //
-    // 2 sqr 4 pow 6 *
-
     if(stack.empty()) stack.push(_operator);
-    else if(_operator == Operator::Normal::RightBracket){
-        while(stack.top() != Operator::Normal::LeftBracket){
+    else if(_operator == Operator::Normal::rightBracket){
+        while(stack.top() != Operator::Normal::leftBracket){
             result.append(stack.top());
             result.append(" ");
             stack.pop();
@@ -54,7 +39,7 @@ void processOperator(const QString& _operator, QStack<QString>& stack, QString& 
         stack.pop();
     }
     else{
-        while(!stack.empty() && precedence(stack.top()) >= precedence(_operator)){
+        while(!stack.empty() && precedence(stack.top()) >= precedence(_operator) && _operator != "("){
             result.append(stack.top());
             result.append(" ");
             stack.pop();
@@ -153,16 +138,16 @@ QString changeToPostfix(const QString& expr){
 }
 
 int precedence(const QString& op){
-    if(op == Operator::Normal::Plus) return 2;
-    else if(op == Operator::Normal::Minus) return 2;
-    else if(op == Operator::Normal::Mult) return 3;
-    else if(op == Operator::Normal::Divide) return 3;
-    else if(op == Operator::Normal::LeftBracket) return 1;
+    if(op == Operator::Normal::plus) return 2;
+    else if(op == Operator::Normal::minus) return 2;
+    else if(op == Operator::Normal::mult) return 3;
+    else if(op == Operator::Normal::divide) return 3;
+    else if(op == Operator::Normal::leftBracket) return 1;
     else return 4;
 }
 
 bool isUnarySpecial(const QString& expr){
-    if(expr.indexOf("(") != -1 && expr.indexOf(")") != -1){
+    if(expr.indexOf(Operator::Normal::leftBracket) != -1 && expr.indexOf(Operator::Normal::rightBracket) != -1){
         return true;
     }
     else{
@@ -177,11 +162,11 @@ QQueue<QString> splitOperator(const QString& expr){
     QQueue<QString> stack;
     QString chunk;
     for(int index=0; index<expr.length(); index++){
-        if(expr.at(index) == '('){
+        if(expr.at(index) == Operator::Normal::leftBracket){
             stack.push_back(expr.mid(start, index-start));
             start = index+1;
         }
-        else if(expr.at(index) == ')'){
+        else if(expr.at(index) == Operator::Normal::rightBracket){
             if(start < index)
                 queue.push_back(expr.mid(start, index-start));
             queue.push_back(stack.back());

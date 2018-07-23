@@ -7,10 +7,10 @@
 #include <QString>
 #include <QMap>
 #include <utility>
-
+#include "operator.h"
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
 class MainWindow : public QMainWindow

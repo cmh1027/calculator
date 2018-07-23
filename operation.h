@@ -1,5 +1,5 @@
-#ifndef CALCULATE_H
-#define CALCULATE_H
+#ifndef OPERATION_H
+#define OPERATION_H
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <QtCore/QStack>
@@ -31,7 +31,6 @@ namespace Operation{
     void log(QStack<QString>& stack);
     void mod(QStack<QString>& stack);
     void fac(QStack<QString>& stack);
+    void negate(QStack<QString>& stack);
 }
-
-
-#endif // CALCULATE_H
+#endif // OPERATION_H

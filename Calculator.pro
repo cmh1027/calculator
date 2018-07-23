@@ -27,14 +27,15 @@ SOURCES += \
         main.cpp \
         view/mainwindow.cpp \
     calculator.cpp \
-    calculate.cpp \
-    view/mainwindow_cal.cpp
+    view/mainwindow_cal.cpp \
+    operator.cpp \
+    operation.cpp
 
 HEADERS += \
         view/mainwindow.h \
     calculator.h \
-    include.h \
-    calculate.h
+    operator.h \
+    operation.h
 
 FORMS += \
         view/mainwindow.ui

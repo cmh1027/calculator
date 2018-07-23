@@ -7,12 +7,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     Operators(std::initializer_list<std::pair<QString, void(MainWindow::*)()>>({
-    std::make_pair("plus", this->plus), std::make_pair("minus", this->minus), std::make_pair("multiply", this->multiply),
-    std::make_pair("divide", this->divide), std::make_pair("equal", this->equal), std::make_pair("erase", this->erase),
-    std::make_pair("dot", this->dot), std::make_pair("negate", this->negate), std::make_pair("ce", this->ce),
-    std::make_pair("c", this->c), std::make_pair("percent", this->percent), std::make_pair("sqrt", this->sqrt),
-    std::make_pair("sqr", this->sqr), std::make_pair("inverse", this->inv), std::make_pair("pow", this->pow),
-    std::make_pair("sqrt", this->sqrt)
+        std::make_pair("plus", this->plus), std::make_pair("minus", this->minus), std::make_pair("multiply", this->multiply),
+        std::make_pair("divide", this->divide), std::make_pair("equal", this->equal), std::make_pair("erase", this->erase),
+        std::make_pair("dot", this->dot), std::make_pair("negate", this->negate), std::make_pair("ce", this->ce),
+        std::make_pair("c", this->c), std::make_pair("percent", this->percent), std::make_pair("sqrt", this->sqrt),
+        std::make_pair("sqr", this->sqr), std::make_pair("inverse", this->inv), std::make_pair("pow", this->pow),
+        std::make_pair("root", this->root)
     }))
 {
     ui->setupUi(this);
@@ -159,7 +159,8 @@ QString MainWindow::lastOp() const{
 
 bool MainWindow::isLastOpArithmetic() const{
     QString&& op = this->lastOp();
-    return op == "+" || op == "-" || op == "×" || op == "÷";
+    return op == Operator::Normal::plus || op == Operator::Normal::minus || op == Operator::Normal::mult ||
+           op == Operator::Normal::divide || op == Operator::Normal::altMult || op == Operator::Normal::altDivide;
 }
 
 void MainWindow::replaceLastOp(const QString &str){
@@ -171,15 +172,15 @@ void MainWindow::replaceLastOp(const QString &str){
 }
 
 bool MainWindow::isBracketUnclosed() const{
-    return this->getInter().count("(") > this->getInter().count(")");
+    return this->getInter().count(Operator::Normal::leftBracket) > this->getInter().count(Operator::Normal::rightBracket);
 }
 
 bool MainWindow::endsWithBracket() const{
-    return this->getInter().endsWith(")");
+    return this->getInter().endsWith(Operator::Normal::rightBracket);
 }
 
 void MainWindow::closeAllBracket(){
     this->appendInter(this->getResult(), false);
     while(this->isBracketUnclosed())
-        this->appendInter(")");
+        this->appendInter(Operator::Normal::rightBracket);
 }

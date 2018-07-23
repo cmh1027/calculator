@@ -89,19 +89,19 @@ void MainWindow::arithmetic(const QString &op){
     }
 }
 void MainWindow::plus(){
-    this->arithmetic("+");
+    this->arithmetic(Operator::Normal::plus);
 }
 
 void MainWindow::minus(){
-    this->arithmetic("-");
+    this->arithmetic(Operator::Normal::minus);
 }
 
 void MainWindow::multiply(){
-    this->arithmetic("×");
+    this->arithmetic(Operator::Normal::mult);
 }
 
 void MainWindow::divide(){
-    this->arithmetic("÷");
+    this->arithmetic(Operator::Normal::divide);
 }
 
 void MainWindow::equal(){
@@ -126,11 +126,15 @@ void MainWindow::dot(){
 void MainWindow::negate(){
     QString &&result = this->getResult(false);
     if(result == "0") return;
-    if(result.front() == '-'){
-        this->removeResult(1);
+    if(this->calculated)
+        this->unarySpecial(Operator::Special::negate);
+    else{
+        if(result.front() == '-'){
+            this->removeResult(1);
+        }
+        else
+            this->prependResult("-");
     }
-    else
-        this->prependResult("-");
 }
 
 void MainWindow::ce(){
@@ -153,7 +157,7 @@ void MainWindow::percent(){
 }
 
 void MainWindow::unarySpecial(const QString &op){
-    if(this->getInter().isEmpty() || !this->calculated){
+    if(this->getInter().isEmpty() || !this->calculated || this->isLastOpArithmetic()){
         QString &&expr = QString("%1(%2)").arg(op).arg(this->getResult());
         this->appendInter(expr);
         this->setResult(calculateExpr(expr));
@@ -178,26 +182,27 @@ void MainWindow::binarySpecial(const QString &op){
             this->appendInter(op);
     }
     this->specialStart = true;
+    this->calculated = false;
 }
 
 void MainWindow::sqrt(){
-    this->unarySpecial("sqrt");
+    this->unarySpecial(Operator::Special::sqrt);
 }
 
 void MainWindow::sqr(){
-    this->unarySpecial("sqr");
+    this->unarySpecial(Operator::Special::sqr);
 }
 
 void MainWindow::inv(){
-    this->unarySpecial("inv");
+    this->unarySpecial(Operator::Special::inv);
 }
 
 void MainWindow::root(){
-    this->binarySpecial("root");
+    this->binarySpecial(Operator::Special::root);
 }
 
 void MainWindow::pow(){
-    this->binarySpecial("^");
+    this->binarySpecial(Operator::Special::pow);
 }
 
 

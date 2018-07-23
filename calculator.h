@@ -6,36 +6,7 @@
 #include <QtCore/QStack>
 #include <QtCore/QString>
 #include <iostream>
-#include "calculate.h"
-
-namespace Operator{
-    namespace Normal{
-        const QString Plus = "+";
-        const QString Minus = "-";
-        const QString Mult = "×";
-        const QString Divide = "÷";
-        const QString LeftBracket = "(";
-        const QString RightBracket = ")";
-    }
-    namespace Special{
-        const QString Root = "root";
-        const QString Pow = "pow";
-        const QString Inv = "inv";
-        const QString Sin = "sin";
-        const QString Cos = "cos";
-        const QString Tan = "tan";
-        const QString Asin = "asin";
-        const QString Acos = "acos";
-        const QString Atan = "atan";
-        const QString Log = "log";
-        const QString Mod = "mod";
-        const QString Fac = "fac";
-        const QString sinh = "sinh";
-        const QString cosh = "cosh";
-        const QString tanh = "tanh";
-    }
-    extern const QMap<QString, void(*)(QStack<QString>& stack)> operateFuncs;
-}
+#include "operator.h"
 
 QString calculateExpr(const QString& expr);
 QString changeToPostfix(const QString& expr);
