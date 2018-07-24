@@ -2,15 +2,17 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 #include <QtCore/QRegExp>
 #include <QString>
 #include <QMap>
 #include <utility>
-#include "operator.h"
+#include "../module/calculator/operator.h"
 
 namespace Ui {
     class MainWindow;
+    class Form;
 }
 
 class MainWindow : public QMainWindow
@@ -22,7 +24,8 @@ public:
     ~MainWindow();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow *mainWindowUi;
+    Ui::Form *contentUi;
     QLabel *interLabel;
     QLabel *resultLabel;
     bool calculated;
@@ -72,6 +75,18 @@ private:
     void inv();
     void root();
     void pow();
+    void sin();
+    void cos();
+    void tan();
+    void asin();
+    void acos();
+    void atan();
+    void sinh();
+    void cosh();
+    void tanh();
+    void log();
+    void mod();
+    void fac();
 public slots:
     void buttonPushed();
 

@@ -19,6 +19,7 @@ namespace Operation{
     void sqr(QStack<QString>& stack);
     void pow(QStack<QString>& stack);
     void inv(QStack<QString>& stack);
+    void negate(QStack<QString>& stack);
     void sin(QStack<QString>& stack);
     void cos(QStack<QString>& stack);
     void tan(QStack<QString>& stack);
@@ -31,6 +32,6 @@ namespace Operation{
     void log(QStack<QString>& stack);
     void mod(QStack<QString>& stack);
     void fac(QStack<QString>& stack);
-    void negate(QStack<QString>& stack);
+
 }
 #endif // OPERATION_H

@@ -25,17 +25,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        view/mainwindow.cpp \
-    calculator.cpp \
-    view/mainwindow_cal.cpp \
-    operator.cpp \
-    operation.cpp
+        template/mainwindow.cpp \
+    template/mainwindow_cal.cpp \
+    module/calculator/calculator.cpp \
+    module/calculator/operation.cpp \
+    module/calculator/operator.cpp
 
 HEADERS += \
-        view/mainwindow.h \
-    calculator.h \
-    operator.h \
-    operation.h
+        template/mainwindow.h \
+    module/calculator/calculator.h \
+    module/calculator/operation.h \
+    module/calculator/operator.h
 
 FORMS += \
-        view/mainwindow.ui
+        template/mainwindow.ui \
+    template/content/general.ui

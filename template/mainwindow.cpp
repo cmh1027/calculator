@@ -1,11 +1,12 @@
-
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "ui_general.h"
 #include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
+    mainWindowUi(new Ui::MainWindow),
+    contentUi(new Ui::Form),
     Operators(std::initializer_list<std::pair<QString, void(MainWindow::*)()>>({
         std::make_pair("plus", this->plus), std::make_pair("minus", this->minus), std::make_pair("multiply", this->multiply),
         std::make_pair("divide", this->divide), std::make_pair("equal", this->equal), std::make_pair("erase", this->erase),
@@ -15,10 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
         std::make_pair("root", this->root)
     }))
 {
-    ui->setupUi(this);
-    QPushButton* button;
+    mainWindowUi->setupUi(this);
+    contentUi->setupUi(this->findChild<QWidget*>("contentWidget"));
     auto allButtons = this->findChildren<QPushButton*>();
-    foreach(button, allButtons){
+    foreach(QPushButton* button, allButtons){
         connect(button, SIGNAL(clicked()), this, SLOT(buttonPushed()));
     }
     this->interLabel = this->findChild<QLabel*>("intermediateLabel");
@@ -29,7 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete mainWindowUi;
+    delete contentUi;
 }
 
 void MainWindow::buttonPushed(){

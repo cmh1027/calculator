@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "calculator.h"
+#include "../module/calculator/calculator.h"
 
 void MainWindow::addNumber(const QString &str){
     if(this->calculated){
@@ -203,6 +203,54 @@ void MainWindow::root(){
 
 void MainWindow::pow(){
     this->binarySpecial(Operator::Special::pow);
+}
+
+void MainWindow::sin(){
+    this->unarySpecial(Operator::Special::sin);
+}
+
+void MainWindow::cos(){
+    this->unarySpecial(Operator::Special::pow);
+}
+
+void MainWindow::tan(){
+    this->unarySpecial(Operator::Special::tan);
+}
+
+void MainWindow::asin(){
+    this->unarySpecial(Operator::Special::asin);
+}
+
+void MainWindow::acos(){
+    this->unarySpecial(Operator::Special::acos);
+}
+
+void MainWindow::atan(){
+    this->unarySpecial(Operator::Special::atan);
+}
+
+void MainWindow::sinh(){
+    this->unarySpecial(Operator::Special::sinh);
+}
+
+void MainWindow::cosh(){
+    this->unarySpecial(Operator::Special::cosh);
+}
+
+void MainWindow::tanh(){
+    this->unarySpecial(Operator::Special::tanh);
+}
+
+void MainWindow::log(){
+    this->unarySpecial(Operator::Special::log);
+}
+
+void MainWindow::mod(){
+    this->unarySpecial(Operator::Special::mod);
+}
+
+void MainWindow::fac(){
+    this->unarySpecial(Operator::Special::fac);
 }
 
 
