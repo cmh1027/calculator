@@ -26,23 +26,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         template/mainwindow.cpp \
-    module/calculator/calculator.cpp \
     module/calculator/operation.cpp \
     module/calculator/operator.cpp \
-    template/content/calculator/general.cpp \
     template/content/calculator/scientific/scientific.cpp \
-    template/content/content.cpp
+    template/content/content.cpp \
+    template/content/calculator/general/general.cpp \
+    template/content/calculator/calculator.cpp \
+    module/calculator/calculation.cpp
 
 HEADERS += \
         template/mainwindow.h \
-    module/calculator/calculator.h \
     module/calculator/operation.h \
     module/calculator/operator.h \
     template/content/content.h \
-    template/content/calculator/general.h \
-    template/content/calculator/scientific/scientific.h
+    template/content/calculator/scientific/scientific.h \
+    template/content/calculator/general/general.h \
+    template/content/calculator/calculator.h \
+    module/calculator/calculation.h \
+    template/templates.h
 
 FORMS += \
         template/mainwindow.ui \
-    template/content/calculator/general.ui \
-    template/content/calculator/scientific/scientific.ui
+    template/content/calculator/scientific/scientific.ui \
+    template/content/calculator/general/general.ui

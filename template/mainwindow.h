@@ -2,8 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
-#include "content/content.h"
-#include "content/calculator/general.h"
+#include "templates.h"
+#define RENDER(ui) if(content != nullptr)\
+                        delete content;\
+                    content = new ui(this);\
+                    content->setup();
+
 
 namespace Ui {
     class MainWindow;

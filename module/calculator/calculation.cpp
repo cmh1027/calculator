@@ -1,4 +1,4 @@
-#include "calculator.h"
+#include "calculation.h"
 
 bool isOperand(const QString& expr){
     bool isDouble;

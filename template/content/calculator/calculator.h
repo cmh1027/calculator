@@ -1,39 +1,29 @@
-#ifndef GENERAL_H
-#define GENERAL_H
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
 #include <QMainWindow>
-#include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
-#include <QtCore/QRegExp>
 #include <QString>
-#include <QMap>
-#include <utility>
 #include <iostream>
 #include "../content.h"
 #include "../../../module/calculator/operator.h"
-#include "../../../module/calculator/calculator.h"
 
-namespace Ui {
-    class Form;
-}
-
-class GeneralCalculator : public Content
+class Calculator : public Content
 {
     Q_OBJECT
 
 public:
-    GeneralCalculator(QMainWindow*);
-    virtual ~GeneralCalculator();
+    Calculator(QMainWindow *window);
+    virtual ~Calculator();
 
 private:
-    Ui::Form *contentUi;
-
-protected:
-    QMainWindow* MainWindow;
+    QMainWindow *MainWindow;
     QLabel *interLabel;
     QLabel *resultLabel;
+
+protected:
     bool calculated;
     bool specialStart;
-    const QMap<QString, void(GeneralCalculator::*)()> Operators;
+    void bindLabels();
     void setResult(const QString &str);
     void appendResult(const QString &str);
     void prependResult(const QString &str);
@@ -57,42 +47,5 @@ protected:
     bool isLastOpArithmetic() const;
     void replaceLastOp(const QString &str);
     void addNumber(const QString &str);
-    void calculate();
-    void calculate(const QString &op);
-    void arithmetic(const QString &op);
-    void unarySpecial(const QString &format);
-    void binarySpecial(const QString &format);
-    void plus();
-    void minus();
-    void multiply();
-    void divide();
-    void equal();
-    void erase();
-    void dot();
-    void negate();
-    void ce();
-    void c();
-    void percent();
-    void sqrt();
-    void sqr();
-    void inv();
-    void root();
-    void pow();
-    void sin();
-    void cos();
-    void tan();
-    void asin();
-    void acos();
-    void atan();
-    void sinh();
-    void cosh();
-    void tanh();
-    void log();
-    void mod();
-    void fac();
-
-public slots:
-    void buttonPushed() override;
 };
-
-#endif // GENERAL_H
+#endif // CALCULATOR_H

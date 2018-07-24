@@ -1,5 +1,5 @@
-#ifndef CALCULATOR_H
-#define CALCULATOR_H
+#ifndef CALCULATION_H
+#define CALCULATION_H
 
 #include <QtCore/QQueue>
 #include <QtCore/QMap>

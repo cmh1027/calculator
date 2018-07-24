@@ -17,9 +17,7 @@ MainWindow::~MainWindow()
 
 
 void MainWindow::generalCalculator(){
-    if(content != nullptr)
-        delete content;
-    content = new GeneralCalculator(this);
+    RENDER(GeneralCalculator)
 }
 
 void MainWindow::buttonPushed(){
