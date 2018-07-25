@@ -1,13 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <iostream>
 
 MainWindow::MainWindow() :
     mainWindowUi(new Ui::MainWindow), content(nullptr)
 {
     mainWindowUi->setupUi(this);
-    // this->generalCalculator();
-    this->scientificCalculator();
+    this->generalCalculator();
+    sidebar = new QWidget(this);
+    sidebar->setStyleSheet("background-color: rgb(255, 255, 127);");
+    sidebar->resize(100, 100);
+    sidebar->show();
 }
 
 MainWindow::~MainWindow()
@@ -26,5 +28,5 @@ void MainWindow::scientificCalculator(){
 }
 
 void MainWindow::buttonPushed(){
-    std::cout << "Test\n";
+
 }

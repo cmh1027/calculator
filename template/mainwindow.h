@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QWidget>
 #include "templates.h"
 #define RENDER(ui) if(content != nullptr)\
                         delete content;\
@@ -24,9 +25,9 @@ public:
 private:
     Ui::MainWindow *mainWindowUi;
     Content *content;
+    QWidget *sidebar;
     void generalCalculator();
     void scientificCalculator();
-
 public slots:
     void buttonPushed();
 };

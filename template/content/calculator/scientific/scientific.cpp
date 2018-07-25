@@ -1,12 +1,14 @@
 #include "scientific.h"
 #include "ui_scientific.h"
 #include <iostream>
+#include <cmath>
 ScientificCalculator::ScientificCalculator(QMainWindow* window) : GeneralCalculator(window),
-    contentUi(new Ui::ScientificCalculator), MainWindow(window)
+    contentUi(new Ui::ScientificCalculator), MainWindow(window), screen(Mode::One)
 {
     for(auto iter = GeneralCalculator::Operators.constBegin(); iter != GeneralCalculator::Operators.constEnd(); ++iter){
         Operators[iter.key()] = iter.value();
     }
+    Operators["cube"] = this->cube;
     Operators["root"] = this->root;
     Operators["pow"] = this->pow;
     Operators["sin"] = this->sin;
@@ -25,6 +27,7 @@ ScientificCalculator::ScientificCalculator(QMainWindow* window) : GeneralCalcula
     Operators["abs"] = this->abs;
     Operators["pi"] = this->pi;
     Operators["e"] = this->e;
+    Operators["change"] = this->change;
 }
 ScientificCalculator::~ScientificCalculator(){}
 
@@ -66,6 +69,38 @@ void ScientificCalculator::binarySpecial(const QString &op){
     this->calculated = false;
 }
 
+void ScientificCalculator::change(){
+    screen = (screen + 1) % Mode::Length;
+    if(screen == Mode::One){
+        this->changeButton("cube", "sqr", "x²");
+        this->changeButton("root", "pow", "xʸ");
+        this->changeButton("asin", "sin", "sin");
+        this->changeButton("acos", "cos", "cos");
+        this->changeButton("atan", "tan", "tan");
+        this->changeButton("inverse", "sqrt", "√");
+        this->changeButton("fac", "abs", "｜x｜");
+        this->changeButton("sinh", "log", "log");
+        this->changeButton("cosh", "ln", "ln");
+        this->changeButton("tanh", "mod", "mod");
+    }
+    else if(screen == Mode::Two){
+        this->changeButton("sqr", "cube", "x³");
+        this->changeButton("pow", "root", "ʸ√x");
+        this->changeButton("sin", "asin", "sin⁻¹");
+        this->changeButton("cos", "acos", "cos⁻¹");
+        this->changeButton("tan", "atan", "tan⁻¹");
+        this->changeButton("sqrt", "inverse", "1/x");
+        this->changeButton("abs", "fac", "n!");
+        this->changeButton("log", "sinh", "sinh");
+        this->changeButton("ln", "cosh", "cosh");
+        this->changeButton("mod", "tanh", "tanh");
+    }
+}
+
+void ScientificCalculator::cube(){
+    this->unarySpecial(Operator::Special::cube);
+}
+
 void ScientificCalculator::root(){
     this->binarySpecial(Operator::Special::root);
 }
@@ -79,7 +114,7 @@ void ScientificCalculator::sin(){
 }
 
 void ScientificCalculator::cos(){
-    this->unarySpecial(Operator::Special::pow);
+    this->unarySpecial(Operator::Special::cos);
 }
 
 void ScientificCalculator::tan(){

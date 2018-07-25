@@ -1,6 +1,7 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 #include <QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 #include <QString>
 #include <iostream>
@@ -48,10 +49,12 @@ protected:
     bool isBracketUnclosed(const QString &expr) const;
     bool endsWithBracket() const;
     bool endsWithBracket(const QString &expr) const;
+    bool isUnarySpecial(const QString &expr) const;
     void closeAllBracket();
     bool isLastOpArithmetic() const;
     void replaceLastOp(const QString &str);
     void addNumber(const QString &str);
     void constant(const double &constant);
+    void changeButton(const QString &targetName, const QString &buttonName, const QString &icon);
 };
 #endif // CALCULATOR_H

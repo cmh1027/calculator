@@ -109,7 +109,7 @@ void Calculator::setInter(const QString &str){
 QString Calculator::lastOp() const{
     QString&& inter = this->getInter();
     int index;
-    if(inter.back() == Operator::Normal::rightBracket){
+    if(inter.back() == Operator::Normal::rightBracket && inter.at(inter.length()-2) == " "){
         int bracketNum = 1;
         index = inter.length() - 2;
         while(bracketNum > 0){
@@ -159,6 +159,9 @@ bool Calculator::endsWithBracket(const QString &expr) const{
 bool Calculator::endsWithBracket() const{
     return this->getInter().endsWith(Operator::Normal::rightBracket);
 }
+bool Calculator::isUnarySpecial(const QString &expr) const{
+    return this->endsWithBracket(expr) && expr.at(expr.length()-2) == " ";
+}
 
 void Calculator::closeAllBracket(){
     this->appendInter(this->getResult(), false);
@@ -195,4 +198,17 @@ void Calculator::addNumber(const QString &str){
 void Calculator::constant(const double &constant){
     this->setResult(doubleToString(constant));
     this->calculated = false;
+}
+
+void Calculator::changeButton(const QString &targetName, const QString &buttonName, const QString &icon){
+    QPushButton *button;
+    if(targetName.indexOf("Button") != 0)
+        button = this->MainWindow->findChild<QPushButton*>(targetName+"Button");
+    else
+        button = this->MainWindow->findChild<QPushButton*>(targetName);
+    if(buttonName.indexOf("Button") != 0)
+        button->setObjectName(buttonName+"Button");
+    else
+        button->setObjectName(buttonName);
+    button->setText(icon);
 }

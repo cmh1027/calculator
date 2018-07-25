@@ -19,6 +19,7 @@ namespace Operator{
     namespace Special{
         const QString sqrt = "sqrt";
         const QString sqr = "sqr";
+        const QString cube = "cube";
         const QString root = "root";
         const QString pow = "pow";
         const QString inv = "inv";

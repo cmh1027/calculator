@@ -190,7 +190,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Mod</string>
+          <string>mod</string>
          </property>
         </widget>
        </item>

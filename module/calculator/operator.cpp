@@ -12,5 +12,6 @@ const QMap<QString, void(*)(QStack<QString>& stack)> Operator::operateFuncs = {
     {Operator::Special::log, Operation::log}, {Operator::Special::ln, Operation::ln},
     {Operator::Special::mod, Operation::mod}, {Operator::Special::abs, Operation::abs},
     {Operator::Special::fac, Operation::fac}, {Operator::Special::sinh, Operation::sinh},
-    {Operator::Special::cosh, Operation::cosh}, {Operator::Special::tanh, Operation::tanh}
+    {Operator::Special::cosh, Operation::cosh}, {Operator::Special::tanh, Operation::tanh},
+    {Operator::Special::cube, Operation::cube}
 };

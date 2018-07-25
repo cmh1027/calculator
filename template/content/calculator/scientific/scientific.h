@@ -17,9 +17,14 @@ public:
 private:
     Ui::ScientificCalculator *contentUi;
     QMainWindow *MainWindow;
+    enum Mode {One, Two, Length};
+    using Mode = enum Mode;
+    int screen;
 
 protected:
     void binarySpecial(const QString &format);
+    void change();
+    void cube();
     void root();
     void pow();
     void sin();

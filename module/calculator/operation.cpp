@@ -1,5 +1,4 @@
 #include "operation.h"
-
 namespace Operation{
     void plus(QStack<QString>& stack){
         double first, second;
@@ -44,7 +43,7 @@ namespace Operation{
         if(first < 0)
             stack.push(doubleToString(std::nan("")));
         else
-            stack.push(doubleToString(std::pow(first, 1/2)));
+            stack.push(doubleToString(std::sqrt(first)));
     }
 
     void root(QStack<QString>& stack){
@@ -64,6 +63,13 @@ namespace Operation{
         first = stack.top().toDouble();
         stack.pop();
         stack.push(doubleToString(std::pow(first, 2)));
+    }
+
+    void cube(QStack<QString>& stack){
+        double first;
+        first = stack.top().toDouble();
+        stack.pop();
+        stack.push(doubleToString(std::pow(first, 3)));
     }
 
     void pow(QStack<QString>& stack){
@@ -172,7 +178,7 @@ namespace Operation{
         double first;
         first = stack.top().toDouble();
         stack.pop();
-        stack.push(doubleToString(std::lgamma(first+1)));
+        stack.push(doubleToString(std::tgamma(first+1)));
     }
 
     void negate(QStack<QString>& stack){

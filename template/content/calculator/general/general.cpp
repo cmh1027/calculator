@@ -190,7 +190,7 @@ void GeneralCalculator::unarySpecial(const QString &op){
     }
     else{
         QString &&lastOp = this->lastOp();
-        if(this->endsWithBracket(lastOp)){
+        if(this->isUnarySpecial(lastOp)){
             QString &&expr = QString("%1(%2)").arg(op).arg(this->calculateExpression(this->lastOp()));
             this->replaceLastOp(expr);
             this->setResult(calculateExpression(expr));

@@ -16,6 +16,7 @@ namespace Operation{
     void sqrt(QStack<QString>& stack);
     void root(QStack<QString>& stack);
     void sqr(QStack<QString>& stack);
+    void cube(QStack<QString>& stack);
     void pow(QStack<QString>& stack);
     void inv(QStack<QString>& stack);
     void negate(QStack<QString>& stack);
