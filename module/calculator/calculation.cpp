@@ -160,6 +160,8 @@ namespace Calculation{
 
 
     QQueue<QString> splitOperator(const QString& expr){
+        // sin(15 + 15)
+        // 15 15 + sin
         int start = 0;
         QQueue<QString> queue;
         QQueue<QString> stack;

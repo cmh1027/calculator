@@ -47,6 +47,7 @@ protected:
     bool isBracketUnclosed() const;
     bool isBracketUnclosed(const QString &expr) const;
     bool endsWithBracket() const;
+    bool endsWithBracket(const QString &expr) const;
     void closeAllBracket();
     bool isLastOpArithmetic() const;
     void replaceLastOp(const QString &str);

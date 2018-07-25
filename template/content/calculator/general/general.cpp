@@ -189,9 +189,17 @@ void GeneralCalculator::unarySpecial(const QString &op){
         this->calculated = true;
     }
     else{
-        QString &&expr = QString("%1(%2)").arg(op).arg(this->lastOp());
-        this->replaceLastOp(expr);
-        this->setResult(calculateExpression(expr));
+        QString &&lastOp = this->lastOp();
+        if(this->endsWithBracket(lastOp)){
+            QString &&expr = QString("%1(%2)").arg(op).arg(this->calculateExpression(this->lastOp()));
+            this->replaceLastOp(expr);
+            this->setResult(calculateExpression(expr));
+        }
+        else{
+            QString &&expr = QString("%1(%2)").arg(op).arg(this->lastOp());
+            this->replaceLastOp(expr);
+            this->setResult(calculateExpression(expr));
+        }
     }
 }
 
@@ -226,5 +234,6 @@ void GeneralCalculator::rightBracket(){
         this->appendInter(Operator::Normal::rightBracket);
     }
     this->setResult(calculateExpression(this->getInter()));
+    this->calculated = true;
 }
 

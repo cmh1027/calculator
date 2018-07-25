@@ -108,11 +108,25 @@ void Calculator::setInter(const QString &str){
 
 QString Calculator::lastOp() const{
     QString&& inter = this->getInter();
-    int lastIndex;
-    if((lastIndex = inter.lastIndexOf(" ")) == -1)
-        return inter;
-    else
-        return inter.remove(0, lastIndex+1);
+    int index;
+    if(inter.back() == Operator::Normal::rightBracket){
+        int bracketNum = 1;
+        index = inter.length() - 2;
+        while(bracketNum > 0){
+            if(inter.at(index) == Operator::Normal::leftBracket)
+                --bracketNum;
+            else if(inter.at(index) == Operator::Normal::rightBracket)
+                ++bracketNum;
+            --index;
+        }
+        return inter.mid(index+1, inter.length());
+    }
+    else{
+        if((index = inter.lastIndexOf(" ")) == -1)
+            return inter;
+        else
+            return inter.remove(0, index+1);
+    }
 }
 
 bool Calculator::isLastOpArithmetic() const{
@@ -121,12 +135,13 @@ bool Calculator::isLastOpArithmetic() const{
            op == Operator::Normal::divide || op == Operator::Normal::altMult || op == Operator::Normal::altDivide;
 }
 
-void Calculator::replaceLastOp(const QString &str){
-    QString&& expr = this->getInter();
-    if(expr.lastIndexOf(" ") == -1)
-        this->setInter(str);
+void Calculator::replaceLastOp(const QString &expr){
+    QString&& inter = this->getInter();
+    QString&& lastOp = this->lastOp();
+    if(inter == lastOp)
+        this->setInter(expr);
     else
-        this->setInter(expr.replace(expr.lastIndexOf(" ")+1, expr.length(), str));
+        this->setInter(inter.replace(inter.indexOf(lastOp), inter.length(), expr));
 }
 
 bool Calculator::isBracketUnclosed() const{
@@ -135,6 +150,10 @@ bool Calculator::isBracketUnclosed() const{
 
 bool Calculator::isBracketUnclosed(const QString &expr) const{
     return expr.count(Operator::Normal::leftBracket) > expr.count(Operator::Normal::rightBracket);
+}
+
+bool Calculator::endsWithBracket(const QString &expr) const{
+    return expr.endsWith(Operator::Normal::rightBracket);
 }
 
 bool Calculator::endsWithBracket() const{
