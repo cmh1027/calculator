@@ -1,24 +1,30 @@
 #include "general.h"
 #include "ui_general.h"
 GeneralCalculator::GeneralCalculator(QMainWindow *window) :
-    Calculator(window), contentUi(new Ui::Form), MainWindow(window),
-    Operators(std::initializer_list<std::pair<QString, void(GeneralCalculator::*)()>>({
-        std::make_pair("plus", this->plus), std::make_pair("minus", this->minus), std::make_pair("multiply", this->multiply),
-        std::make_pair("divide", this->divide), std::make_pair("equal", this->equal), std::make_pair("erase", this->erase),
-        std::make_pair("dot", this->dot), std::make_pair("negate", this->negate), std::make_pair("ce", this->ce),
-        std::make_pair("c", this->c), std::make_pair("percent", this->percent), std::make_pair("sqrt", this->sqrt),
-        std::make_pair("sqr", this->sqr), std::make_pair("inverse", this->inv)
-    }))
-{}
+    Calculator(window), contentUi(new Ui::GeneralCalculator), MainWindow(window)
+{
+     Operators["plus"] = this->plus;
+     Operators["minus"] = this->minus;
+     Operators["multiply"] = this->multiply;
+     Operators["divide"] = this->divide;
+     Operators["equal"] = this->equal;
+     Operators["erase"] = this->erase;
+     Operators["dot"] = this->dot;
+     Operators["negate"] = this->negate;
+     Operators["ce"] = this->ce;
+     Operators["c"] = this->c;
+     Operators["percent"] = this->percent;
+     Operators["sqrt"] = this->sqrt;
+     Operators["sqr"] = this->sqr;
+     Operators["inverse"] = this->inverse;
+     Operators["leftBracket"] = this->leftBracket;
+     Operators["rightBracket"] = this->rightBracket;
+}
 
 GeneralCalculator::~GeneralCalculator(){}
 
 void GeneralCalculator::setup(){
     SETUP_CAL_UI(contentUi, MainWindow)
-    auto allButtons = MainWindow->findChildren<QPushButton*>();
-    foreach(QPushButton* button, allButtons){
-        connect(button, SIGNAL(clicked()), this, SLOT(buttonPushed()));
-    }
 }
 
 void GeneralCalculator::buttonPushed(){
@@ -40,19 +46,25 @@ void GeneralCalculator::buttonPushed(){
     }
 }
 
+QString GeneralCalculator::calculateExpression(QString expr){
+    while(this->isBracketUnclosed(expr))
+        expr = expr + " )";
+    return Calculation::calculateExpr(expr);
+}
+
 void GeneralCalculator::calculate(){
     if(this->getInter().isEmpty())
         return;
     else{
         if(this->isBracketUnclosed()){
             this->closeAllBracket();
-            this->setResult(calculateExpr(this->getInter()));
+            this->setResult(calculateExpression(this->getInter()));
         }
         else{
             if(this->endsWithBracket())
-                this->setResult(calculateExpr(this->getInter()));
+                this->setResult(calculateExpression(this->getInter()));
             else
-                this->setResult(calculateExpr(this->getInter() + " " + this->getResult()));
+                this->setResult(calculateExpression(this->getInter() + " " + this->getResult()));
         }
     }
     this->setInter("");
@@ -64,11 +76,11 @@ void GeneralCalculator::calculate(const QString &op){
     if(this->getInter().isEmpty()) return;
     else{
         if(this->endsWithBracket()){
-            this->setResult(calculateExpr(this->getInter()));
+            this->setResult(calculateExpression(this->getInter()));
             this->appendInter(op);
         }
         else{
-            this->setResult(calculateExpr(this->getInter() + " " + this->getResult()));
+            this->setResult(calculateExpression(this->getInter() + " " + this->getResult()));
             this->appendInter(result);
             this->appendInter(op);
         }
@@ -162,8 +174,8 @@ void GeneralCalculator::c(){
 }
 
 void GeneralCalculator::percent(){
-    double result = calculateExpr(this->chopInterOp(1)).toDouble() * this->getResult().toDouble() / 100;
-    QString &&str = QString::fromStdString(doubleToString(result));
+    double result = calculateExpression(this->chopInterOp(1)).toDouble() * this->getResult().toDouble() / 100;
+    QString &&str = doubleToString(result);
     this->appendInter(str);
     this->setResult(str);
     this->calculated = true;
@@ -173,13 +185,13 @@ void GeneralCalculator::unarySpecial(const QString &op){
     if(this->getInter().isEmpty() || !this->calculated || this->isLastOpArithmetic()){
         QString &&expr = QString("%1(%2)").arg(op).arg(this->getResult());
         this->appendInter(expr);
-        this->setResult(calculateExpr(expr));
+        this->setResult(calculateExpression(expr));
         this->calculated = true;
     }
     else{
         QString &&expr = QString("%1(%2)").arg(op).arg(this->lastOp());
         this->replaceLastOp(expr);
-        this->setResult(calculateExpr(expr));
+        this->setResult(calculateExpression(expr));
     }
 }
 
@@ -192,6 +204,27 @@ void GeneralCalculator::sqr(){
     this->unarySpecial(Operator::Special::sqr);
 }
 
-void GeneralCalculator::inv(){
+void GeneralCalculator::inverse(){
     this->unarySpecial(Operator::Special::inv);
 }
+
+void GeneralCalculator::leftBracket(){
+    if(this->calculated){
+        this->setResult("0");
+        this->appendInter(Operator::Normal::leftBracket);
+    }
+    else{
+        this->appendInter(Operator::Normal::leftBracket);
+        this->calculated = true;
+    }
+}
+
+void GeneralCalculator::rightBracket(){
+    if(this->isBracketUnclosed()){
+        if(this->isLastOpArithmetic())
+            this->appendInter(this->getResult());
+        this->appendInter(Operator::Normal::rightBracket);
+    }
+    this->setResult(calculateExpression(this->getInter()));
+}
+

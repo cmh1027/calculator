@@ -6,6 +6,9 @@
 #include <iostream>
 #include "../content.h"
 #include "../../../module/calculator/operator.h"
+#include "../../../module/calculator/constant.h"
+
+using namespace Const;
 
 class Calculator : public Content
 {
@@ -42,10 +45,12 @@ protected:
     QString getInter() const;
     QString lastOp() const;
     bool isBracketUnclosed() const;
+    bool isBracketUnclosed(const QString &expr) const;
     bool endsWithBracket() const;
     void closeAllBracket();
     bool isLastOpArithmetic() const;
     void replaceLastOp(const QString &str);
     void addNumber(const QString &str);
+    void constant(const double &constant);
 };
 #endif // CALCULATOR_H

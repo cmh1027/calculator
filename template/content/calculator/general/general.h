@@ -13,7 +13,7 @@
 #include "../../../../module/calculator/calculation.h"
 
 namespace Ui {
-    class Form;
+    class GeneralCalculator;
 }
 
 class GeneralCalculator : public Calculator
@@ -26,12 +26,13 @@ public:
     void setup() override;
 
 private:
-    Ui::Form *contentUi;
+    Ui::GeneralCalculator *contentUi;
     QMainWindow *MainWindow;
 
 protected:
     void calculate();
     void calculate(const QString &op);
+    QString calculateExpression(QString expr);
     void arithmetic(const QString &op);
     void unarySpecial(const QString &format);
     void plus();
@@ -47,7 +48,9 @@ protected:
     void percent();
     void sqrt();
     void sqr();
-    void inv();
+    void inverse();
+    void leftBracket();
+    void rightBracket();
     QMap<QString, void(GeneralCalculator::*)()> Operators;
 
 public slots:

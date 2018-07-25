@@ -3,7 +3,7 @@
 #include "../general/general.h"
 
 namespace Ui {
-    class Form;
+    class ScientificCalculator;
 }
 
 class ScientificCalculator : public GeneralCalculator{
@@ -15,7 +15,7 @@ public:
     void setup() override;
 
 private:
-    Ui::Form *contentUi;
+    Ui::ScientificCalculator *contentUi;
     QMainWindow *MainWindow;
 
 protected:
@@ -32,9 +32,16 @@ protected:
     void cosh();
     void tanh();
     void log();
+    void ln();
     void mod();
     void fac();
+    void abs();
+    void pi();
+    void e();
+    QMap<QString, void(ScientificCalculator::*)()> Operators;
 
+public slots:
+    void buttonPushed() override;
 };
 
 #endif // SCIENTIFIC_H

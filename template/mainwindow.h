@@ -25,6 +25,7 @@ private:
     Ui::MainWindow *mainWindowUi;
     Content *content;
     void generalCalculator();
+    void scientificCalculator();
 
 public slots:
     void buttonPushed();

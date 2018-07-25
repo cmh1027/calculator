@@ -9,7 +9,8 @@ const QMap<QString, void(*)(QStack<QString>& stack)> Operator::operateFuncs = {
     {Operator::Special::sin, Operation::sin}, {Operator::Special::cos, Operation::cos},
     {Operator::Special::tan, Operation::tan}, {Operator::Special::asin, Operation::asin},
     {Operator::Special::acos, Operation::acos}, {Operator::Special::atan, Operation::atan},
-    {Operator::Special::log, Operation::log}, {Operator::Special::mod, Operation::mod},
+    {Operator::Special::log, Operation::log}, {Operator::Special::ln, Operation::ln},
+    {Operator::Special::mod, Operation::mod}, {Operator::Special::abs, Operation::abs},
     {Operator::Special::fac, Operation::fac}, {Operator::Special::sinh, Operation::sinh},
     {Operator::Special::cosh, Operation::cosh}, {Operator::Special::tanh, Operation::tanh}
 };

@@ -133,6 +133,10 @@ bool Calculator::isBracketUnclosed() const{
     return this->getInter().count(Operator::Normal::leftBracket) > this->getInter().count(Operator::Normal::rightBracket);
 }
 
+bool Calculator::isBracketUnclosed(const QString &expr) const{
+    return expr.count(Operator::Normal::leftBracket) > expr.count(Operator::Normal::rightBracket);
+}
+
 bool Calculator::endsWithBracket() const{
     return this->getInter().endsWith(Operator::Normal::rightBracket);
 }
@@ -145,7 +149,7 @@ void Calculator::closeAllBracket(){
 
 void Calculator::addNumber(const QString &str){
     if(this->calculated){
-        if(!this->getInter().isEmpty() && !this->isLastOpArithmetic())
+        if(!this->getInter().isEmpty() && !this->isLastOpArithmetic() && this->lastOp() != Operator::Normal::leftBracket)
             this->setInter(this->chopInterOp(1));
         this->setResult(str);
         this->calculated = false;
@@ -167,4 +171,9 @@ void Calculator::addNumber(const QString &str){
                 this->appendResult(str);
         }
     }
+}
+
+void Calculator::constant(const double &constant){
+    this->setResult(doubleToString(constant));
+    this->calculated = false;
 }

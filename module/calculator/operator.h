@@ -4,6 +4,7 @@
 #include <QStack>
 #include <QMap>
 #include "operation.h"
+
 namespace Operator{
     namespace Normal{
         const QString plus = "+";
@@ -28,12 +29,14 @@ namespace Operator{
         const QString acos = "acos";
         const QString atan = "atan";
         const QString log = "log";
+        const QString ln = "ln";
         const QString mod = "mod";
         const QString fac = "fac";
         const QString sinh = "sinh";
         const QString cosh = "cosh";
         const QString tanh = "tanh";
         const QString negate = "negate";
+        const QString abs = "abs";
     }
     extern const QMap<QString, void(*)(QStack<QString>& stack)> operateFuncs;
 }

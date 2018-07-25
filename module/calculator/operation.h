@@ -1,13 +1,12 @@
 #ifndef OPERATION_H
 #define OPERATION_H
-#define _USE_MATH_DEFINES
-#include <cmath>
+#include "constant.h"
 #include <QtCore/QStack>
 #include <QtCore/QString>
-#include <sstream>
 #include <string>
+#include <cmath>
 
-std::string doubleToString(const double &number);
+using namespace Const;
 
 namespace Operation{
     void plus(QStack<QString>& stack);
@@ -30,8 +29,10 @@ namespace Operation{
     void cosh(QStack<QString>& stack);
     void tanh(QStack<QString>& stack);
     void log(QStack<QString>& stack);
+    void ln(QStack<QString>& stack);
     void mod(QStack<QString>& stack);
     void fac(QStack<QString>& stack);
+    void abs(QStack<QString>& stack);
 
 }
 #endif // OPERATION_H

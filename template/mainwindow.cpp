@@ -6,7 +6,8 @@ MainWindow::MainWindow() :
     mainWindowUi(new Ui::MainWindow), content(nullptr)
 {
     mainWindowUi->setupUi(this);
-    this->generalCalculator();
+    // this->generalCalculator();
+    this->scientificCalculator();
 }
 
 MainWindow::~MainWindow()
@@ -18,6 +19,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::generalCalculator(){
     RENDER(GeneralCalculator)
+}
+
+void MainWindow::scientificCalculator(){
+    RENDER(ScientificCalculator);
 }
 
 void MainWindow::buttonPushed(){
