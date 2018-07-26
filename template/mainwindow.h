@@ -9,7 +9,6 @@
 #include <QVector>
 #include "templates.h"
 
-
 #define LOAD_CONTENT(ui) \
     widget = new QWidget; \
     content = new ui(widget); \
@@ -28,6 +27,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow();
     ~MainWindow();
+    QPushButton *currentMenu;
 
 private:
     Ui::MainWindow *mainWindowUi;

@@ -12,7 +12,7 @@
         ui->setupUi(widget); \
         Calculator::bindLabels(); \
         foreach(QPushButton* button, widget->findChildren<QPushButton*>()){ \
-            connect(button, &QPushButton::clicked, this, this->buttonPushed); \
+            connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
         }
 
 using namespace Const;
