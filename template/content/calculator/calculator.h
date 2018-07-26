@@ -8,6 +8,12 @@
 #include "../content.h"
 #include "../../../module/calculator/operator.h"
 #include "../../../module/calculator/constant.h"
+#define SETUP_CAL_UI(ui, widget) \
+        ui->setupUi(widget); \
+        Calculator::bindLabels(); \
+        foreach(QPushButton* button, widget->findChildren<QPushButton*>()){ \
+            connect(button, &QPushButton::clicked, this, this->buttonPushed); \
+        }
 
 using namespace Const;
 
@@ -16,11 +22,11 @@ class Calculator : public Content
     Q_OBJECT
 
 public:
-    Calculator(QMainWindow *window);
+    Calculator(QWidget*);
     virtual ~Calculator();
 
 private:
-    QMainWindow *MainWindow;
+    QWidget *contentWidget;
     QLabel *interLabel;
     QLabel *resultLabel;
 

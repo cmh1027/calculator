@@ -3,4 +3,5 @@
 #include "content/content.h"
 #include "content/calculator/general/general.h"
 #include "content/calculator/scientific/scientific.h"
+#include "sidemenu/menulayout.h"
 #endif // TEMPLATES_H

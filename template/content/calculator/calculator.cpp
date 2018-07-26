@@ -1,12 +1,13 @@
 #include "calculator.h"
 
-Calculator::Calculator(QMainWindow *window) : MainWindow(window), calculated(false), specialStart(false){}
+Calculator::Calculator(QWidget *widget) : Content(widget), contentWidget(widget), calculated(false), specialStart(false){}
 
-Calculator::~Calculator(){}
+Calculator::~Calculator(){
+}
 
 void Calculator::bindLabels(){
-    resultLabel = MainWindow->findChild<QLabel*>("resultLabel");
-    interLabel = MainWindow->findChild<QLabel*>("intermediateLabel");
+    resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
+    interLabel = contentWidget->findChild<QLabel*>("intermediateLabel");
 }
 
 QString Calculator::getResult(const bool &chopDot){
@@ -203,9 +204,9 @@ void Calculator::constant(const double &constant){
 void Calculator::changeButton(const QString &targetName, const QString &buttonName, const QString &icon){
     QPushButton *button;
     if(targetName.indexOf("Button") != 0)
-        button = this->MainWindow->findChild<QPushButton*>(targetName+"Button");
+        button = this->contentWidget->findChild<QPushButton*>(targetName+"Button");
     else
-        button = this->MainWindow->findChild<QPushButton*>(targetName);
+        button = this->contentWidget->findChild<QPushButton*>(targetName);
     if(buttonName.indexOf("Button") != 0)
         button->setObjectName(buttonName+"Button");
     else

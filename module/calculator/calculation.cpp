@@ -79,12 +79,12 @@ namespace Calculation{
 
     QString calculatePostfix(const QString& expr){
         int start = 0, end;
-        QStack<QString> stack;
+        QStack<double> stack;
         QString chunk;
         if(expr.isEmpty()) return QString("0");
         while(chunking(expr, chunk, " ", start, end)){
             if(isOperand(chunk)){
-                stack.push(chunk);
+                stack.push(chunk.toDouble());
             }
             else{
                 if(Operator::operateFuncs.contains(chunk))
@@ -97,11 +97,11 @@ namespace Calculation{
                 }
             }
         }
-        if(stack.top() == "nan"){
+        if(std::isnan(stack.top())){
             return QString("Invalid input");
         }
         else{
-            return stack.top();
+            return doubleToString(stack.top());
         }
     }
 
@@ -138,6 +138,7 @@ namespace Calculation{
         }
         remainOperators(stack, result);
         return result.trimmed();
+        // 7 3 root 2 root 3 pow 2 pow sin 2 3 root sin 3 pow +
     }
 
     int precedence(const QString& op){

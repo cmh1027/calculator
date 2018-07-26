@@ -10,13 +10,13 @@ class ScientificCalculator : public GeneralCalculator{
     Q_OBJECT
 
 public:
-    ScientificCalculator(QMainWindow*);
+    ScientificCalculator(QWidget*);
     virtual ~ScientificCalculator();
     void setup() override;
 
 private:
     Ui::ScientificCalculator *contentUi;
-    QMainWindow *MainWindow;
+    QWidget *contentWidget;
     enum Mode {One, Two, Length};
     using Mode = enum Mode;
     int screen;

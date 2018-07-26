@@ -21,13 +21,13 @@ class GeneralCalculator : public Calculator
     Q_OBJECT
 
 public:
-    GeneralCalculator(QMainWindow*);
+    GeneralCalculator(QWidget*);
     virtual ~GeneralCalculator();
     void setup() override;
 
 private:
     Ui::GeneralCalculator *contentUi;
-    QMainWindow *MainWindow;
+    QWidget *contentWidget;
 
 protected:
     void calculate();

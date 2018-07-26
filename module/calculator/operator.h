@@ -39,6 +39,6 @@ namespace Operator{
         const QString negate = "negate";
         const QString abs = "abs";
     }
-    extern const QMap<QString, void(*)(QStack<QString>& stack)> operateFuncs;
+    extern const QMap<QString, void(*)(QStack<double>& stack)> operateFuncs;
 }
 #endif // OPERATOR_H

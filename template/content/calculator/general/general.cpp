@@ -1,7 +1,7 @@
 #include "general.h"
 #include "ui_general.h"
-GeneralCalculator::GeneralCalculator(QMainWindow *window) :
-    Calculator(window), contentUi(new Ui::GeneralCalculator), MainWindow(window)
+GeneralCalculator::GeneralCalculator(QWidget *widget) :
+    Calculator(widget), contentUi(new Ui::GeneralCalculator), contentWidget(widget)
 {
      Operators["plus"] = this->plus;
      Operators["minus"] = this->minus;
@@ -24,7 +24,7 @@ GeneralCalculator::GeneralCalculator(QMainWindow *window) :
 GeneralCalculator::~GeneralCalculator(){}
 
 void GeneralCalculator::setup(){
-    SETUP_CAL_UI(contentUi, MainWindow)
+    SETUP_CAL_UI(contentUi, contentWidget)
 }
 
 void GeneralCalculator::buttonPushed(){

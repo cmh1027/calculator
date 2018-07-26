@@ -2,8 +2,8 @@
 #include "ui_scientific.h"
 #include <iostream>
 #include <cmath>
-ScientificCalculator::ScientificCalculator(QMainWindow* window) : GeneralCalculator(window),
-    contentUi(new Ui::ScientificCalculator), MainWindow(window), screen(Mode::One)
+ScientificCalculator::ScientificCalculator(QWidget *widget) : GeneralCalculator(widget),
+    contentUi(new Ui::ScientificCalculator), contentWidget(widget), screen(Mode::One)
 {
     for(auto iter = GeneralCalculator::Operators.constBegin(); iter != GeneralCalculator::Operators.constEnd(); ++iter){
         Operators[iter.key()] = iter.value();
@@ -32,7 +32,7 @@ ScientificCalculator::ScientificCalculator(QMainWindow* window) : GeneralCalcula
 ScientificCalculator::~ScientificCalculator(){}
 
 void ScientificCalculator::setup(){
-    SETUP_CAL_UI(contentUi, MainWindow)
+    SETUP_CAL_UI(contentUi, contentWidget)
 }
 
 void ScientificCalculator::buttonPushed(){

@@ -1,6 +1,16 @@
 #include "content.h"
+#include <iostream>
 
-Content::Content(){}
+Content::Content(QWidget* widget):contentWidget(widget){}
 
-Content::~Content(){}
+Content::~Content(){
+}
+
+void Content::hideAllObjects(){
+}
+void Content::showAllObjects(){
+}
+
+void Content::deleteAllObjects(){
+}
 

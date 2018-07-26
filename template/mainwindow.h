@@ -2,13 +2,20 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QStackedWidget>
+#include <QVector>
 #include "templates.h"
-#define RENDER(ui) if(content != nullptr)\
-                        delete content;\
-                    content = new ui(this);\
-                    content->setup();
 
+
+#define LOAD_CONTENT(ui) \
+    widget = new QWidget; \
+    content = new ui(widget); \
+    content->setup(); \
+    this->contentWidget->addWidget(widget); \
+    this->contents.append(content);
 
 namespace Ui {
     class MainWindow;
@@ -24,12 +31,18 @@ public:
 
 private:
     Ui::MainWindow *mainWindowUi;
-    Content *content;
+    QStackedWidget *contentWidget;
+    QVector<Content*> contents;
     QWidget *sidebar;
+    void loadContents();
+    void installSidebar();
     void generalCalculator();
     void scientificCalculator();
+
 public slots:
-    void buttonPushed();
+    void showMenu();
+    void hideMenu();
+    void changeContent(const int& menuNum);
 };
 
 #endif // MAINWINDOW_H

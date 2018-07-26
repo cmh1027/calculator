@@ -7,6 +7,7 @@
 #include <QtCore/QString>
 #include <iostream>
 #include "operator.h"
+#include "../utility.h"
 namespace Calculation{
     QString calculateExpr(const QString& expr);
     QString changeToPostfix(const QString& expr);
