@@ -170,7 +170,7 @@ void GeneralCalculator::ce(){
 void GeneralCalculator::c(){
     this->setResult("0");
     this->setInter("");
-    this->doubleList.clear();
+    this->clearDoubleList();
     this->calculated = false;
 }
 

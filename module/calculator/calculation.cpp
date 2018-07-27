@@ -108,6 +108,10 @@ namespace Calculation{
                 return Utility::doubleToString(stack.top());
             }
             else{
+                for(auto it = doubleList.begin(); it != doubleList.end(); it++){
+                    if(stack.top() == it.value())
+                        return it.key();
+                }
                 QString format = QString("{%1}").arg(doubleList.size());
                 doubleList[format] = stack.top();
                 return format;
@@ -148,7 +152,6 @@ namespace Calculation{
         }
         remainOperators(stack, result);
         return result.trimmed();
-        // 7 3 root 2 root 3 pow 2 pow sin 2 3 root sin 3 pow +
     }
 
     int precedence(const QString& op){

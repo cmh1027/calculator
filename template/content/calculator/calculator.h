@@ -27,6 +27,7 @@ public:
     virtual ~Calculator();
 
 private:
+    QMainWindow *mainWindow;
     QWidget *contentWidget;
     QLabel *interLabel;
     QLabel *resultLabel;
@@ -66,5 +67,6 @@ protected:
     void addNumber(const QString &str);
     void constant(const QString &constant);
     void changeButton(const QString &targetName, const QString &buttonName, const QString &icon);
+    void clearDoubleList();
 };
 #endif // CALCULATOR_H

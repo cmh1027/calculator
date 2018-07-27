@@ -2,12 +2,13 @@
 #include "../../mainwindow.h"
 
 Calculator::Calculator(QMainWindow *window, QWidget *widget) : Content(window, widget),
-    contentWidget(widget), calculated(false), specialStart(false),
+    mainWindow(window), contentWidget(widget), calculated(false), specialStart(false),
     doubleList(*static_cast<MainWindow*>(window)->config->getConstantList()){
 }
 
 Calculator::~Calculator(){
 }
+
 
 void Calculator::bindLabels(){
     resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
@@ -217,4 +218,8 @@ void Calculator::changeButton(const QString &targetName, const QString &buttonNa
     else
         button->setObjectName(buttonName);
     button->setText(icon);
+}
+
+void Calculator::clearDoubleList(){
+    doubleList = *static_cast<MainWindow*>(mainWindow)->config->getConstantList();
 }
