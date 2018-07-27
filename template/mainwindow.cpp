@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 MainWindow::MainWindow() :
-    currentMenu(nullptr), mainWindowUi(new Ui::MainWindow)
+    currentMenu(nullptr), config(new Configuration), mainWindowUi(new Ui::MainWindow)
 {
     mainWindowUi->setupUi(this);
     this->installSidebar();
@@ -13,6 +13,7 @@ MainWindow::MainWindow() :
 MainWindow::~MainWindow()
 {
     delete mainWindowUi;
+    delete config;
     for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
         delete *iter;
 }

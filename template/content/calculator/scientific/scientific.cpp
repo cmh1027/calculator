@@ -2,7 +2,7 @@
 #include "ui_scientific.h"
 #include <iostream>
 #include <cmath>
-ScientificCalculator::ScientificCalculator(QWidget *widget) : GeneralCalculator(widget),
+ScientificCalculator::ScientificCalculator(QMainWindow *window, QWidget *widget) : GeneralCalculator(window, widget),
     contentUi(new Ui::ScientificCalculator), contentWidget(widget), screen(Mode::One)
 {
     for(auto iter = GeneralCalculator::Operators.constBegin(); iter != GeneralCalculator::Operators.constEnd(); ++iter){
@@ -166,9 +166,9 @@ void ScientificCalculator::abs(){
 }
 
 void ScientificCalculator::pi(){
-    this->constant(Constant["pi"]);
+    this->constant("pi");
 }
 
 void ScientificCalculator::e(){
-    this->constant(Constant["e"]);
+    this->constant("e");
 }

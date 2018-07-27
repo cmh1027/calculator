@@ -1,6 +1,10 @@
 #include "calculator.h"
+#include "../../mainwindow.h"
 
-Calculator::Calculator(QWidget *widget) : Content(widget), contentWidget(widget), calculated(false), specialStart(false){}
+Calculator::Calculator(QMainWindow *window, QWidget *widget) : Content(window, widget),
+    contentWidget(widget), calculated(false), specialStart(false),
+    doubleList(*static_cast<MainWindow*>(window)->config->getConstantList()){
+}
 
 Calculator::~Calculator(){
 }
@@ -11,13 +15,17 @@ void Calculator::bindLabels(){
 }
 
 QString Calculator::getResult(const bool &chopDot){
-    QString &&result = this->resultLabel->text();
     if(chopDot){
-        if(result.back() == '.'){
-            this->setResult(result.chopped(1));
+        if(this->result.back() == '.'){
+            this->setResult(this->result.chopped(1));
         }
     }
-    return result;
+    return this->result;
+}
+
+void Calculator::setResult(const QString &str){
+    this->result = str;
+    this->resultLabel->setText(Utility::transformExpr(str, this->doubleList));
 }
 
 void Calculator::appendResult(const QString &str){
@@ -40,12 +48,13 @@ void Calculator::removeResult(const int &pos, const int &num){
     this->setResult(this->getResult(false).remove(pos, num));
 }
 
-void Calculator::setResult(const QString &str){
-    this->resultLabel->setText(str);
+QString Calculator::getInter() const{
+    return this->inter;
 }
 
-QString Calculator::getInter() const{
-    return this->interLabel->text();
+void Calculator::setInter(const QString &str){
+    this->inter = str;
+    this->interLabel->setText(Utility::transformExpr(str, this->doubleList));
 }
 
 void Calculator::appendInter(const QString &str, const bool &autoSpace){
@@ -101,10 +110,6 @@ QString Calculator::removeInterOp(const int &num){
             return "";
         inter = inter.remove(0, inter.indexOf(" ") + 1);
     return inter;
-}
-
-void Calculator::setInter(const QString &str){
-    this->interLabel->setText(str);
 }
 
 QString Calculator::lastOp() const{
@@ -196,8 +201,8 @@ void Calculator::addNumber(const QString &str){
     }
 }
 
-void Calculator::constant(const double &constant){
-    this->setResult(doubleToString(constant));
+void Calculator::constant(const QString &constant){
+    this->setResult(QString("{%1}").arg(constant));
     this->calculated = false;
 }
 

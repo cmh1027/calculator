@@ -1,7 +1,7 @@
 #include "general.h"
 #include "ui_general.h"
-GeneralCalculator::GeneralCalculator(QWidget *widget) :
-    Calculator(widget), contentUi(new Ui::GeneralCalculator), contentWidget(widget)
+GeneralCalculator::GeneralCalculator(QMainWindow *window, QWidget *widget) :
+    Calculator(window, widget), contentUi(new Ui::GeneralCalculator), contentWidget(widget)
 {
      Operators["plus"] = this->plus;
      Operators["minus"] = this->minus;
@@ -49,7 +49,7 @@ void GeneralCalculator::buttonPushed(){
 QString GeneralCalculator::calculateExpression(QString expr){
     while(this->isBracketUnclosed(expr))
         expr = expr + " )";
-    return Calculation::calculateExpr(expr);
+    return Calculation::calculateExpr(expr, this->doubleList);
 }
 
 void GeneralCalculator::calculate(){
@@ -163,19 +163,20 @@ void GeneralCalculator::negate(){
 }
 
 void GeneralCalculator::ce(){
-    this->setResult("");
+    this->setResult("0");
     this->calculated = false;
 }
 
 void GeneralCalculator::c(){
-    this->setResult("");
+    this->setResult("0");
     this->setInter("");
+    this->doubleList.clear();
     this->calculated = false;
 }
 
 void GeneralCalculator::percent(){
     double result = calculateExpression(this->chopInterOp(1)).toDouble() * this->getResult().toDouble() / 100;
-    QString &&str = doubleToString(result);
+    QString &&str = Utility::doubleToString(result);
     this->appendInter(str);
     this->setResult(str);
     this->calculated = true;

@@ -1,7 +1,7 @@
 #include "content.h"
 #include <iostream>
 
-Content::Content(QWidget* widget):contentWidget(widget){}
+Content::Content(QMainWindow *window, QWidget* widget):contentWidget(widget), mainWindow(window){}
 
 Content::~Content(){
 }

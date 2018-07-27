@@ -6,11 +6,12 @@ namespace Ui {
     class ScientificCalculator;
 }
 
-class ScientificCalculator : public GeneralCalculator{
+class ScientificCalculator : public GeneralCalculator
+{
     Q_OBJECT
 
 public:
-    ScientificCalculator(QWidget*);
+    ScientificCalculator(QMainWindow*, QWidget*);
     virtual ~ScientificCalculator();
     void setup() override;
 

@@ -6,7 +6,7 @@ namespace Calculation{
     bool isOperand(const QString& expr){
         bool isDouble;
         expr.toDouble(&isDouble);
-        return isDouble;
+        return isDouble || (expr.indexOf("{") != -1 && expr.indexOf("}") != -1);
     }
 
     void processOp(QQueue<QString>&& ops, QString& result){
@@ -59,8 +59,8 @@ namespace Calculation{
         }
     }
 
-    QString calculateExpr(const QString& expr){
-        QString result = calculatePostfix(changeToPostfix(expr));
+    QString calculateExpr(const QString& expr, QMap<QString, double>& doubleList){
+        QString result = calculatePostfix(changeToPostfix(expr), doubleList);
         return result;
     }
 
@@ -77,14 +77,17 @@ namespace Calculation{
         }
     }
 
-    QString calculatePostfix(const QString& expr){
+    QString calculatePostfix(const QString& expr, QMap<QString, double>& doubleList){
         int start = 0, end;
         QStack<double> stack;
         QString chunk;
         if(expr.isEmpty()) return QString("0");
         while(chunking(expr, chunk, " ", start, end)){
             if(isOperand(chunk)){
-                stack.push(chunk.toDouble());
+                if(chunk.indexOf("{") != -1 && chunk.indexOf("}") != -1)
+                    stack.push(doubleList[chunk]);
+                else
+                    stack.push(chunk.toDouble());
             }
             else{
                 if(Operator::operateFuncs.contains(chunk))
@@ -101,7 +104,14 @@ namespace Calculation{
             return QString("Invalid input");
         }
         else{
-            return doubleToString(stack.top());
+            if(isInt(stack.top())){
+                return Utility::doubleToString(stack.top());
+            }
+            else{
+                QString format = QString("{%1}").arg(doubleList.size());
+                doubleList[format] = stack.top();
+                return format;
+            }
         }
     }
 
@@ -161,8 +171,6 @@ namespace Calculation{
 
 
     QQueue<QString> splitOperator(const QString& expr){
-        // sin(15 + 15)
-        // 15 15 + sin
         int start = 0;
         QQueue<QString> queue;
         QQueue<QString> stack;
@@ -181,5 +189,12 @@ namespace Calculation{
             }
         }
         return queue;
+    }
+
+    bool isInt(const double& num){
+        if(num - static_cast<long long int>(num) > 0)
+            return false;
+        else
+            return true;
     }
 }

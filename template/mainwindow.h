@@ -10,10 +10,11 @@
 #include <QMouseEvent>
 #include <QVector>
 #include "templates.h"
+#include "configuration.h"
 
 #define LOAD_CONTENT(ui) \
     widget = new QWidget; \
-    content = new ui(widget); \
+    content = new ui(this, widget); \
     content->setup(); \
     this->contentWidget->addWidget(widget); \
     this->contents.append(content);
@@ -30,6 +31,7 @@ public:
     explicit MainWindow();
     ~MainWindow();
     QPushButton *currentMenu;
+    Configuration *config;
 
 private:
     Ui::MainWindow *mainWindowUi;

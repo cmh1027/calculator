@@ -9,7 +9,7 @@ class Content : public QObject{
     Q_OBJECT
 
 public:
-    Content(QWidget *window);
+    Content(QMainWindow*, QWidget *window);
     virtual ~Content();
     virtual void setup() = 0;
     void hideAllObjects();
@@ -18,6 +18,7 @@ public:
 
 private:
     QWidget* contentWidget;
+    QMainWindow* mainWindow;
 
 public slots:
     virtual void buttonPushed() = 0;

@@ -9,9 +9,9 @@
 #include "operator.h"
 #include "../utility.h"
 namespace Calculation{
-    QString calculateExpr(const QString& expr);
+    QString calculateExpr(const QString& expr, QMap<QString, double>& doubleList);
     QString changeToPostfix(const QString& expr);
-    QString calculatePostfix(const QString& expr);
+    QString calculatePostfix(const QString& expr, QMap<QString, double>& doubleList);
     bool isUnarySpecial(const QString& expr);
     QQueue<QString> splitOperator(const QString& expr);
     int nextIndex(const QString& expr, int start, const QString& delimiter);
@@ -23,5 +23,6 @@ namespace Calculation{
     void processOperator(const QString& _operator, QStack<QString>& stack, QString& result);
     void remainOperators(QStack<QString>& stack, QString& result);
     bool isOperand(const QString& expr);
+    bool isInt(const double& num);
 }
 #endif

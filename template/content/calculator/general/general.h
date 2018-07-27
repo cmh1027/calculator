@@ -21,7 +21,7 @@ class GeneralCalculator : public Calculator
     Q_OBJECT
 
 public:
-    GeneralCalculator(QWidget*);
+    GeneralCalculator(QMainWindow*, QWidget*);
     virtual ~GeneralCalculator();
     void setup() override;
 

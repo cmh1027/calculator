@@ -36,7 +36,8 @@ SOURCES += \
     module/calculator/constant.cpp \
     module/utility.cpp \
     template/sidemenu/menuLayout.cpp \
-    template/sidemenu/menuItem.cpp
+    template/sidemenu/menuItem.cpp \
+    template/configuration.cpp
 
 HEADERS += \
         template/mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     module/calculator/constant.h \
     module/utility.h \
     template/sidemenu/menuItem.h \
-    template/sidemenu/menulayout.h
+    template/sidemenu/menulayout.h \
+    template/configuration.h
 
 FORMS += \
         template/mainwindow.ui \
