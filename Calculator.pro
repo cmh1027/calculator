@@ -51,7 +51,7 @@ HEADERS += \
     module/calculator/constant.h \
     module/utility.h \
     template/sidemenu/menuItem.h \
-    template/sidemenu/menuLayout.h
+    template/sidemenu/menulayout.h
 
 FORMS += \
         template/mainwindow.ui \

@@ -24,18 +24,22 @@ void MainWindow::loadContents(){
     LOAD_CONTENT(ScientificCalculator);
 }
 
+void MainWindow::setTitle(const QString &str){
+    this->findChild<QLabel*>("titleLabel")->setText(str);
+}
 
 void MainWindow::installSidebar(){
     this->sidebar = this->findChild<QWidget*>("menubarWidget");
     this->sidebar->setParent(this);
     this->sidebar->setFixedHeight(this->height() + 11);
-    connect(this->sidebar->findChild<QToolButton*>("menuCloseButton"), &QToolButton::clicked, this, this->hideMenu);
-    MenuLayout *sidebarLayout = new MenuLayout(this);
-    this->sidebar->findChild<QWidget*>("scrollAreaWidgetContents")->setLayout(sidebarLayout);
+    connect(this->sidebar->findChild<QToolButton*>("menuCloseButton"), &QToolButton::clicked, this, &this->hideMenu);
+    MenuLayout *sidebarLayout = new MenuLayout(this, this->sidebar->findChild<QWidget*>("scrollAreaWidgetContents"));
+    sidebarLayout->applyLayout();
     this->sidebar->hide();
 }
 
 void MainWindow::showMenu(){
+    this->sidebar->setFixedHeight(this->height() + 11);
     this->sidebar->show();
 }
 
@@ -45,8 +49,18 @@ void MainWindow::hideMenu(){
 
 void MainWindow::changeContent(const int& menuNum){
     auto senderButton = static_cast<QPushButton*>(sender());
-    this->currentMenu->setStyleSheet("background-color: transparent;");
+    this->setTitle(senderButton->text());
+    this->currentMenu->setStyleSheet("QPushButton{text-align: left;padding-left:50px;}"
+                                     "QPushButton:hover{background-color: rgb(207, 207, 207);}");
     this->currentMenu = senderButton;
-    this->currentMenu->setStyleSheet("background-color: rgb(119, 162, 255);");
+    this->currentMenu->setStyleSheet("QPushButton{background-color: rgb(119, 162, 255);"
+                                     "text-align: left;padding-left:50px;}"
+                                     "QPushButton:hover{background-color: rgb(144, 144, 255);}");
     this->contentWidget->setCurrentIndex(menuNum);
+    this->hideMenu();
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event){
+    if(!(event->x() < this->sidebar->width() && event->y() < this->sidebar->height()))
+        this->hideMenu();
 }

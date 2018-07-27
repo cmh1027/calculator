@@ -4,8 +4,10 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QWidget>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QStackedWidget>
+#include <QMouseEvent>
 #include <QVector>
 #include "templates.h"
 
@@ -38,6 +40,8 @@ private:
     void installSidebar();
     void generalCalculator();
     void scientificCalculator();
+    void setTitle(const QString &str);
+    void mousePressEvent(QMouseEvent *event);
 
 public slots:
     void showMenu();

@@ -1,12 +1,12 @@
 #include "menuLayout.h"
 #include <iostream>
-MenuLayout::MenuLayout(QMainWindow* window){
-    this->setContentsMargins(0, 0, 0, 0);
-    MenuItem *item;
-    item = new MenuItem(window, "Normal", 0);
-    item->setStyleSheet("background-color: rgb(119, 162, 255);");
-    static_cast<MainWindow*>(window)->currentMenu = item;
-    this->addWidget(item);
-    this->addWidget(new MenuItem(window, "Scientific", 1));
+MenuLayout::MenuLayout(QMainWindow* window, QWidget* widget):mainWindow(window), parent(widget){}
 
+void MenuLayout::applyLayout(){
+    this->addWidget((new MenuItem(mainWindow, parent, "Normal", 0))->selected());
+    this->addWidget((new MenuItem(mainWindow, parent, "Scientific", 1))->unselected());
+}
+
+void MenuLayout::addWidget(QWidget* item){
+    item->setParent(this->parent);
 }
