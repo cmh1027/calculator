@@ -1,7 +1,9 @@
 #include "calculation.h"
 #include "operator.h"
-#include "../utility.h"
+#include "constant.h"
+#include "../../config/config.h"
 
+extern Configuration* config;
 using namespace Calculation;
 
 namespace Calculation{
@@ -92,8 +94,15 @@ namespace Calculation{
                     stack.push(chunk.toDouble());
             }
             else{
-                if(Operator::operateFuncs.contains(chunk))
+                if(Operator::operateFuncs.contains(chunk)){
+                    if(!config->getRadian() && (chunk == Operator::Special::sin || chunk == Operator::Special::cos ||
+                       chunk == Operator::Special::tan)){
+                       double degree = stack.top()*Const::PI/180;
+                       stack.pop();
+                       stack.push(degree);
+                    }
                     Operator::operateFuncs[chunk](stack);
+                }
                 else{
                     std::cout << "Map operateFuncs does not have a key : " << chunk.toStdString() << "\n";
                     std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
@@ -107,7 +116,7 @@ namespace Calculation{
         }
         else{
             if(isInt(stack.top())){
-                return Utility::doubleToString(stack.top());
+                return QString::number(static_cast<long>(stack.top()));
             }
             else{
                 for(auto it = doubleList.begin(); it != doubleList.end(); it++){

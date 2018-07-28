@@ -2,7 +2,6 @@
 #define MENUITEM_H
 #include <QPushButton>
 #include <QString>
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
 
 class MainWindow;

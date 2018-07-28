@@ -1,7 +1,15 @@
 #include "utility.h"
+#include "../config/config.h"
+#include <sstream>
+#include <iomanip>
+#include <iostream>
+
+extern Configuration* config;
+
 namespace Utility{
-    QString doubleToString(const double &number, int precision){
+    QString doubleToString(const double &number){
         std::stringstream strs;
+        int precision = config->getPrecision();
         if(number - static_cast<long long int>(number)> 0 && precision >= 0){
             for(int point = 1; point<precision; ++point){
                 if(number*std::pow(10, point) - std::floor(number*std::pow(10, point)) == 0){

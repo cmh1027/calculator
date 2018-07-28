@@ -1,7 +1,6 @@
 #ifndef OPERATION_H
 #define OPERATION_H
 #include <QtCore/QStack>
-#include <QtCore/QString>
 
 namespace Operation{
     void plus(QStack<double>& stack);

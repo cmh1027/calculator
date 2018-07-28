@@ -1,10 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "templates.h"
+#include "../config/config.h"
+
+Configuration* config;
 
 MainWindow::MainWindow() :
-    currentMenu(nullptr), config(new Configuration), mainWindowUi(new Ui::MainWindow)
+    currentMenu(nullptr), mainWindowUi(new Ui::MainWindow)
 {
+    config = new Configuration(this);
     mainWindowUi->setupUi(this);
     this->installSidebar();
     this->contentWidget = this->findChild<QStackedWidget*>("contentWidget");
@@ -15,16 +19,15 @@ MainWindow::MainWindow() :
 MainWindow::~MainWindow()
 {
     delete mainWindowUi;
-    delete config;
     for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
         delete *iter;
 }
 
 void MainWindow::loadContents(){
     QWidget* widget;
-    Content* content;
-    LOAD_CONTENT(GeneralCalculator);
-    LOAD_CONTENT(ScientificCalculator);
+    Template::Content* content;
+    LOAD_CONTENT(Template::GeneralCalculator)
+    LOAD_CONTENT(Template::ScientificCalculator)
 }
 
 void MainWindow::setTitle(const QString &str){
@@ -66,4 +69,14 @@ void MainWindow::changeContent(const int& menuNum){
 void MainWindow::mousePressEvent(QMouseEvent *event){
     if(!(event->x() < this->sidebar->width() && event->y() < this->sidebar->height()))
         this->hideMenu();
+}
+
+void MainWindow::addConstant(const QString &str, const double &num){
+    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
+        (*iter)->addConstant(str, num);
+}
+
+void MainWindow::removeConstant(const QString &str){
+    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
+       (*iter)->removeConstant(str);
 }

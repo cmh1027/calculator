@@ -1,6 +1,4 @@
 #include "operation.h"
-#include "constant.h"
-using namespace Const;
 namespace Operation{
     void plus(QStack<double>& stack){
         double first, second;
@@ -94,21 +92,21 @@ namespace Operation{
         double first;
         first = stack.top();
         stack.pop();
-        stack.push(std::sin(first*Constant["pi"]/180));
+        stack.push(std::sin(first));
     }
 
     void cos(QStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
-        stack.push(std::cos(first*Constant["pi"]/180));
+        stack.push(std::cos(first));
     }
 
     void tan(QStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
-        stack.push(std::tan(first*Constant["pi"]/180));
+        stack.push(std::tan(first));
     }
 
     void asin(QStack<double>& stack){

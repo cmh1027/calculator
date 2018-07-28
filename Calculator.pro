@@ -22,41 +22,40 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-
-SOURCES += \
-        main.cpp \
-        template/mainwindow.cpp \
-    module/calculator/operation.cpp \
-    module/calculator/operator.cpp \
-    template/content/calculator/scientific/scientific.cpp \
-    template/content/content.cpp \
-    template/content/calculator/general/general.cpp \
-    template/content/calculator/calculator.cpp \
-    module/calculator/calculation.cpp \
-    module/calculator/constant.cpp \
-    module/utility.cpp \
-    template/sidemenu/menuLayout.cpp \
-    template/sidemenu/menuItem.cpp \
-    template/configuration.cpp
-
 HEADERS += \
-        template/mainwindow.h \
+    config/config.h \
+    module/utility.h \
+    module/calculator/calculation.h \
+    module/calculator/constant.h \
     module/calculator/operation.h \
     module/calculator/operator.h \
-    template/content/content.h \
-    template/content/calculator/scientific/scientific.h \
-    template/content/calculator/general/general.h \
-    template/content/calculator/calculator.h \
-    module/calculator/calculation.h \
+    template/mainwindow.h \
     template/templates.h \
-    module/calculator/constant.h \
-    module/utility.h \
     template/sidemenu/menuItem.h \
-    template/sidemenu/menulayout.h \
-    template/configuration.h
+    template/sidemenu/menuLayout.h \
+    template/content/content.h \
+    template/content/calculator/calculator.h \
+    template/content/calculator/general/general.h \
+    template/content/calculator/scientific/scientific.h
+
+SOURCES += \
+    config/config.cpp \
+    module/utility.cpp \
+    module/calculator/calculation.cpp \
+    module/calculator/constant.cpp \
+    module/calculator/operation.cpp \
+    module/calculator/operator.cpp \
+    template/mainwindow.cpp \
+    template/sidemenu/menuItem.cpp \
+    template/sidemenu/menuLayout.cpp \
+    template/content/content.cpp \
+    template/content/calculator/calculator.cpp \
+    template/content/calculator/general/general.cpp \
+    template/content/calculator/scientific/scientific.cpp \
+    main.cpp
 
 FORMS += \
-        template/mainwindow.ui \
-    template/content/calculator/scientific/scientific.ui \
+    template/mainwindow.ui \
+    template/content/calculator/calculator.ui \
     template/content/calculator/general/general.ui \
-    template/content/calculator/calculator.ui
+    template/content/calculator/scientific/scientific.ui

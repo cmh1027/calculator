@@ -3,6 +3,6 @@
 #include "content/content.h"
 #include "content/calculator/general/general.h"
 #include "content/calculator/scientific/scientific.h"
+#include "content/config/config.h"
 #include "sidemenu/menulayout.h"
-#include "configuration.h"
 #endif // TEMPLATES_H
