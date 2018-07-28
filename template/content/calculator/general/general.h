@@ -1,6 +1,5 @@
 #ifndef GENERAL_H
 #define GENERAL_H
-#include <QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 #include <QtCore/QRegExp>
@@ -9,8 +8,8 @@
 #include <utility>
 #include <iostream>
 #include "../calculator.h"
-#include "../../../../module/calculator/operator.h"
-#include "../../../../module/calculator/calculation.h"
+
+class MainWindow;
 
 namespace Ui {
     class GeneralCalculator;
@@ -21,7 +20,7 @@ class GeneralCalculator : public Calculator
     Q_OBJECT
 
 public:
-    GeneralCalculator(QMainWindow*, QWidget*);
+    GeneralCalculator(MainWindow*, QWidget*);
     virtual ~GeneralCalculator();
     void setup() override;
 

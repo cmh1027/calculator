@@ -1,4 +1,5 @@
 #include "configuration.h"
+#include "../module/calculator/constant.h"
 
 Configuration::Configuration():constants({{"{pi}", Const::Constant["pi"]}, {"{e}", Const::Constant["e"]}}){}
 

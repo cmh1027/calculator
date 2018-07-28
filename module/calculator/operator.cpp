@@ -1,4 +1,5 @@
 #include "operator.h"
+#include "operation.h"
 const QMap<QString, void(*)(QStack<double>& stack)> Operator::operateFuncs = {
     {Operator::Normal::plus, Operation::plus}, {Operator::Normal::minus, Operation::minus},
     {Operator::Normal::mult, Operation::mult}, {Operator::Normal::divide, Operation::divide},

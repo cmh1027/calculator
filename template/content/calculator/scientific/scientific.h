@@ -1,6 +1,9 @@
 #ifndef SCIENTIFIC_H
 #define SCIENTIFIC_H
 #include "../general/general.h"
+#include <iostream>
+
+class MainWindow;
 
 namespace Ui {
     class ScientificCalculator;
@@ -11,7 +14,7 @@ class ScientificCalculator : public GeneralCalculator
     Q_OBJECT
 
 public:
-    ScientificCalculator(QMainWindow*, QWidget*);
+    ScientificCalculator(MainWindow*, QWidget*);
     virtual ~ScientificCalculator();
     void setup() override;
 

@@ -1,12 +1,7 @@
 #ifndef OPERATION_H
 #define OPERATION_H
-#include "constant.h"
 #include <QtCore/QStack>
 #include <QtCore/QString>
-#include <string>
-#include <cmath>
-
-using namespace Const;
 
 namespace Operation{
     void plus(QStack<double>& stack);

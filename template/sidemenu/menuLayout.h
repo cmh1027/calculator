@@ -1,19 +1,19 @@
 #ifndef MENULAYOUT_H
 #define MENULAYOUT_H
-#include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
-#include "menuitem.h"
+
+class MainWindow;
 
 class MenuLayout : public QObject{
     Q_OBJECT
 
 public:
-    MenuLayout(QMainWindow*, QWidget*);
+    MenuLayout(MainWindow*, QWidget*);
     void applyLayout();
     void addWidget(QWidget*);
 
 private:
-    QMainWindow *mainWindow;
+    MainWindow *mainWindow;
     QWidget *parent;
 };
 #endif // MENULAYOUT_H

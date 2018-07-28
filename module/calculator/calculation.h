@@ -6,8 +6,6 @@
 #include <QtCore/QStack>
 #include <QtCore/QString>
 #include <iostream>
-#include "operator.h"
-#include "../utility.h"
 namespace Calculation{
     QString calculateExpr(const QString& expr, QMap<QString, double>& doubleList);
     QString changeToPostfix(const QString& expr);

@@ -1,10 +1,14 @@
 #include "calculator.h"
 #include "ui_calculator.h"
 #include "../../mainwindow.h"
+#include "../../../module/calculator/operator.h"
+#include "../../../module/calculator/constant.h"
+#include "../../../module/utility.h"
+#include "../../configuration.h"
 
-Calculator::Calculator(QMainWindow *window, QWidget *widget) : Content(window, widget),
+Calculator::Calculator(MainWindow *window, QWidget *widget) : Content(window, widget),
     contentUi(new Ui::Calculator), mainWindow(window), contentWidget(widget), calculated(false), specialStart(false),
-    doubleList(*static_cast<MainWindow*>(window)->config->getConstantList())
+    doubleList(*window->config->getConstantList())
 {
     contentUi->setupUi(widget);
     this->resultLabel = contentWidget->findChild<QLabel*>("resultLabel");

@@ -1,4 +1,6 @@
 #include "calculation.h"
+#include "operator.h"
+#include "../utility.h"
 
 using namespace Calculation;
 

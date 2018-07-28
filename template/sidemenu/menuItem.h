@@ -4,15 +4,17 @@
 #include <QString>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QWidget>
-#include "../mainwindow.h"
+
+class MainWindow;
+
 class MenuItem : public QPushButton{
     Q_OBJECT
 
 private:
-    QMainWindow *mainWindow;
+    MainWindow *mainWindow;
 
 public:
-    MenuItem(QMainWindow *mainWindow, QWidget* parent, const QString &text, const int &num);
+    MenuItem(MainWindow *mainWindow, QWidget* parent, const QString &text, const int &num);
     MenuItem* selected();
     MenuItem* unselected();
 };

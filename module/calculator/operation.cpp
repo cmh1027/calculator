@@ -1,4 +1,6 @@
 #include "operation.h"
+#include "constant.h"
+using namespace Const;
 namespace Operation{
     void plus(QStack<double>& stack){
         double first, second;

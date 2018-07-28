@@ -3,7 +3,6 @@
 #include <QString>
 #include <QStack>
 #include <QMap>
-#include "operation.h"
 
 namespace Operator{
     namespace Normal{

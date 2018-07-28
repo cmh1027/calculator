@@ -1,8 +1,8 @@
 #include "scientific.h"
 #include "ui_scientific.h"
-#include <iostream>
-#include <cmath>
-ScientificCalculator::ScientificCalculator(QMainWindow *window, QWidget *widget) : GeneralCalculator(window, widget),
+#include "../../../../module/calculator/operator.h"
+#include "../../../mainwindow.h"
+ScientificCalculator::ScientificCalculator(MainWindow *window, QWidget *widget) : GeneralCalculator(window, widget),
     contentUi(new Ui::ScientificCalculator), contentWidget(widget->findChild<QWidget*>("buttonWidget")),
     screen(Mode::One)
 {

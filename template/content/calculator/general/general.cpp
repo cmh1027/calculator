@@ -1,6 +1,10 @@
 #include "general.h"
 #include "ui_general.h"
-GeneralCalculator::GeneralCalculator(QMainWindow *window, QWidget *widget) :
+#include "../../../../module/calculator/operator.h"
+#include "../../../../module/calculator/calculation.h"
+#include "../../../../module/utility.h"
+#include "../../../mainwindow.h"
+GeneralCalculator::GeneralCalculator(MainWindow *window, QWidget *widget) :
     Calculator(window, widget), contentUi(new Ui::GeneralCalculator),
     contentWidget(widget->findChild<QWidget*>("buttonWidget"))
 {

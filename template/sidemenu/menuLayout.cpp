@@ -1,6 +1,8 @@
 #include "menuLayout.h"
-#include <iostream>
-MenuLayout::MenuLayout(QMainWindow* window, QWidget* widget):mainWindow(window), parent(widget){}
+#include "../mainwindow.h"
+#include "menuitem.h"
+
+MenuLayout::MenuLayout(MainWindow* window, QWidget* widget):mainWindow(window), parent(widget){}
 
 void MenuLayout::applyLayout(){
     this->addWidget((new MenuItem(mainWindow, parent, "Normal", 0))->selected());

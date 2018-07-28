@@ -1,37 +1,33 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
-#include <QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 #include <QString>
 #include <QMap>
-#include <iostream>
 #include "../content.h"
-#include "../../../module/calculator/operator.h"
-#include "../../../module/calculator/constant.h"
 #define SETUP_CAL_UI(ui, widget) \
         ui->setupUi(widget); \
         foreach(QPushButton* button, widget->findChildren<QPushButton*>()){ \
             connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
         }
 
+class MainWindow;
+
 namespace Ui {
     class Calculator;
 }
-
-using namespace Const;
 
 class Calculator : public Content
 {
     Q_OBJECT
 
 public:
-    Calculator(QMainWindow*, QWidget*);
+    Calculator(MainWindow*, QWidget*);
     virtual ~Calculator();
 
 private:
     Ui::Calculator *contentUi;
-    QMainWindow *mainWindow;
+    MainWindow *mainWindow;
     QWidget *contentWidget;
     QLabel *interLabel;
     QLabel *resultLabel;

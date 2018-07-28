@@ -3,7 +3,7 @@
 #include <QObject>
 #include <QMap>
 #include <QString>
-#include "../module/calculator/constant.h"
+
 class Configuration : public QObject{
     Q_OBJECT
 

@@ -7,10 +7,12 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QPushButton>
 #include <QMouseEvent>
 #include <QVector>
-#include "templates.h"
-#include "configuration.h"
+
+class Content;
+class Configuration;
 
 #define LOAD_CONTENT(ui) \
     widget = new QWidget; \

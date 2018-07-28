@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "templates.h"
+
 MainWindow::MainWindow() :
     currentMenu(nullptr), config(new Configuration), mainWindowUi(new Ui::MainWindow)
 {
