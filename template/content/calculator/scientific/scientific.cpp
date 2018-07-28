@@ -3,7 +3,8 @@
 #include <iostream>
 #include <cmath>
 ScientificCalculator::ScientificCalculator(QMainWindow *window, QWidget *widget) : GeneralCalculator(window, widget),
-    contentUi(new Ui::ScientificCalculator), contentWidget(widget), screen(Mode::One)
+    contentUi(new Ui::ScientificCalculator), contentWidget(widget->findChild<QWidget*>("buttonWidget")),
+    screen(Mode::One)
 {
     for(auto iter = GeneralCalculator::Operators.constBegin(); iter != GeneralCalculator::Operators.constEnd(); ++iter){
         Operators[iter.key()] = iter.value();

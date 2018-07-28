@@ -11,10 +11,13 @@
 #include "../../../module/calculator/constant.h"
 #define SETUP_CAL_UI(ui, widget) \
         ui->setupUi(widget); \
-        Calculator::bindLabels(); \
         foreach(QPushButton* button, widget->findChildren<QPushButton*>()){ \
             connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
         }
+
+namespace Ui {
+    class Calculator;
+}
 
 using namespace Const;
 
@@ -27,6 +30,7 @@ public:
     virtual ~Calculator();
 
 private:
+    Ui::Calculator *contentUi;
     QMainWindow *mainWindow;
     QWidget *contentWidget;
     QLabel *interLabel;
@@ -38,7 +42,6 @@ protected:
     QMap<QString, double> doubleList; // repeating
     QString inter;
     QString result;
-    void bindLabels();
     void setResult(const QString &str);
     QString getResult(const bool &chopDot = true);
     void appendResult(const QString &str);

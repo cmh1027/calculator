@@ -1,19 +1,17 @@
 #include "calculator.h"
+#include "ui_calculator.h"
 #include "../../mainwindow.h"
 
 Calculator::Calculator(QMainWindow *window, QWidget *widget) : Content(window, widget),
-    mainWindow(window), contentWidget(widget), calculated(false), specialStart(false),
-    doubleList(*static_cast<MainWindow*>(window)->config->getConstantList()){
+    contentUi(new Ui::Calculator), mainWindow(window), contentWidget(widget), calculated(false), specialStart(false),
+    doubleList(*static_cast<MainWindow*>(window)->config->getConstantList())
+{
+    contentUi->setupUi(widget);
+    this->resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
+    this->interLabel = contentWidget->findChild<QLabel*>("intermediateLabel");
 }
 
-Calculator::~Calculator(){
-}
-
-
-void Calculator::bindLabels(){
-    resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
-    interLabel = contentWidget->findChild<QLabel*>("intermediateLabel");
-}
+Calculator::~Calculator(){}
 
 QString Calculator::getResult(const bool &chopDot){
     if(chopDot){

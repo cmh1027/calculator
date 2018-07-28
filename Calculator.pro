@@ -58,4 +58,5 @@ HEADERS += \
 FORMS += \
         template/mainwindow.ui \
     template/content/calculator/scientific/scientific.ui \
-    template/content/calculator/general/general.ui
+    template/content/calculator/general/general.ui \
+    template/content/calculator/calculator.ui

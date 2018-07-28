@@ -5,12 +5,3 @@ Content::Content(QMainWindow *window, QWidget* widget):contentWidget(widget), ma
 
 Content::~Content(){
 }
-
-void Content::hideAllObjects(){
-}
-void Content::showAllObjects(){
-}
-
-void Content::deleteAllObjects(){
-}
-

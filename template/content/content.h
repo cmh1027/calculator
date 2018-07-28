@@ -12,9 +12,6 @@ public:
     Content(QMainWindow*, QWidget *window);
     virtual ~Content();
     virtual void setup() = 0;
-    void hideAllObjects();
-    void showAllObjects();
-    void deleteAllObjects();
 
 private:
     QWidget* contentWidget;
