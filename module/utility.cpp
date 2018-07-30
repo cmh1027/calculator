@@ -23,6 +23,7 @@ namespace Utility{
         std::string str = strs.str();
         return QString::fromStdString(str);
     }
+
     QString transformExpr(QString str, QMap<QString, double>& list){
         int left, right;
         QString &&key = "";

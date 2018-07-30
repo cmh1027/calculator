@@ -22,6 +22,7 @@ namespace Template{
         enum Mode {One, Two, Length};
         using Mode = enum Mode;
         int screen;
+        void buttonConnect() override;
 
     protected:
         void binarySpecial(const QString &format);

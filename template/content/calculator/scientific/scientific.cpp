@@ -39,6 +39,12 @@ namespace Template{
         SETUP_UI(contentUi, contentWidget)
     }
 
+    void ScientificCalculator::buttonConnect(){
+        foreach(QPushButton* button, contentWidget->findChildren<QPushButton*>()){ \
+            connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
+        }
+    }
+
     void ScientificCalculator::buttonPushed(){
         QRegExp rx("num[0-9]{1}Button");
         auto button = sender();

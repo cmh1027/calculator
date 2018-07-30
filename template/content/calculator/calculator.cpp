@@ -4,7 +4,6 @@
 #include "../../../module/calculator/operator.h"
 #include "../../../module/utility.h"
 #include "../../../config/config.h"
-
 extern Configuration* config;
 namespace Template{
     Calculator::Calculator(QWidget *widget) : Template::Content(widget),
@@ -18,7 +17,7 @@ namespace Template{
     Calculator::~Calculator(){}
 
     QString Calculator::getResult(const bool &chopDot){
-        if(chopDot){
+        if(chopDot && this->result != ""){
             if(this->result.back() == '.'){
                 this->setResult(this->result.chopped(1));
             }
@@ -144,6 +143,14 @@ namespace Template{
                op == Operator::Normal::divide || op == Operator::Normal::altMult || op == Operator::Normal::altDivide;
     }
 
+    bool Calculator::isLastOpOperator() const{
+        QString&& op = this->lastOp();
+        bool isDouble;
+        op.toDouble(&isDouble);
+        return !(isDouble || (op.indexOf("{") != -1 && op.indexOf("}") != -1) ||
+               (op.indexOf("(") != -1 && op.indexOf(")") != -1));
+    }
+
     void Calculator::replaceLastOp(const QString &expr){
         QString&& inter = this->getInter();
         QString&& lastOp = this->lastOp();
@@ -224,5 +231,10 @@ namespace Template{
 
     void Calculator::clearDoubleList(){
         doubleList = *config->getConstantList();
+    }
+
+    void Calculator::precisionChanged(){
+        this->setInter(this->getInter());
+        this->setResult(this->getResult());
     }
 }

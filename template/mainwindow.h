@@ -10,17 +10,17 @@
 
 namespace Template{
     class Content;
+    class Configuration;
 }
 
-/*
-#define LOAD_CONFIG() \
+#define LOAD_CONFIG \
     Template::Configuration* configTemplate; \
     widget = new QWidget; \
-    configTemplate = new Template::Configuration(widget); \
+    configTemplate = new Template::Configuration(this, widget); \
     configTemplate->setup(); \
     this->contentWidget->addWidget(widget); \
     this->configTemplate = configTemplate;
-*/
+
 #define LOAD_CONTENT(ui) \
     widget = new QWidget; \
     content = new ui(widget); \
@@ -40,13 +40,15 @@ public:
     explicit MainWindow();
     ~MainWindow();
     QPushButton *currentMenu;
+    void degreeUnitChanged();
+    void precisionChanged();
 
 private:
     Ui::MainWindow *mainWindowUi;
     QStackedWidget *contentWidget;
     QVector<Template::Content*> contents;
     QWidget *sidebar;
-    // Template::Configuration *configTemplate;
+    Template::Configuration *configTemplate;
     void loadContents();
     void installSidebar();
     void generalCalculator();

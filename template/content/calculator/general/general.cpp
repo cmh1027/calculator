@@ -37,6 +37,12 @@ namespace Template{
         SETUP_UI(contentUi, contentWidget)
     }
 
+    void GeneralCalculator::buttonConnect(){
+        foreach(QPushButton* button, contentWidget->findChildren<QPushButton*>()){ \
+            connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
+        }
+    }
+
     void GeneralCalculator::buttonPushed(){
         QRegExp rx("num[0-9]{1}Button");
         auto button = sender();
@@ -53,6 +59,15 @@ namespace Template{
                 std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
                 exit(1);
             }
+        }
+    }
+
+    void GeneralCalculator::calculateAgain(){
+        if(this->getInter() != ""){
+            if(this->isLastOpOperator())
+                this->setResult(calculateExpression(this->chopInterOp(1)));
+            else
+                this->setResult(calculateExpression(this->getInter()));
         }
     }
 

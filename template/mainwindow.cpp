@@ -19,6 +19,7 @@ MainWindow::MainWindow() :
 MainWindow::~MainWindow()
 {
     delete mainWindowUi;
+    delete configTemplate;
     for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
         delete *iter;
 }
@@ -28,6 +29,7 @@ void MainWindow::loadContents(){
     Template::Content* content;
     LOAD_CONTENT(Template::GeneralCalculator)
     LOAD_CONTENT(Template::ScientificCalculator)
+    LOAD_CONFIG
 }
 
 void MainWindow::setTitle(const QString &str){
@@ -79,4 +81,22 @@ void MainWindow::addConstant(const QString &str, const double &num){
 void MainWindow::removeConstant(const QString &str){
     for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
        (*iter)->removeConstant(str);
+}
+
+void MainWindow::degreeUnitChanged(){
+    Template::GeneralCalculator* ptr;
+    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter){
+        if((ptr = dynamic_cast<Template::GeneralCalculator*>(*iter)) != nullptr){
+            ptr->calculateAgain();
+        }
+    }
+}
+
+void MainWindow::precisionChanged(){
+    Template::Calculator* ptr;
+    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter){
+        if((ptr = dynamic_cast<Template::Calculator*>(*iter)) != nullptr){
+            ptr->precisionChanged();
+        }
+    }
 }

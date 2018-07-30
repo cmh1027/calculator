@@ -1,28 +1,28 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <QWidget>
+#include <QString>
+#include <QMap>
 
-/*
 namespace Ui {
-    class Config;
+    class Configuration;
 }
+class MainWindow;
 
 namespace Template{
     class Configuration : public QObject{
         Q_OBJECT
 
     public:
-        Configuration(QWidget*);
+        Configuration(MainWindow*, QWidget*);
         virtual ~Configuration();
         void setup();
 
     private:
-        Ui::Config *contentUi;
+        Ui::Configuration *contentUi;
+        MainWindow *mainWindow;
         QWidget *contentWidget;
-
-    public slots:
-        void buttonPushed();
+        void buttonConnect();
     };
 }
-*/
 #endif // CONFIG_H

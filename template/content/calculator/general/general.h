@@ -17,10 +17,12 @@ namespace Template{
         GeneralCalculator(QWidget*);
         virtual ~GeneralCalculator();
         void setup() override;
+        void calculateAgain();
 
     private:
         Ui::GeneralCalculator *contentUi;
         QWidget *contentWidget;
+        void buttonConnect() override;
 
     protected:
         void calculate();

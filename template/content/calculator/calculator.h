@@ -16,6 +16,7 @@ namespace Template{
     public:
         Calculator(QWidget*);
         virtual ~Calculator();
+        void precisionChanged();
 
     private:
         Ui::Calculator *contentUi;
@@ -52,6 +53,7 @@ namespace Template{
         bool isUnarySpecial(const QString &expr) const;
         void closeAllBracket();
         bool isLastOpArithmetic() const;
+        bool isLastOpOperator() const;
         void replaceLastOp(const QString &str);
         void addNumber(const QString &str);
         void constant(const QString &constant);

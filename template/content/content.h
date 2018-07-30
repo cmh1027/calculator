@@ -5,9 +5,7 @@
 #include <QPushButton>
 #define SETUP_UI(ui, widget) \
         ui->setupUi(widget); \
-        foreach(QPushButton* button, widget->findChildren<QPushButton*>()){ \
-            connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
-        }
+        this->buttonConnect();
 
 namespace Template{
     class Content : public QObject{
@@ -21,6 +19,7 @@ namespace Template{
         void removeConstant(const QString &str);
 
     protected:
+        virtual void buttonConnect() = 0;
         QMap<QString, double> doubleList; // constant & repeating decimal symbolic calculation
 
     private:
