@@ -18,7 +18,7 @@ namespace Template{
 
     QString Calculator::getResult(const bool &chopDot){
         if(chopDot && this->result != ""){
-            if(this->result.back() == '.'){
+            if(this->result.back() == "."){
                 this->setResult(this->result.chopped(1));
             }
         }

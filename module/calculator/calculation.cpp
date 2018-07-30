@@ -2,23 +2,15 @@
 #include "operator.h"
 #include "constant.h"
 #include "../../config/config.h"
+#include "iostream"
 
 extern Configuration* config;
-using namespace Calculation;
 
 namespace Calculation{
     bool isOperand(const QString& expr){
         bool isDouble;
         expr.toDouble(&isDouble);
         return isDouble || (expr.indexOf("{") != -1 && expr.indexOf("}") != -1);
-    }
-
-    void processOp(QQueue<QString>&& ops, QString& result){
-        while(!ops.empty()){
-            result.append(ops.front());
-            result.append(" ");
-            ops.pop_front();
-        }
     }
 
     void processOp(const QString& op, QStack<QString>& stack, QString& result){
@@ -44,12 +36,20 @@ namespace Calculation{
                 stack.pop();
             }
             stack.pop();
-        }
-        else{
-            while(!stack.empty() && precedence(stack.top()) >= precedence(_operator) && _operator != "("){
+            while(!stack.empty() && precedence(stack.top()) > precedence(Operator::Normal::mult)){
                 result.append(stack.top());
                 result.append(" ");
                 stack.pop();
+            }
+        }
+
+        else{
+            if(_operator != Operator::Normal::leftBracket){
+                while(!stack.empty() && precedence(stack.top()) >= precedence(_operator)){
+                    result.append(stack.top());
+                    result.append(" ");
+                    stack.pop();
+                }
             }
             stack.push(_operator);
         }
@@ -63,30 +63,16 @@ namespace Calculation{
         }
     }
 
-    QString calculateExpr(const QString& expr, QMap<QString, double>& doubleList){
-        QString result = calculatePostfix(changeToPostfix(expr), doubleList);
+    QString calculateExpr(QString& expr, QMap<QString, double>& doubleList){
+        QString result = calculatePostfix(changeToPostfix(expr.replace(" ", "")), doubleList);
         return result;
     }
 
-    int nextIndex(const QString& expr, int start, const QString& delimiter){
-        int end = expr.indexOf(delimiter, start);
-        if(start == expr.length()+1){
-            return -2;
-        }
-        else if(end == -1){
-            return expr.length();
-        }
-        else{
-            return end;
-        }
-    }
 
     QString calculatePostfix(const QString& expr, QMap<QString, double>& doubleList){
-        int start = 0, end;
         QStack<double> stack;
-        QString chunk;
         if(expr.isEmpty()) return QString("0");
-        while(chunking(expr, chunk, " ", start, end)){
+        foreach(const QString &chunk, expr.split(" ")){
             if(isOperand(chunk)){
                 if(chunk.indexOf("{") != -1 && chunk.indexOf("}") != -1)
                     stack.push(doubleList[chunk]);
@@ -130,79 +116,99 @@ namespace Calculation{
         }
     }
 
-    bool chunking(const QString& expr, QString& chunk, const QString& delimiter, int& start, int& end){
+    bool chunking(const QString& expr, QString& chunk, int& start){
         if(chunk.isEmpty())
             start = 0;
-        end = nextIndex(expr, start, delimiter);
-        if(end == -2)
+        if(start >= expr.length())
             return false;
-        else{
-            chunk = expr.mid(start, end-start);
-            if(chunk.isEmpty()){
-                std::cout << "Chunk is empty!\n";
-                std::cout << "Expression : " << expr.toStdString() << "\n";
-                exit(1);
-            }
-            start = end+1;
-            return true;
+        QChar firstChar = expr.at(start);
+        if(firstChar.isDigit())
+            numberChunk(expr, chunk, start);
+        else if(firstChar == "{")
+            symbolChunk(expr, chunk, start);
+        else if(firstChar == Operator::Normal::leftBracket || firstChar == Operator::Normal::rightBracket ||
+                isArithmetic(firstChar)){
+            chunk = firstChar;
+            start += 1;
         }
+        else
+            specialChunk(expr, chunk, start);
+        return true;
+    }
+
+    // cos(sin(8*2)root3)
+    // stack : cos ( sin
+    // result : 8 2 *
+    void numberChunk(const QString& expr, QString& chunk, int& start){
+        bool dotExist = false;
+        int index;
+        for(index = start; index < expr.length(); ++index){
+            if(expr.at(index) == "."){
+                if(dotExist){
+                    std::cout << "Invalid expression\n";
+                    std::cout << expr.toStdString() << std::endl;
+                    exit(1);
+                }
+                else{
+                    dotExist = true;
+                }
+            }
+            else{
+                if(!expr.at(index).isDigit()){
+                    chunk = expr.mid(start, index-start);
+                    start = index;
+                    return;
+                }
+            }
+        }
+        chunk = expr.mid(start, index-start+1);
+        start = index+1;
+    }
+
+    void symbolChunk(const QString& expr, QString& chunk, int& start){
+        for(int index = start; index < expr.length(); ++index){
+            if(expr.at(index) == "}"){
+                chunk = expr.mid(start, index-start+1);
+                start = index + 1;
+                return;
+            }
+        }
+        std::cout << "Invalid expression\n";
+        std::cout << expr.toStdString() << std::endl;
+        exit(1);
+    }
+
+    void specialChunk(const QString& expr, QString& chunk, int& start){
+        for(int index = start; index < expr.length(); ++index){
+            if(!(expr.at(index).isUpper() || expr.at(index).isLower())){
+                chunk = expr.mid(start, index-start);
+                start = index;
+                return;
+            }
+        }
+        std::cout << "Invalid expression\n";
+        std::cout << expr.toStdString() << std::endl;
+        exit(1);
     }
 
     QString changeToPostfix(const QString& expr){
-        int start = 0, end;
+        int start = 0;
         QStack<QString> stack;
         QString chunk, result;
         if(expr.isEmpty()) return "0";
-        while(chunking(expr, chunk, " ", start, end)){
-            if(isUnarySpecial(chunk)){;
-                processOp(splitOperator(chunk), result);
-            }
-            else{
-                processOp(chunk, stack, result);
-            }
+        while(chunking(expr, chunk, start)){
+            processOp(chunk, stack, result);
         }
         remainOperators(stack, result);
         return result.trimmed();
     }
 
     int precedence(const QString& op){
-        if(op == Operator::Normal::plus) return 2;
-        else if(op == Operator::Normal::minus) return 2;
-        else if(op == Operator::Normal::mult) return 3;
-        else if(op == Operator::Normal::divide) return 3;
-        else if(op == Operator::Normal::leftBracket) return 1;
-        else return 4;
-    }
-
-    bool isUnarySpecial(const QString& expr){
-        if(expr.indexOf(Operator::Normal::leftBracket) != -1 && expr.indexOf(Operator::Normal::rightBracket) != -1){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-
-    QQueue<QString> splitOperator(const QString& expr){
-        int start = 0;
-        QQueue<QString> queue;
-        QQueue<QString> stack;
-        QString chunk;
-        for(int index=0; index<expr.length(); index++){
-            if(expr.at(index) == Operator::Normal::leftBracket){
-                stack.push_back(expr.mid(start, index-start));
-                start = index+1;
-            }
-            else if(expr.at(index) == Operator::Normal::rightBracket){
-                if(start < index)
-                    queue.push_back(expr.mid(start, index-start));
-                queue.push_back(stack.back());
-                stack.pop_back();
-                start = index + 1;
-            }
-        }
-        return queue;
+        if(op == Operator::Normal::plus) return 1;
+        else if(op == Operator::Normal::minus) return 1;
+        else if(op == Operator::Normal::mult) return 2;
+        else if(op == Operator::Normal::divide) return 2;
+        else return 3;
     }
 
     bool isInt(const double& num){
@@ -210,5 +216,10 @@ namespace Calculation{
             return false;
         else
             return true;
+    }
+
+    bool isArithmetic(const QString& op){
+        return op == Operator::Normal::plus || op == Operator::Normal::minus || op == Operator::Normal::mult ||
+               op == Operator::Normal::divide || op == Operator::Normal::altMult || op == Operator::Normal::altDivide;
     }
 }
