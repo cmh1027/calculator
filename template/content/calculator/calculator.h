@@ -44,8 +44,8 @@ namespace Template{
         void removeInter(const int &num);
         void removeInter(const int &pos, const int &num);
         QString chopInterOp(const int &num);
-        QString removeInterOp(const int &num);
         QString lastOp() const;
+        QString lastOp(const QString& str) const;
         bool isBracketUnclosed() const;
         bool isBracketUnclosed(const QString &expr) const;
         bool endsWithBracket() const;

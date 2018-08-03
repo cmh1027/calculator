@@ -1,9 +1,13 @@
+#include <algorithm>
+#include <string>
 #include "calculator.h"
 #include "ui_calculator.h"
 #include "../../mainwindow.h"
 #include "../../../module/calculator/operator.h"
+#include "../../../module/calculator/calculation.h"
 #include "../../../module/utility.h"
 #include "../../../config/config.h"
+#include <iostream>
 extern Configuration* config;
 namespace Template{
     Calculator::Calculator(QWidget *widget) : Template::Content(widget),
@@ -26,8 +30,8 @@ namespace Template{
     }
 
     void Calculator::setResult(const QString &str){
-        this->result = str;
-        this->resultLabel->setText(Utility::transformExpr(str, this->doubleList));
+        this->result = str.trimmed();
+        this->resultLabel->setText(Utility::transformExpr(str.trimmed(), this->doubleList));
     }
 
     void Calculator::appendResult(const QString &str){
@@ -55,8 +59,8 @@ namespace Template{
     }
 
     void Calculator::setInter(const QString &str){
-        this->inter = str;
-        this->interLabel->setText(Utility::transformExpr(str, this->doubleList));
+        this->inter = str.trimmed();
+        this->interLabel->setText(Utility::transformExpr(str.trimmed(), this->doubleList));
     }
 
     void Calculator::appendInter(const QString &str, const bool &autoSpace){
@@ -95,46 +99,98 @@ namespace Template{
 
     QString Calculator::chopInterOp(const int &num){
         QString&& inter = this->getInter();
-        int index;
         for(int i=0; i<num; ++i){
-            if((index = inter.lastIndexOf(" ")) == -1)
-                return "";
-            inter.chop(inter.length() - index);
+            inter.chop(this->lastOp(inter).length());
+            inter.trimmed();
         }
         return inter;
     }
 
-    QString Calculator::removeInterOp(const int &num){
-        QString&& inter = this->getInter();
-        int index;
-        for(int i=0; i<num; ++i)
-            if((index = inter.indexOf(" ")) == -1)
-                return "";
-            inter = inter.remove(0, inter.indexOf(" ") + 1);
-        return inter;
+    QString Calculator::lastOp(const QString &str) const{
+        if(str.isEmpty())
+            return "";
+        QChar lastChar = str.back();
+        int i;
+        if(lastChar == Operator::Normal::rightBracket){
+            int bracketNum = 0;
+            for(i = str.length()-1; i >= 0; --i){
+                if(str.at(i) == Operator::Normal::rightBracket)
+                    ++bracketNum;
+                else if(str.at(i) == Operator::Normal::leftBracket)
+                    --bracketNum;
+                if(bracketNum == 0)
+                    break;
+            }
+            for(i -= 1; i >=0 ; --i){
+                if(!(str.at(i).isLower() || str.at(i).isUpper())){
+                    ++i;
+                    break;
+                }
+            }
+        }
+        else if(lastChar.isDigit()){
+            for(i = str.length()-1; i >= 0; --i){
+                if(!str.at(i).isDigit())
+                    break;
+            }
+        }
+        else if(lastChar == "}"){
+            for(i = str.length()-1; i >= 0; --i){
+                if(str.at(i) == "{")
+                    break;
+            }
+        }
+        else{
+            for(i = str.length()-1; i >= 0; --i){
+                if(!(str.at(i).isUpper() || str.at(i).isLower()))
+                    break;
+            }
+        }
+        return str.mid(i);
     }
 
     QString Calculator::lastOp() const{
-        QString&& inter = this->getInter();
-        int index;
-        if(inter.back() == Operator::Normal::rightBracket && inter.at(inter.length()-2) == " "){
-            int bracketNum = 1;
-            index = inter.length() - 2;
-            while(bracketNum > 0){
-                if(inter.at(index) == Operator::Normal::leftBracket)
-                    --bracketNum;
-                else if(inter.at(index) == Operator::Normal::rightBracket)
+        QString&& str = this->getInter();
+        if(str.isEmpty())
+            return "";
+        QChar lastChar = str.back();
+        int i;
+        if(lastChar == Operator::Normal::rightBracket){
+            int bracketNum = 0;
+            for(i = str.length()-1; i >= 0; --i){
+                if(str.at(i) == Operator::Normal::rightBracket)
                     ++bracketNum;
-                --index;
+                else if(str.at(i) == Operator::Normal::leftBracket)
+                    --bracketNum;
+                if(bracketNum == 0)
+                    break;
             }
-            return inter.mid(index+1, inter.length());
+            for(i -= 1; i >=0 ; --i){
+                if(!(str.at(i).isLower() || str.at(i).isUpper())){
+                    ++i;
+                    break;
+                }
+            }
+        }
+        else if(lastChar.isDigit()){
+            for(i = str.length()-1; i >= 0; --i){
+                if(!str.at(i).isDigit())
+                    break;
+            }
+        }
+        else if(lastChar == "}"){
+            for(i = str.length()-1; i >= 0; --i){
+                if(str.at(i) == "{")
+                    break;
+            }
         }
         else{
-            if((index = inter.lastIndexOf(" ")) == -1)
-                return inter;
-            else
-                return inter.remove(0, index+1);
+            for(i = str.length()-1; i >= 0; --i){
+                if(!(str.at(i).isUpper() || str.at(i).isLower()))
+                    break;
+            }
         }
+        return str.mid(i);
     }
 
     bool Calculator::isLastOpArithmetic() const{
@@ -213,7 +269,7 @@ namespace Template{
 
     void Calculator::constant(const QString &constant){
         this->setResult(QString("{%1}").arg(constant));
-        this->calculated = false;
+        this->calculated = true;
     }
 
     void Calculator::changeButton(const QString &targetName, const QString &buttonName, const QString &icon){

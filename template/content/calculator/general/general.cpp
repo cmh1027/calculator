@@ -165,8 +165,12 @@ namespace Template{
     }
 
     void GeneralCalculator::dot(){
-        if(this->calculated)
+        if(this->calculated){
+            if(!this->getInter().isEmpty() && !this->isLastOpArithmetic() && this->lastOp() != Operator::Normal::leftBracket)
+                this->setInter(this->chopInterOp(1));
             this->setResult("0.");
+            this->calculated = false;
+        }
         else{
             if(this->getResult().indexOf(".") == -1)
                 this->appendResult(".");

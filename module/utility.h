@@ -4,6 +4,6 @@
 #include <QMap>
 namespace Utility{
     QString doubleToString(const double &number);
-    QString transformExpr(QString str, QMap<QString, double>& list);
+    QString transformExpr(const QString& str, QMap<QString, double>& list);
 }
 #endif // UTILITY_H

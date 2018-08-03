@@ -4,10 +4,15 @@
 #include <QMap>
 #include <QString>
 
+namespace Template{
+    class Configuration;
+}
 class MainWindow;
 
 class Configuration : public QObject{
     Q_OBJECT
+
+friend class Template::Configuration;
 
 public:
     Configuration(MainWindow*);
@@ -17,14 +22,15 @@ public:
     void removeConstant(const QString &str);
     const QMap<QString, double>* getConstantList();
     bool getRadian();
-    void setRadian(bool);
     int getPrecision();
-    void setPrecision(int);
+
 
 private:
     QMap<QString, double> constants;
     MainWindow* mainWindow;
     bool radian;
     int precision;
+    void setRadian(bool);
+    void setPrecision(int);
 };
 #endif // CONFIGURATION_H

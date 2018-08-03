@@ -1,6 +1,7 @@
 #include "config.h"
 #include "../module/calculator/constant.h"
 #include "../template/mainwindow.h"
+#include "../template/content/config/config_content.h"
 
 Configuration::Configuration(MainWindow* window) :
     constants({{"{pi}", Const::PI}, {"{e}", Const::E}}), mainWindow(window),

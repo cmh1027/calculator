@@ -36,16 +36,17 @@ namespace Calculation{
                 stack.pop();
             }
             stack.pop();
-            while(!stack.empty() && precedence(stack.top()) > precedence(Operator::Normal::mult)){
+            while(!stack.empty() && precedence(stack.top()) > precedence(Operator::Normal::mult) &&
+                  stack.top() != Operator::Normal::leftBracket){
                 result.append(stack.top());
                 result.append(" ");
                 stack.pop();
             }
         }
-
         else{
             if(_operator != Operator::Normal::leftBracket){
-                while(!stack.empty() && precedence(stack.top()) >= precedence(_operator)){
+                while(!stack.empty() && precedence(stack.top()) >= precedence(_operator) &&
+                      stack.top() != Operator::Normal::leftBracket){
                     result.append(stack.top());
                     result.append(" ");
                     stack.pop();
@@ -64,10 +65,23 @@ namespace Calculation{
     }
 
     QString calculateExpr(QString& expr, QMap<QString, double>& doubleList){
-        QString result = calculatePostfix(changeToPostfix(expr.replace(" ", "")), doubleList);
+        QString result = calculatePostfix(changeToPostfix(expr), doubleList);
         return result;
     }
 
+    QString changeToPostfix(const QString& expr){
+        QString str = expr;
+        str.replace(" ", "");
+        int start = 0;
+        QStack<QString> stack;
+        QString chunk, result;
+        if(str.isEmpty()) return "0";
+        while(chunking(str, chunk, start)){
+            processOp(chunk, stack, result);
+        }
+        remainOperators(stack, result);
+        return result.trimmed();
+    }
 
     QString calculatePostfix(const QString& expr, QMap<QString, double>& doubleList){
         QStack<double> stack;
@@ -136,9 +150,6 @@ namespace Calculation{
         return true;
     }
 
-    // cos(sin(8*2)root3)
-    // stack : cos ( sin
-    // result : 8 2 *
     void numberChunk(const QString& expr, QString& chunk, int& start){
         bool dotExist = false;
         int index;
@@ -189,18 +200,6 @@ namespace Calculation{
         std::cout << "Invalid expression\n";
         std::cout << expr.toStdString() << std::endl;
         exit(1);
-    }
-
-    QString changeToPostfix(const QString& expr){
-        int start = 0;
-        QStack<QString> stack;
-        QString chunk, result;
-        if(expr.isEmpty()) return "0";
-        while(chunking(expr, chunk, start)){
-            processOp(chunk, stack, result);
-        }
-        remainOperators(stack, result);
-        return result.trimmed();
     }
 
     int precedence(const QString& op){

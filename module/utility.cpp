@@ -24,19 +24,20 @@ namespace Utility{
         return QString::fromStdString(str);
     }
 
-    QString transformExpr(QString str, QMap<QString, double>& list){
+    QString transformExpr(const QString& str, QMap<QString, double>& list){
         int left, right;
         QString &&key = "";
-        while((left = str.indexOf("{")) != -1 && (right = str.indexOf("}")) != -1){
+        QString result = str;
+        while((left = result.indexOf("{")) != -1 && (right = result.indexOf("}")) != -1){
             if(left == -1 || right == -1){
                 std::cout << "Something goes wrong\n";
-                std::cout << str.toStdString() << "\n";
+                std::cout << result.toStdString() << "\n";
                 std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
                 exit(1);
             }
-            key = str.mid(left, right-left+1);
+            key = result.mid(left, right-left+1);
             if(list.contains(key)){
-                str.replace(left, right-left+1, Utility::doubleToString(list[key]));
+                result.replace(left, right-left+1, Utility::doubleToString(list[key]));
             }
             else{
                 std::cout << "Repeating constant list does not have a key : " << key.toStdString() << "\n";
@@ -44,7 +45,7 @@ namespace Utility{
                 exit(1);
             }
         }
-        return str;
+        return result;
     }
 }
 
