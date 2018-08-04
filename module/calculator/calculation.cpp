@@ -2,8 +2,7 @@
 #include "operator.h"
 #include "constant.h"
 #include "../../config/config.h"
-#include "iostream"
-
+#include "../exception.h"
 extern Configuration* config;
 
 namespace Calculation{
@@ -13,7 +12,7 @@ namespace Calculation{
         return isDouble || (expr.indexOf("{") != -1 && expr.indexOf("}") != -1);
     }
 
-    void processOp(const QString& op, QStack<QString>& stack, QString& result){
+    void processOp(const QString& op, CStack<QString>& stack, QString& result){
         if(isOperand(op)){
             processOperand(op, result);
         }
@@ -27,7 +26,7 @@ namespace Calculation{
         result.append(" ");
     }
 
-    void processOperator(const QString& _operator, QStack<QString>& stack, QString& result){
+    void processOperator(const QString& _operator, CStack<QString>& stack, QString& result){
         if(stack.empty()) stack.push(_operator);
         else if(_operator == Operator::Normal::rightBracket){
             while(stack.top() != Operator::Normal::leftBracket){
@@ -56,7 +55,7 @@ namespace Calculation{
         }
     }
 
-    void remainOperators(QStack<QString>& stack, QString& result){
+    void remainOperators(CStack<QString>& stack, QString& result){
         while(!stack.empty()){
             result.append(stack.top());
             result.append(" ");
@@ -64,8 +63,14 @@ namespace Calculation{
         }
     }
 
-    QString calculateExpr(QString& expr, QMap<QString, double>& doubleList){
-        QString result = calculatePostfix(changeToPostfix(expr), doubleList);
+    QString calculateExpr(QString& expr, CMap<QString, double>& doubleList){
+        QString &&result = "";
+        try{
+            result = calculatePostfix(changeToPostfix(expr), doubleList);
+        }
+        catch(std::InvalidExprException &e){
+            result = e.what();
+        }
         return result;
     }
 
@@ -73,7 +78,7 @@ namespace Calculation{
         QString str = expr;
         str.replace(" ", "");
         int start = 0;
-        QStack<QString> stack;
+        CStack<QString> stack;
         QString chunk, result;
         if(str.isEmpty()) return "0";
         while(chunking(str, chunk, start)){
@@ -83,8 +88,8 @@ namespace Calculation{
         return result.trimmed();
     }
 
-    QString calculatePostfix(const QString& expr, QMap<QString, double>& doubleList){
-        QStack<double> stack;
+    QString calculatePostfix(const QString& expr, CMap<QString, double>& doubleList){
+        CStack<double> stack;
         if(expr.isEmpty()) return QString("0");
         foreach(const QString &chunk, expr.split(" ")){
             if(isOperand(chunk)){
@@ -94,25 +99,17 @@ namespace Calculation{
                     stack.push(chunk.toDouble());
             }
             else{
-                if(Operator::operateFuncs.contains(chunk)){
-                    if(!config->getRadian() && (chunk == Operator::Special::sin || chunk == Operator::Special::cos ||
-                       chunk == Operator::Special::tan)){
-                       double degree = stack.top()*Const::PI/180;
-                       stack.pop();
-                       stack.push(degree);
-                    }
-                    Operator::operateFuncs[chunk](stack);
+                if(!config->getRadian() && (chunk == Operator::Special::sin || chunk == Operator::Special::cos ||
+                   chunk == Operator::Special::tan)){
+                   double degree = stack.top()*Const::PI/180;
+                   stack.pop();
+                   stack.push(degree);
                 }
-                else{
-                    std::cout << "Map operateFuncs does not have a key : " << chunk.toStdString() << "\n";
-                    std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
-                    std::cout << "Expression : " << expr.toStdString() << "\n";
-                    exit(1);
-                }
+                Operator::operateFuncs[chunk](stack);
             }
         }
         if(std::isnan(stack.top())){
-            return QString("Invalid input");
+            return "Invalid input";
         }
         else{
             if(isInt(stack.top())){
@@ -156,9 +153,7 @@ namespace Calculation{
         for(index = start; index < expr.length(); ++index){
             if(expr.at(index) == "."){
                 if(dotExist){
-                    std::cout << "Invalid expression\n";
-                    std::cout << expr.toStdString() << std::endl;
-                    exit(1);
+                    throw std::InvalidExprException();
                 }
                 else{
                     dotExist = true;
@@ -184,9 +179,7 @@ namespace Calculation{
                 return;
             }
         }
-        std::cout << "Invalid expression\n";
-        std::cout << expr.toStdString() << std::endl;
-        exit(1);
+        throw std::InvalidExprException();
     }
 
     void specialChunk(const QString& expr, QString& chunk, int& start){
@@ -197,9 +190,7 @@ namespace Calculation{
                 return;
             }
         }
-        std::cout << "Invalid expression\n";
-        std::cout << expr.toStdString() << std::endl;
-        exit(1);
+        throw std::InvalidExprException();
     }
 
     int precedence(const QString& op){

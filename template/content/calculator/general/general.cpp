@@ -1,12 +1,12 @@
 #include <QtCore/QRegExp>
 #include <utility>
-#include <iostream>
 #include "general.h"
 #include "ui_general.h"
 #include "../../../../module/calculator/operator.h"
 #include "../../../../module/calculator/calculation.h"
 #include "../../../../module/utility.h"
 #include "../../../mainwindow.h"
+#include <iostream>
 
 namespace Template{
     GeneralCalculator::GeneralCalculator(QWidget *widget) :
@@ -57,7 +57,6 @@ namespace Template{
             else{
                 std::cout << "Map Operators does not have a key : " << funcName.toStdString() << "\n";
                 std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
-                exit(1);
             }
         }
     }

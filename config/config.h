@@ -1,9 +1,8 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 #include <QObject>
-#include <QMap>
 #include <QString>
-
+#include "../module/ctl.h"
 namespace Template{
     class Configuration;
 }
@@ -20,13 +19,13 @@ public:
     void addConstant(const QString &str, const double &num);
     double getConstant(const QString &str) const;
     void removeConstant(const QString &str);
-    const QMap<QString, double>* getConstantList();
+    const CMap<QString, double>* getConstantList();
     bool getRadian();
     int getPrecision();
 
 
 private:
-    QMap<QString, double> constants;
+    CMap<QString, double> constants;
     MainWindow* mainWindow;
     bool radian;
     int precision;

@@ -2,7 +2,6 @@
 #include "../module/calculator/constant.h"
 #include "../template/mainwindow.h"
 #include "../template/content/config/config_content.h"
-
 Configuration::Configuration(MainWindow* window) :
     constants({{"{pi}", Const::PI}, {"{e}", Const::E}}), mainWindow(window),
     radian(false), precision(-1)
@@ -27,7 +26,7 @@ void Configuration::removeConstant(const QString &str){
         this->constants.remove(str);
 }
 
-const QMap<QString, double>* Configuration::getConstantList(){
+const CMap<QString, double>* Configuration::getConstantList(){
     return &constants;
 }
 

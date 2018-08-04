@@ -37,7 +37,9 @@ HEADERS += \
     template/content/calculator/calculator.h \
     template/content/calculator/general/general.h \
     template/content/calculator/scientific/scientific.h \
-    template/content/config/config_content.h
+    template/content/config/config_content.h \
+    module/exception.h \
+    module/ctl.h
 
 SOURCES += \
     config/config.cpp \
@@ -54,7 +56,8 @@ SOURCES += \
     template/content/calculator/general/general.cpp \
     template/content/calculator/scientific/scientific.cpp \
     main.cpp \
-    template/content/config/config_content.cpp
+    template/content/config/config_content.cpp \
+    module/exception.cpp
 
 FORMS += \
     template/mainwindow.ui \

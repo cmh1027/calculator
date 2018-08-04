@@ -1,8 +1,8 @@
 #ifndef CONTENT_H
 #define CONTENT_H
 #include <QObject>
-#include <QMap>
 #include <QPushButton>
+#include "../../module/ctl.h"
 #define SETUP_UI(ui, widget) \
         ui->setupUi(widget); \
         this->buttonConnect();
@@ -20,7 +20,7 @@ namespace Template{
 
     protected:
         virtual void buttonConnect() = 0;
-        QMap<QString, double> doubleList; // constant & repeating decimal symbolic calculation
+        CMap<QString, double> doubleList; // constant & repeating decimal symbolic calculation
 
     private:
         QWidget* contentWidget;

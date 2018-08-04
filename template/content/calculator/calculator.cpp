@@ -1,13 +1,11 @@
-#include <algorithm>
-#include <string>
 #include "calculator.h"
 #include "ui_calculator.h"
 #include "../../mainwindow.h"
 #include "../../../module/calculator/operator.h"
-#include "../../../module/calculator/calculation.h"
 #include "../../../module/utility.h"
 #include "../../../config/config.h"
-#include <iostream>
+#include "../../../module/exception.h"
+
 extern Configuration* config;
 namespace Template{
     Calculator::Calculator(QWidget *widget) : Template::Content(widget),
@@ -31,7 +29,12 @@ namespace Template{
 
     void Calculator::setResult(const QString &str){
         this->result = str.trimmed();
-        this->resultLabel->setText(Utility::transformExpr(str.trimmed(), this->doubleList));
+        try{
+            this->resultLabel->setText(Utility::transformExpr(str.trimmed(), this->doubleList));
+        }
+        catch(std::InvalidExprException &e){
+            this->resultLabel->setText(e.what());
+        }
     }
 
     void Calculator::appendResult(const QString &str){
@@ -60,7 +63,12 @@ namespace Template{
 
     void Calculator::setInter(const QString &str){
         this->inter = str.trimmed();
-        this->interLabel->setText(Utility::transformExpr(str.trimmed(), this->doubleList));
+        try{
+            this->interLabel->setText(Utility::transformExpr(str.trimmed(), this->doubleList));
+        }
+        catch(std::InvalidExprException &e){
+            this->resultLabel->setText(e.what());
+        }
     }
 
     void Calculator::appendInter(const QString &str, const bool &autoSpace){

@@ -1,6 +1,8 @@
 #include "operation.h"
+#include "../exception.h"
+
 namespace Operation{
-    void plus(QStack<double>& stack){
+    void plus(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -9,7 +11,7 @@ namespace Operation{
         stack.push(first+second);
     }
 
-    void minus(QStack<double>& stack){
+    void minus(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -18,7 +20,7 @@ namespace Operation{
         stack.push(first-second);
     }
 
-    void mult(QStack<double>& stack){
+    void mult(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -27,7 +29,7 @@ namespace Operation{
         stack.push(first*second);
     }
 
-    void divide(QStack<double>& stack){
+    void divide(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -36,7 +38,7 @@ namespace Operation{
         stack.push(first/second);
     }
 
-    void sqrt(QStack<double>& stack){
+    void sqrt(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
@@ -46,7 +48,7 @@ namespace Operation{
             stack.push(std::sqrt(first));
     }
 
-    void root(QStack<double>& stack){
+    void root(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -58,21 +60,21 @@ namespace Operation{
             stack.push(std::pow(first, 1/second));
     }
 
-    void sqr(QStack<double>& stack){
+    void sqr(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::pow(first, 2));
     }
 
-    void cube(QStack<double>& stack){
+    void cube(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::pow(first, 3));
     }
 
-    void pow(QStack<double>& stack){
+    void pow(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -81,91 +83,91 @@ namespace Operation{
         stack.push(std::pow(first, second));
     }
 
-    void inv(QStack<double>& stack){
+    void inv(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(1/first);
     }
 
-    void sin(QStack<double>& stack){
+    void sin(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::sin(first));
     }
 
-    void cos(QStack<double>& stack){
+    void cos(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::cos(first));
     }
 
-    void tan(QStack<double>& stack){
+    void tan(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::tan(first));
     }
 
-    void asin(QStack<double>& stack){
+    void asin(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::asin(first));
     }
 
-    void acos(QStack<double>& stack){
+    void acos(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::acos(first));
     }
 
-    void atan(QStack<double>& stack){
+    void atan(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::atan(first));
     }
 
-    void sinh(QStack<double>& stack){
+    void sinh(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::sinh(first));
     }
 
-    void cosh(QStack<double>& stack){
+    void cosh(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::cosh(first));
     }
 
-    void tanh(QStack<double>& stack){
+    void tanh(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::tanh(first));
     }
 
-    void log(QStack<double>& stack){
+    void log(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::log10(first));
     }
 
-    void ln(QStack<double>& stack){
+    void ln(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::log(first));
     }
 
-    void mod(QStack<double>& stack){
+    void mod(CStack<double>& stack){
         double first, second;
         second = stack.top();
         stack.pop();
@@ -174,21 +176,21 @@ namespace Operation{
         stack.push(std::fmod(first, second));
     }
 
-    void fac(QStack<double>& stack){
+    void fac(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(std::tgamma(first+1));
     }
 
-    void negate(QStack<double>& stack){
+    void negate(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();
         stack.push(-1 * first);
     }
 
-    void abs(QStack<double>& stack){
+    void abs(CStack<double>& stack){
         double first;
         first = stack.top();
         stack.pop();

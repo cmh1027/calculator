@@ -46,7 +46,7 @@ namespace Template{
         void abs();
         void pi();
         void e();
-        QMap<QString, void(ScientificCalculator::*)()> Operators;
+        CMap<QString, void(ScientificCalculator::*)()> Operators;
 
     public slots:
         void buttonPushed() override;

@@ -1,8 +1,7 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 #include <QString>
-#include <QStack>
-#include <QMap>
+#include "../ctl.h"
 #include "operation.h"
 
 namespace Operator{
@@ -39,6 +38,6 @@ namespace Operator{
         extern const QString negate;
         extern const QString abs;
     }
-    extern const QMap<QString, void(*)(QStack<double>& stack)> operateFuncs;
+    extern const CMap<QString, void(*)(CStack<double>& stack)> operateFuncs;
 }
 #endif // OPERATOR_H

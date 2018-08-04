@@ -33,7 +33,7 @@ namespace Operator{
         const QString negate = "negate";
         const QString abs = "abs";
     }
-    const QMap<QString, void(*)(QStack<double>& stack)> operateFuncs = {
+    const CMap<QString, void(*)(CStack<double>& stack)> operateFuncs = {
         {Operator::Normal::plus, Operation::plus}, {Operator::Normal::minus, Operation::minus},
         {Operator::Normal::mult, Operation::mult}, {Operator::Normal::divide, Operation::divide},
         {Operator::Normal::altMult, Operation::mult}, {Operator::Normal::altDivide, Operation::divide},

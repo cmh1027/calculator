@@ -3,6 +3,7 @@
 #include "ui_scientific.h"
 #include "../../../../module/calculator/operator.h"
 #include "../../../mainwindow.h"
+#include "../../../../module/ctl.h"
 
 namespace Template{
     ScientificCalculator::ScientificCalculator(QWidget *widget) : Template::GeneralCalculator(widget),

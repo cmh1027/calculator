@@ -1,6 +1,6 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H
-#include <QMap>
+#include "../ctl.h"
 #include <QString>
 
 namespace Const{

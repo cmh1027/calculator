@@ -2,7 +2,7 @@
 #define CONFIG_H
 #include <QWidget>
 #include <QString>
-#include <QMap>
+#include "../../../module/ctl.h"
 
 namespace Ui {
     class Configuration;

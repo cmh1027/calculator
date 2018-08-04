@@ -1,5 +1,4 @@
 #include "content.h"
-#include <iostream>
 #include "../mainwindow.h"
 #include "../../config/config.h"
 

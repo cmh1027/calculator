@@ -1,8 +1,8 @@
 #include "utility.h"
 #include "../config/config.h"
+#include "exception.h"
 #include <sstream>
 #include <iomanip>
-#include <iostream>
 
 extern Configuration* config;
 
@@ -24,26 +24,16 @@ namespace Utility{
         return QString::fromStdString(str);
     }
 
-    QString transformExpr(const QString& str, QMap<QString, double>& list){
+    QString transformExpr(const QString& str, CMap<QString, double>& list){
         int left, right;
         QString &&key = "";
         QString result = str;
         while((left = result.indexOf("{")) != -1 && (right = result.indexOf("}")) != -1){
             if(left == -1 || right == -1){
-                std::cout << "Something goes wrong\n";
-                std::cout << result.toStdString() << "\n";
-                std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
-                exit(1);
+                throw std::InvalidExprException();
             }
             key = result.mid(left, right-left+1);
-            if(list.contains(key)){
-                result.replace(left, right-left+1, Utility::doubleToString(list[key]));
-            }
-            else{
-                std::cout << "Repeating constant list does not have a key : " << key.toStdString() << "\n";
-                std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
-                exit(1);
-            }
+            result.replace(left, right-left+1, Utility::doubleToString(list[key]));
         }
         return result;
     }

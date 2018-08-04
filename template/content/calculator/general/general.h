@@ -1,7 +1,7 @@
 #ifndef GENERAL_H
 #define GENERAL_H
 #include <QString>
-#include <QMap>
+#include "../../../../module/ctl.h"
 #include "../calculator.h"
 
 namespace Ui {
@@ -46,7 +46,7 @@ namespace Template{
         void inverse();
         void leftBracket();
         void rightBracket();
-        QMap<QString, void(GeneralCalculator::*)()> Operators;
+        CMap<QString, void(GeneralCalculator::*)()> Operators;
 
     public slots:
         void buttonPushed() override;
