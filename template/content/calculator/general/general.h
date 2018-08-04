@@ -14,10 +14,11 @@ namespace Template{
         Q_OBJECT
 
     public:
-        GeneralCalculator(QWidget*);
+        GeneralCalculator();
         virtual ~GeneralCalculator();
         void setup() override;
         void calculateAgain();
+        void disableLineEdit();
 
     private:
         Ui::GeneralCalculator *contentUi;
@@ -47,6 +48,7 @@ namespace Template{
         void leftBracket();
         void rightBracket();
         CMap<QString, void(GeneralCalculator::*)()> Operators;
+        void mousePressEvent(QMouseEvent*);
 
     public slots:
         void buttonPushed() override;

@@ -2,6 +2,7 @@
 #define CALCULATOR_H
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QString>
 #include "../content.h"
 
@@ -14,14 +15,17 @@ namespace Template{
         Q_OBJECT
 
     public:
-        Calculator(QWidget*);
+        Calculator();
         virtual ~Calculator();
         void precisionChanged();
+        void enableLineEdit();
+        void disableLineEdit();
 
     private:
         Ui::Calculator *contentUi;
         QWidget *contentWidget;
         QLabel *interLabel;
+        QLineEdit *interLineEdit;
         QLabel *resultLabel;
 
     protected:
@@ -59,6 +63,8 @@ namespace Template{
         void constant(const QString &constant);
         void changeButton(const QString &targetName, const QString &buttonName, const QString &icon);
         void clearDoubleList();
+        bool isModifying;
+
     };
 }
 #endif // CALCULATOR_H

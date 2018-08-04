@@ -1,6 +1,6 @@
 #ifndef CONTENT_H
 #define CONTENT_H
-#include <QObject>
+#include <QWidget>
 #include <QPushButton>
 #include "../../module/ctl.h"
 #define SETUP_UI(ui, widget) \
@@ -8,11 +8,11 @@
         this->buttonConnect();
 
 namespace Template{
-    class Content : public QObject{
+    class Content : public QWidget{
         Q_OBJECT
 
     public:
-        Content(QWidget*);
+        Content();
         virtual ~Content();
         virtual void setup() = 0;
         void addConstant(const QString &str, const double &num);

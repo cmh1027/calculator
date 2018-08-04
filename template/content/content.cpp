@@ -5,11 +5,7 @@
 extern Configuration* config;
 
 namespace Template{
-    Content::Content(QWidget* widget) : doubleList(*config->getConstantList()),
-        contentWidget(widget)
-    {
-
-    }
+    Content::Content() : QWidget(), doubleList(*config->getConstantList()), contentWidget(this){}
 
     Content::~Content(){}
 

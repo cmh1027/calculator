@@ -12,7 +12,7 @@ namespace Template{
         Q_OBJECT
 
     public:
-        ScientificCalculator(QWidget*);
+        ScientificCalculator();
         virtual ~ScientificCalculator();
         void setup() override;
 

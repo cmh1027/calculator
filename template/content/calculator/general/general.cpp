@@ -1,4 +1,5 @@
 #include <QtCore/QRegExp>
+#include <QtWidgets/QLineEdit>
 #include <utility>
 #include "general.h"
 #include "ui_general.h"
@@ -9,9 +10,9 @@
 #include <iostream>
 
 namespace Template{
-    GeneralCalculator::GeneralCalculator(QWidget *widget) :
-        Template::Calculator(widget), contentUi(new Ui::GeneralCalculator),
-        contentWidget(widget->findChild<QWidget*>("buttonWidget"))
+    GeneralCalculator::GeneralCalculator() :
+        Template::Calculator(), contentUi(new Ui::GeneralCalculator),
+        contentWidget(this->findChild<QWidget*>("buttonWidget"))
     {
          Operators["plus"] = this->plus;
          Operators["minus"] = this->minus;
@@ -44,6 +45,8 @@ namespace Template{
     }
 
     void GeneralCalculator::buttonPushed(){
+        if(this->isModifying)
+            return;
         QRegExp rx("num[0-9]{1}Button");
         auto button = sender();
         QString buttonName = button->objectName();
@@ -62,7 +65,7 @@ namespace Template{
     }
 
     void GeneralCalculator::calculateAgain(){
-        if(this->getInter() != ""){
+        if(!this->getInter().isEmpty()){
             if(this->isLastOpOperator())
                 this->setResult(calculateExpression(this->chopInterOp(1)));
             else
@@ -265,4 +268,18 @@ namespace Template{
         this->setResult(calculateExpression(this->getInter()));
         this->calculated = true;
     }
+
+    void GeneralCalculator::disableLineEdit(){
+        Calculator::disableLineEdit();
+        this->calculateAgain();
+    }
+
+    void GeneralCalculator::mousePressEvent(QMouseEvent*){
+        if(this->findChild<QLabel*>("interLabel")->underMouse())
+            this->enableLineEdit();
+        else if(this->findChild<QLineEdit*>("interLineEdit")->isVisible() && \
+                !this->findChild<QLineEdit*>("interLineEdit")->underMouse())
+            this->disableLineEdit();
+    }
+
 }

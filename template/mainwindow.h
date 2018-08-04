@@ -5,28 +5,26 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QMouseEvent>
-#include <QVector>
 
 namespace Template{
     class Content;
     class Configuration;
 }
 
-#define LOAD_CONFIG \
+#define LOAD_CONFIG() \
     Template::Configuration* configTemplate; \
-    widget = new QWidget; \
-    configTemplate = new Template::Configuration(this, widget); \
+    configTemplate = new Template::Configuration(this); \
     configTemplate->setup(); \
-    this->contentWidget->addWidget(widget); \
-    this->configTemplate = configTemplate;
+    this->contentWidget->addWidget(configTemplate); \
+    this->configTemplate = configTemplate; \
 
 #define LOAD_CONTENT(ui) \
-    widget = new QWidget; \
-    content = new ui(widget); \
+    content = new ui(); \
     content->setup(); \
-    this->contentWidget->addWidget(widget); \
-    this->contents.append(content);
+    this->contentWidget->addWidget(content); \
 
 namespace Ui {
     class MainWindow;
@@ -46,7 +44,6 @@ public:
 private:
     Ui::MainWindow *mainWindowUi;
     QStackedWidget *contentWidget;
-    QVector<Template::Content*> contents;
     QWidget *sidebar;
     Template::Configuration *configTemplate;
     void loadContents();
@@ -54,9 +51,10 @@ private:
     void generalCalculator();
     void scientificCalculator();
     void setTitle(const QString &str);
-    void mousePressEvent(QMouseEvent *event);
     void addConstant(const QString &str, const double &num);
     void removeConstant(const QString &str);
+    void mousePressEvent(QMouseEvent*);
+    int currentIndex;
 
 public slots:
     void showMenu();

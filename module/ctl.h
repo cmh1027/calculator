@@ -9,9 +9,9 @@ class CStack : public QStack<T>{
 public:
     using QStack<T>::QStack;
     virtual ~CStack();
-    virtual T pop();
-    virtual T& top();
-    virtual const T& top() const;
+    T pop();
+    T& top();
+    const T& top() const;
 
 };
 
@@ -20,9 +20,9 @@ class CMap : public QMap<K, V>{
 public:
     using QMap<K, V>::QMap;
     virtual ~CMap();
-    virtual const V value(const K &key) const;
-    virtual V& operator[](const K &key);
-    virtual const V operator[](const K &key) const;
+    const V value(const K &key) const;
+    V& operator[](const K &key);
+    const V operator[](const K &key) const;
 
 };
 

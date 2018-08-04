@@ -8,12 +8,14 @@
 
 extern Configuration* config;
 namespace Template{
-    Calculator::Calculator(QWidget *widget) : Template::Content(widget),
-        contentUi(new Ui::Calculator), contentWidget(widget), calculated(false), specialStart(false)
+    Calculator::Calculator() : Template::Content(),
+        contentUi(new Ui::Calculator), contentWidget(this), calculated(false), specialStart(false), isModifying(false)
     {
-        contentUi->setupUi(widget);
+        contentUi->setupUi(this);
         this->resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
-        this->interLabel = contentWidget->findChild<QLabel*>("intermediateLabel");
+        this->interLabel = contentWidget->findChild<QLabel*>("interLabel");
+        this->interLineEdit = contentWidget->findChild<QLineEdit*>("interLineEdit");
+        this->interLineEdit->hide();
     }
 
     Calculator::~Calculator(){}
@@ -300,5 +302,19 @@ namespace Template{
     void Calculator::precisionChanged(){
         this->setInter(this->getInter());
         this->setResult(this->getResult());
+    }
+
+    void Calculator::enableLineEdit(){
+        this->isModifying = true;
+        this->interLineEdit->setText(this->inter);
+        this->interLabel->hide();
+        this->interLineEdit->show();
+    }
+
+    void Calculator::disableLineEdit(){
+        this->isModifying = false;
+        this->setInter(this->interLineEdit->text());
+        this->interLineEdit->hide();
+        this->interLabel->show();
     }
 }

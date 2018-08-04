@@ -2,11 +2,10 @@
 #include "ui_mainwindow.h"
 #include "templates.h"
 #include "../config/config.h"
-
 Configuration* config;
 
 MainWindow::MainWindow() :
-    currentMenu(nullptr), mainWindowUi(new Ui::MainWindow)
+    currentMenu(nullptr), mainWindowUi(new Ui::MainWindow), currentIndex(0)
 {
     config = new Configuration(this);
     mainWindowUi->setupUi(this);
@@ -20,16 +19,15 @@ MainWindow::~MainWindow()
 {
     delete mainWindowUi;
     delete configTemplate;
-    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
-        delete *iter;
+    for(int i = 0; i < this->contentWidget->count(); i++)
+        delete this->contentWidget->widget(i);
 }
 
 void MainWindow::loadContents(){
-    QWidget* widget;
     Template::Content* content;
     LOAD_CONTENT(Template::GeneralCalculator)
     LOAD_CONTENT(Template::ScientificCalculator)
-    LOAD_CONFIG
+    LOAD_CONFIG()
 }
 
 void MainWindow::setTitle(const QString &str){
@@ -65,28 +63,31 @@ void MainWindow::changeContent(const int& menuNum){
                                      "text-align: left;padding-left:50px;}"
                                      "QPushButton:hover{background-color: rgb(144, 144, 255);}");
     this->contentWidget->setCurrentIndex(menuNum);
+    this->currentIndex = menuNum;
     this->hideMenu();
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event){
-    if(!(event->x() < this->sidebar->width() && event->y() < this->sidebar->height()))
-        this->hideMenu();
-}
 
 void MainWindow::addConstant(const QString &str, const double &num){
-    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
-        (*iter)->addConstant(str, num);
+    Template::Content* ptr;
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::Content*>(this->contentWidget->widget(i))) != nullptr)
+            ptr->addConstant(str, num);
+    }
 }
 
 void MainWindow::removeConstant(const QString &str){
-    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter)
-       (*iter)->removeConstant(str);
+    Template::Content* ptr;
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::Content*>(this->contentWidget->widget(i))) != nullptr)
+            ptr->removeConstant(str);
+    }
 }
 
 void MainWindow::degreeUnitChanged(){
     Template::GeneralCalculator* ptr;
-    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter){
-        if((ptr = dynamic_cast<Template::GeneralCalculator*>(*iter)) != nullptr){
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::GeneralCalculator*>(this->contentWidget->widget(i))) != nullptr){
             ptr->calculateAgain();
         }
     }
@@ -94,9 +95,15 @@ void MainWindow::degreeUnitChanged(){
 
 void MainWindow::precisionChanged(){
     Template::Calculator* ptr;
-    for(auto iter = this->contents.begin(); iter != this->contents.end(); ++iter){
-        if((ptr = dynamic_cast<Template::Calculator*>(*iter)) != nullptr){
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::Calculator*>(this->contentWidget->widget(i))) != nullptr){
             ptr->precisionChanged();
         }
+    }
+}
+
+void MainWindow::mousePressEvent(QMouseEvent*){
+    if(!this->sidebar->underMouse()){
+        this->hideMenu();
     }
 }

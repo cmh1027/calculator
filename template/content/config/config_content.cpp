@@ -7,8 +7,8 @@
 extern Configuration* config;
 
 namespace Template{
-    Configuration::Configuration(MainWindow* window, QWidget* widget) :
-        contentUi(new Ui::Configuration), mainWindow(window), contentWidget(widget)
+    Configuration::Configuration(MainWindow* window) : QWidget(),
+        contentUi(new Ui::Configuration), mainWindow(window), contentWidget(this)
     {
     }
 
@@ -35,7 +35,7 @@ namespace Template{
                     else{
                         decimalPoint->setEnabled(true);
                         QString&& point = decimalPoint->text();
-                        if(point == "")
+                        if(point.isEmpty())
                             config->setPrecision(-1);
                         else
                             config->setPrecision(point.toInt());
@@ -45,7 +45,7 @@ namespace Template{
         connect(decimalPoint, &QLineEdit::textChanged, this,
                 [this, decimalPoint]() mutable {
                     QString&& point = decimalPoint->text();
-                    if(point == "")
+                    if(point.isEmpty())
                         config->setPrecision(-1);
                     else
                         config->setPrecision(point.toInt());

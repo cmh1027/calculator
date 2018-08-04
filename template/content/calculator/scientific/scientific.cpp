@@ -6,8 +6,8 @@
 #include "../../../../module/ctl.h"
 
 namespace Template{
-    ScientificCalculator::ScientificCalculator(QWidget *widget) : Template::GeneralCalculator(widget),
-        contentUi(new Ui::ScientificCalculator), contentWidget(widget->findChild<QWidget*>("buttonWidget")),
+    ScientificCalculator::ScientificCalculator() : Template::GeneralCalculator(),
+        contentUi(new Ui::ScientificCalculator), contentWidget(this->findChild<QWidget*>("buttonWidget")),
         screen(Mode::One)
     {
         for(auto iter = GeneralCalculator::Operators.constBegin(); iter != GeneralCalculator::Operators.constEnd(); ++iter){
@@ -47,6 +47,8 @@ namespace Template{
     }
 
     void ScientificCalculator::buttonPushed(){
+        if(this->isModifying)
+            return;
         QRegExp rx("num[0-9]{1}Button");
         auto button = sender();
         QString buttonName = button->objectName();

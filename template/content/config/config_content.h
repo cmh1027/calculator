@@ -10,11 +10,11 @@ namespace Ui {
 class MainWindow;
 
 namespace Template{
-    class Configuration : public QObject{
+    class Configuration : public QWidget{
         Q_OBJECT
 
     public:
-        Configuration(MainWindow*, QWidget*);
+        Configuration(MainWindow*);
         virtual ~Configuration();
         void setup();
 
