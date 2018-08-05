@@ -1,9 +1,10 @@
 #ifndef TEMPLATES_H
 #define TEMPLATES_H
 #include "content/content.h"
+#include "content/mathcontent.h"
 #include "content/calculator/calculator.h"
 #include "content/calculator/general/general.h"
 #include "content/calculator/scientific/scientific.h"
-#include "content/config/config_content.h"
+#include "content/config/configcontent.h"
 #include "sidemenu/menulayout.h"
 #endif // TEMPLATES_H

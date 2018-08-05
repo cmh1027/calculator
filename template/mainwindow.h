@@ -8,27 +8,22 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QMouseEvent>
+#include "module/calculator/constant.h"
 
-namespace Template{
-    class Content;
-    class Configuration;
-}
-
-#define LOAD_CONFIG() \
-    Template::Configuration* configTemplate; \
-    configTemplate = new Template::Configuration(this); \
-    configTemplate->setup(); \
-    this->contentWidget->addWidget(configTemplate); \
-    this->configTemplate = configTemplate; \
+#define LOAD_CONFIG(ui) \
+    content = new ui(this); \
+    content->setup(); \
+    this->contentWidget->addWidget(content); \
 
 #define LOAD_CONTENT(ui) \
-    content = new ui(); \
+    content = new ui(this); \
     content->setup(); \
     this->contentWidget->addWidget(content); \
 
 namespace Ui {
     class MainWindow;
 }
+
 
 class MainWindow : public QMainWindow
 {
@@ -45,15 +40,15 @@ private:
     Ui::MainWindow *mainWindowUi;
     QStackedWidget *contentWidget;
     QWidget *sidebar;
-    Template::Configuration *configTemplate;
     void loadContents();
     void installSidebar();
     void generalCalculator();
     void scientificCalculator();
     void setTitle(const QString &str);
-    void addConstant(const QString &str, const double &num);
+    void addConstant(const QString &str, const Const::ConstObject& num);
     void removeConstant(const QString &str);
     void mousePressEvent(QMouseEvent*);
+    void resizeEvent(QResizeEvent*);
     int currentIndex;
 
 public slots:

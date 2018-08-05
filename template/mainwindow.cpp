@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "templates.h"
 #include "../config/config.h"
+
 Configuration* config;
 
 MainWindow::MainWindow() :
@@ -18,7 +19,6 @@ MainWindow::MainWindow() :
 MainWindow::~MainWindow()
 {
     delete mainWindowUi;
-    delete configTemplate;
     for(int i = 0; i < this->contentWidget->count(); i++)
         delete this->contentWidget->widget(i);
 }
@@ -27,7 +27,7 @@ void MainWindow::loadContents(){
     Template::Content* content;
     LOAD_CONTENT(Template::GeneralCalculator)
     LOAD_CONTENT(Template::ScientificCalculator)
-    LOAD_CONFIG()
+    LOAD_CONFIG(Template::Configuration)
 }
 
 void MainWindow::setTitle(const QString &str){
@@ -45,7 +45,6 @@ void MainWindow::installSidebar(){
 }
 
 void MainWindow::showMenu(){
-    this->sidebar->setFixedHeight(this->height() + 11);
     this->sidebar->show();
 }
 
@@ -68,18 +67,18 @@ void MainWindow::changeContent(const int& menuNum){
 }
 
 
-void MainWindow::addConstant(const QString &str, const double &num){
-    Template::Content* ptr;
+void MainWindow::addConstant(const QString &str, const Const::ConstObject& num){
+    Template::MathContent* ptr;
     for(int i = 0; i < this->contentWidget->count(); i++){
-        if((ptr = dynamic_cast<Template::Content*>(this->contentWidget->widget(i))) != nullptr)
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
             ptr->addConstant(str, num);
     }
 }
 
 void MainWindow::removeConstant(const QString &str){
-    Template::Content* ptr;
+    Template::MathContent* ptr;
     for(int i = 0; i < this->contentWidget->count(); i++){
-        if((ptr = dynamic_cast<Template::Content*>(this->contentWidget->widget(i))) != nullptr)
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
             ptr->removeConstant(str);
     }
 }
@@ -106,4 +105,8 @@ void MainWindow::mousePressEvent(QMouseEvent*){
     if(!this->sidebar->underMouse()){
         this->hideMenu();
     }
+}
+
+void MainWindow::resizeEvent(QResizeEvent*){
+    this->sidebar->setFixedHeight(this->height() + 11);
 }

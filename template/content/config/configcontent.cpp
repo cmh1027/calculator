@@ -1,4 +1,4 @@
-#include "config_content.h"
+#include "configcontent.h"
 #include "ui_config_content.h"
 #include "../content.h"
 #include "../../../config/config.h"
@@ -7,7 +7,7 @@
 extern Configuration* config;
 
 namespace Template{
-    Configuration::Configuration(MainWindow* window) : QWidget(),
+    Configuration::Configuration(MainWindow* window) : Content(window),
         contentUi(new Ui::Configuration), mainWindow(window), contentWidget(this)
     {
     }

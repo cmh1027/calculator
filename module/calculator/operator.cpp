@@ -33,20 +33,34 @@ namespace Operator{
         const QString negate = "negate";
         const QString abs = "abs";
     }
-    const CMap<QString, void(*)(CStack<double>& stack)> operateFuncs = {
-        {Operator::Normal::plus, Operation::plus}, {Operator::Normal::minus, Operation::minus},
-        {Operator::Normal::mult, Operation::mult}, {Operator::Normal::divide, Operation::divide},
-        {Operator::Normal::altMult, Operation::mult}, {Operator::Normal::altDivide, Operation::divide},
-        {Operator::Special::sqrt, Operation::sqrt}, {Operator::Special::root, Operation::root},
-        {Operator::Special::sqr, Operation::sqr}, {Operator::Special::pow, Operation::pow},
-        {Operator::Special::negate, Operation::negate}, {Operator::Special::inv, Operation::inv},
-        {Operator::Special::sin, Operation::sin}, {Operator::Special::cos, Operation::cos},
-        {Operator::Special::tan, Operation::tan}, {Operator::Special::asin, Operation::asin},
-        {Operator::Special::acos, Operation::acos}, {Operator::Special::atan, Operation::atan},
-        {Operator::Special::log, Operation::log}, {Operator::Special::ln, Operation::ln},
-        {Operator::Special::mod, Operation::mod}, {Operator::Special::abs, Operation::abs},
-        {Operator::Special::fac, Operation::fac}, {Operator::Special::sinh, Operation::sinh},
-        {Operator::Special::cosh, Operation::cosh}, {Operator::Special::tanh, Operation::tanh},
-        {Operator::Special::cube, Operation::cube}
+
+    CMap<QString, Operation::OperationObject> operateFuncs = {
+        {Operator::Normal::plus, Operation::OperationObject(Operation::plus, "Plus")},
+        {Operator::Normal::minus, Operation::OperationObject(Operation::minus, "Minus")},
+        {Operator::Normal::mult, Operation::OperationObject(Operation::mult, "Multiply")},
+        {Operator::Normal::divide, Operation::OperationObject(Operation::divide, "Divide")},
+        {Operator::Normal::altMult, Operation::OperationObject(Operation::mult, "Multiply")},
+        {Operator::Normal::altDivide, Operation::OperationObject(Operation::divide, "plus")},
+        {Operator::Special::sqrt, Operation::OperationObject(Operation::sqrt, "Square root")},
+        {Operator::Special::root, Operation::OperationObject(Operation::root, "Root")},
+        {Operator::Special::sqr, Operation::OperationObject(Operation::sqr, "Square")},
+        {Operator::Special::cube, Operation::OperationObject(Operation::cube, "Cube")},
+        {Operator::Special::pow, Operation::OperationObject(Operation::pow, "Power")},
+        {Operator::Special::negate, Operation::OperationObject(Operation::negate, "Negate")},
+        {Operator::Special::inv, Operation::OperationObject(Operation::inv, "Inverse")},
+        {Operator::Special::sin, Operation::OperationObject(Operation::sin, "Sine")},
+        {Operator::Special::cos, Operation::OperationObject(Operation::cos, "Cosine")},
+        {Operator::Special::tan, Operation::OperationObject(Operation::tan, "Tangent")},
+        {Operator::Special::asin, Operation::OperationObject(Operation::asin, "Arcsine")},
+        {Operator::Special::acos, Operation::OperationObject(Operation::acos, "Arccosine")},
+        {Operator::Special::atan, Operation::OperationObject(Operation::atan, "Arctangent")},
+        {Operator::Special::log, Operation::OperationObject(Operation::log, "Logarithmic")},
+        {Operator::Special::ln, Operation::OperationObject(Operation::ln, "Natural logarithmic")},
+        {Operator::Special::mod, Operation::OperationObject(Operation::mod, "Mod")},
+        {Operator::Special::abs, Operation::OperationObject(Operation::abs, "Absolute value")},
+        {Operator::Special::fac, Operation::OperationObject(Operation::fac, "Factorial")},
+        {Operator::Special::sinh, Operation::OperationObject(Operation::sinh, "Hyperbolic sine")},
+        {Operator::Special::cosh, Operation::OperationObject(Operation::cosh, "Hyperbolic cosine")},
+        {Operator::Special::tanh, Operation::OperationObject(Operation::tanh, "Hyperbolic tangent")},
     };
 }

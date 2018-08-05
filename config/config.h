@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QString>
 #include "../module/ctl.h"
+#include "../module/calculator/constant.h"
 namespace Template{
     class Configuration;
 }
@@ -16,16 +17,16 @@ friend class Template::Configuration;
 public:
     Configuration(MainWindow*);
     ~Configuration();
-    void addConstant(const QString &str, const double &num);
+    void addConstant(const QString &str, const Const::ConstObject& num);
     double getConstant(const QString &str) const;
     void removeConstant(const QString &str);
-    const CMap<QString, double>* getConstantList();
+    const CMap<QString, Const::ConstObject>* getConstantList();
     bool getRadian();
     int getPrecision();
 
 
 private:
-    CMap<QString, double> constants;
+    CMap<QString, Const::ConstObject> constants;
     MainWindow* mainWindow;
     bool radian;
     int precision;

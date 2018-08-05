@@ -1,32 +1,27 @@
 #ifndef CONTENT_H
 #define CONTENT_H
 #include <QWidget>
-#include <QPushButton>
-#include "../../module/ctl.h"
 #define SETUP_UI(ui, widget) \
         ui->setupUi(widget); \
         this->buttonConnect();
+
+class MainWindow;
 
 namespace Template{
     class Content : public QWidget{
         Q_OBJECT
 
     public:
-        Content();
+        Content(MainWindow*);
         virtual ~Content();
         virtual void setup() = 0;
-        void addConstant(const QString &str, const double &num);
-        void removeConstant(const QString &str);
 
     protected:
         virtual void buttonConnect() = 0;
-        CMap<QString, double> doubleList; // constant & repeating decimal symbolic calculation
+        MainWindow* mainWindow;
 
     private:
         QWidget* contentWidget;
-
-    public slots:
-        virtual void buttonPushed() = 0;
     };
 }
 

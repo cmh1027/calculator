@@ -30,25 +30,22 @@ namespace Calculation{
         if(stack.empty()) stack.push(_operator);
         else if(_operator == Operator::Normal::rightBracket){
             while(stack.top() != Operator::Normal::leftBracket){
-                result.append(stack.top());
+                result.append(stack.pop());
                 result.append(" ");
-                stack.pop();
             }
             stack.pop();
             while(!stack.empty() && precedence(stack.top()) > precedence(Operator::Normal::mult) &&
                   stack.top() != Operator::Normal::leftBracket){
-                result.append(stack.top());
+                result.append(stack.pop());
                 result.append(" ");
-                stack.pop();
             }
         }
         else{
             if(_operator != Operator::Normal::leftBracket){
                 while(!stack.empty() && precedence(stack.top()) >= precedence(_operator) &&
                       stack.top() != Operator::Normal::leftBracket){
-                    result.append(stack.top());
+                    result.append(stack.pop());
                     result.append(" ");
-                    stack.pop();
                 }
             }
             stack.push(_operator);
@@ -57,16 +54,15 @@ namespace Calculation{
 
     void remainOperators(CStack<QString>& stack, QString& result){
         while(!stack.empty()){
-            result.append(stack.top());
+            result.append(stack.pop());
             result.append(" ");
-            stack.pop();
         }
     }
 
-    QString calculateExpr(QString& expr, CMap<QString, double>& doubleList){
+    QString calculateExpr(QString& expr, CMap<QString, Const::ConstObject>& doubleList){
         QString &&result = "";
         try{
-            result = calculatePostfix(changeToPostfix(expr), doubleList);
+            result = calculatePostfix(changeToPostfix(expr), doubleList, expr);
         }
         catch(std::InvalidExprException &e){
             result = e.what();
@@ -88,7 +84,7 @@ namespace Calculation{
         return result.trimmed();
     }
 
-    QString calculatePostfix(const QString& expr, CMap<QString, double>& doubleList){
+    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject>& doubleList, const QString& originalExpr){
         CStack<double> stack;
         if(expr.isEmpty()) return QString("0");
         foreach(const QString &chunk, expr.split(" ")){
@@ -101,8 +97,7 @@ namespace Calculation{
             else{
                 if(!config->getRadian() && (chunk == Operator::Special::sin || chunk == Operator::Special::cos ||
                    chunk == Operator::Special::tan)){
-                   double degree = stack.top()*Const::PI/180;
-                   stack.pop();
+                   double degree = stack.pop()*Const::PI/180;
                    stack.push(degree);
                 }
                 Operator::operateFuncs[chunk](stack);
@@ -121,7 +116,7 @@ namespace Calculation{
                         return it.key();
                 }
                 QString format = QString("{%1}").arg(doubleList.size());
-                doubleList[format] = stack.top();
+                doubleList[format] = Const::ConstObject(stack.top(), originalExpr, false);
                 return format;
             }
         }

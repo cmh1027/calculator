@@ -24,7 +24,7 @@ namespace Utility{
         return QString::fromStdString(str);
     }
 
-    QString transformExpr(const QString& str, CMap<QString, double>& list){
+    QString transformExpr(const QString& str, CMap<QString, Const::ConstObject>& list){
         int left, right;
         QString &&key = "";
         QString result = str;

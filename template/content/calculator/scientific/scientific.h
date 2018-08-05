@@ -2,6 +2,8 @@
 #define SCIENTIFIC_H
 #include "../general/general.h"
 
+class MainWindow;
+
 namespace Ui {
     class ScientificCalculator;
 }
@@ -12,7 +14,7 @@ namespace Template{
         Q_OBJECT
 
     public:
-        ScientificCalculator();
+        ScientificCalculator(MainWindow*);
         virtual ~ScientificCalculator();
         void setup() override;
 

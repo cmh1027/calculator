@@ -1,6 +1,5 @@
 #include <QtCore/QRegExp>
 #include <QtWidgets/QLineEdit>
-#include <utility>
 #include "general.h"
 #include "ui_general.h"
 #include "../../../../module/calculator/operator.h"
@@ -10,8 +9,8 @@
 #include <iostream>
 
 namespace Template{
-    GeneralCalculator::GeneralCalculator() :
-        Template::Calculator(), contentUi(new Ui::GeneralCalculator),
+    GeneralCalculator::GeneralCalculator(MainWindow* window) :
+        Template::Calculator(window), contentUi(new Ui::GeneralCalculator),
         contentWidget(this->findChild<QWidget*>("buttonWidget"))
     {
          Operators["plus"] = this->plus;
@@ -88,7 +87,7 @@ namespace Template{
                 this->setResult(calculateExpression(this->getInter()));
             }
             else{
-                if(this->endsWithBracket())
+                if(this->endWithBracket())
                     this->setResult(calculateExpression(this->getInter()));
                 else
                     this->setResult(calculateExpression(this->getInter() + " " + this->getResult()));
@@ -102,7 +101,7 @@ namespace Template{
         QString &&result = this->getResult();
         if(this->getInter().isEmpty()) return;
         else{
-            if(this->endsWithBracket()){
+            if(this->endWithBracket()){
                 this->setResult(calculateExpression(this->getInter()));
                 this->appendInter(op);
             }
@@ -222,8 +221,8 @@ namespace Template{
         }
         else{
             QString &&lastOp = this->lastOp();
-            if(this->isUnarySpecial(lastOp)){
-                QString &&expr = QString("%1(%2)").arg(op).arg(this->calculateExpression(this->lastOp()));
+            if(this->startWithBracket(lastOp) && this->endWithBracket(lastOp)){
+                QString &&expr = QString("%1%2").arg(op).arg(this->lastOp());
                 this->replaceLastOp(expr);
                 this->setResult(calculateExpression(expr));
             }

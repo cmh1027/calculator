@@ -1,8 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 #include <QWidget>
-#include <QString>
-#include "../../../module/ctl.h"
+#include "../content.h"
 
 namespace Ui {
     class Configuration;
@@ -10,7 +9,7 @@ namespace Ui {
 class MainWindow;
 
 namespace Template{
-    class Configuration : public QWidget{
+    class Configuration : public Content{
         Q_OBJECT
 
     public:

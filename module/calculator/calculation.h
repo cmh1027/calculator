@@ -4,11 +4,12 @@
 #include <QtCore/QQueue>
 #include <QtCore/QString>
 #include "../ctl.h"
+#include "constant.h"
 
 namespace Calculation{
-    QString calculateExpr(QString& expr, CMap<QString, double>& doubleList);
+    QString calculateExpr(QString& expr, CMap<QString, Const::ConstObject>& doubleList);
     QString changeToPostfix(const QString& expr);
-    QString calculatePostfix(const QString& expr, CMap<QString, double>& doubleList);
+    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject>& doubleList, const QString& originalExpr);
     bool chunking(const QString& expr, QString& chunk, int& start);
     void numberChunk(const QString& expr, QString& chunk, int& start);
     void symbolChunk(const QString& expr, QString& chunk, int& start);

@@ -38,6 +38,6 @@ namespace Operator{
         extern const QString negate;
         extern const QString abs;
     }
-    extern const CMap<QString, void(*)(CStack<double>& stack)> operateFuncs;
+    extern CMap<QString, Operation::OperationObject> operateFuncs;
 }
 #endif // OPERATOR_H

@@ -8,7 +8,7 @@
 
 extern Configuration* config;
 namespace Template{
-    Calculator::Calculator() : Template::Content(),
+    Calculator::Calculator(MainWindow* window) : Template::MathContent(window),
         contentUi(new Ui::Calculator), contentWidget(this), calculated(false), specialStart(false), isModifying(false)
     {
         contentUi->setupUi(this);
@@ -234,15 +234,16 @@ namespace Template{
         return expr.count(Operator::Normal::leftBracket) > expr.count(Operator::Normal::rightBracket);
     }
 
-    bool Calculator::endsWithBracket(const QString &expr) const{
+    bool Calculator::startWithBracket(const QString &expr) const{
+        return expr.startsWith(Operator::Normal::leftBracket);
+    }
+
+    bool Calculator::endWithBracket(const QString &expr) const{
         return expr.endsWith(Operator::Normal::rightBracket);
     }
 
-    bool Calculator::endsWithBracket() const{
+    bool Calculator::endWithBracket() const{
         return this->getInter().endsWith(Operator::Normal::rightBracket);
-    }
-    bool Calculator::isUnarySpecial(const QString &expr) const{
-        return this->endsWithBracket(expr) && expr.at(expr.length()-2) == " ";
     }
 
     void Calculator::closeAllBracket(){
@@ -278,7 +279,7 @@ namespace Template{
     }
 
     void Calculator::constant(const QString &constant){
-        this->setResult(QString("{%1}").arg(constant));
+        this->setResult(QString("%1").arg(constant));
         this->calculated = true;
     }
 
@@ -296,7 +297,12 @@ namespace Template{
     }
 
     void Calculator::clearDoubleList(){
-        doubleList = *config->getConstantList();
+        for(auto it = doubleList.begin(); it != doubleList.end();){
+            if((*it).isDefault())
+                ++it;
+            else
+                it = doubleList.erase(it);
+        }
     }
 
     void Calculator::precisionChanged(){

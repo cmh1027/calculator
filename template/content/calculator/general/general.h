@@ -4,6 +4,8 @@
 #include "../../../../module/ctl.h"
 #include "../calculator.h"
 
+class MainWindow;
+
 namespace Ui {
     class GeneralCalculator;
 }
@@ -14,7 +16,7 @@ namespace Template{
         Q_OBJECT
 
     public:
-        GeneralCalculator();
+        GeneralCalculator(MainWindow*);
         virtual ~GeneralCalculator();
         void setup() override;
         void calculateAgain();

@@ -1,8 +1,20 @@
 #ifndef OPERATION_H
 #define OPERATION_H
 #include "../ctl.h"
+#include "dataobject.h"
 
 namespace Operation{
+    class OperationObject : public DataObject{
+    private:
+        using funcType = void(*)(CStack<double>&);
+        funcType func;
+
+    public:
+        OperationObject() = default;
+        OperationObject(const funcType&, const QString&, const bool& = true);
+        void operator()(CStack<double>&);
+    };
+
     void plus(CStack<double>& stack);
     void minus(CStack<double>& stack);
     void mult(CStack<double>& stack);
@@ -28,6 +40,5 @@ namespace Operation{
     void mod(CStack<double>& stack);
     void fac(CStack<double>& stack);
     void abs(CStack<double>& stack);
-
 }
 #endif // OPERATION_H

@@ -6,7 +6,7 @@
 #include "../../../../module/ctl.h"
 
 namespace Template{
-    ScientificCalculator::ScientificCalculator() : Template::GeneralCalculator(),
+    ScientificCalculator::ScientificCalculator(MainWindow* window) : Template::GeneralCalculator(window),
         contentUi(new Ui::ScientificCalculator), contentWidget(this->findChild<QWidget*>("buttonWidget")),
         screen(Mode::One)
     {
@@ -179,10 +179,10 @@ namespace Template{
     }
 
     void ScientificCalculator::pi(){
-        this->constant("pi");
+        this->constant("{pi}");
     }
 
     void ScientificCalculator::e(){
-        this->constant("e");
+        this->constant("{e}");
     }
 }

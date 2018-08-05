@@ -4,18 +4,21 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QString>
-#include "../content.h"
+#include "../mathcontent.h"
 
 namespace Ui {
     class Calculator;
 }
+
+class MainWindow;
+
 namespace Template{
-    class Calculator : public Template::Content
+    class Calculator : public Template::MathContent
     {
         Q_OBJECT
 
     public:
-        Calculator();
+        Calculator(MainWindow*);
         virtual ~Calculator();
         void precisionChanged();
         void enableLineEdit();
@@ -52,9 +55,9 @@ namespace Template{
         QString lastOp(const QString& str) const;
         bool isBracketUnclosed() const;
         bool isBracketUnclosed(const QString &expr) const;
-        bool endsWithBracket() const;
-        bool endsWithBracket(const QString &expr) const;
-        bool isUnarySpecial(const QString &expr) const;
+        bool startWithBracket(const QString &expr) const;
+        bool endWithBracket() const;
+        bool endWithBracket(const QString &expr) const;
         void closeAllBracket();
         bool isLastOpArithmetic() const;
         bool isLastOpOperator() const;
