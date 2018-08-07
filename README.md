@@ -1,1 +1,2 @@
-# calculator
+# Calculator
+## made on Qt
