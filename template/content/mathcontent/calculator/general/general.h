@@ -1,11 +1,10 @@
 #ifndef GENERAL_H
 #define GENERAL_H
-#include <QString>
-#include "../../../../module/ctl.h"
+#include "../../../../../module/ctl.h"
 #include "../calculator.h"
 
 class MainWindow;
-
+class QString;
 namespace Ui {
     class GeneralCalculator;
 }

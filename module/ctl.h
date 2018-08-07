@@ -3,12 +3,11 @@
 #include <QStack>
 #include <QMap>
 #include "exception.h"
-
 template <typename T>
 class CStack : public QStack<T>{
 public:
     using QStack<T>::QStack;
-    virtual ~CStack();
+    virtual ~CStack() = default;
     T pop();
     T& top();
     const T& top() const;
@@ -19,15 +18,13 @@ template <typename K, typename V>
 class CMap : public QMap<K, V>{
 public:
     using QMap<K, V>::QMap;
-    virtual ~CMap();
+    virtual ~CMap() = default;
     const V value(const K &key) const;
     V& operator[](const K &key);
     const V operator[](const K &key) const;
 
 };
 
-template <typename T>
-CStack<T>::~CStack(){}
 
 template <typename T>
 T CStack<T>::pop(){
@@ -59,9 +56,6 @@ const T& CStack<T>::top() const{
     }
 }
 
-
-template <typename K, typename V>
-CMap<K, V>::~CMap(){}
 
 
 template <typename K, typename V>

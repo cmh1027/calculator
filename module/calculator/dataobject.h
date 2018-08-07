@@ -1,10 +1,12 @@
 #ifndef DATAOBJECT_H
 #define DATAOBJECT_H
-#include <QString>
+
+class QString;
 class DataObject{
 public:
     DataObject() = default;
     DataObject(const QString&, const bool& = true);
+    ~DataObject() = default;
     void setDescription(const QString&);
     QString getDescription() const;
     void setDefault(const bool&);

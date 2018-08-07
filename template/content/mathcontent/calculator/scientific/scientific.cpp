@@ -1,9 +1,8 @@
-#include <iostream>
 #include "scientific.h"
 #include "ui_scientific.h"
-#include "../../../../module/calculator/operator.h"
-#include "../../../mainwindow.h"
-#include "../../../../module/ctl.h"
+#include "../../../../../module/calculator/operator.h"
+#include "../../../../mainwindow.h"
+#include "../../../../../module/ctl.h"
 
 namespace Template{
     ScientificCalculator::ScientificCalculator(MainWindow* window) : Template::GeneralCalculator(window),
@@ -34,10 +33,12 @@ namespace Template{
         Operators["e"] = this->e;
         Operators["change"] = this->change;
     }
-    ScientificCalculator::~ScientificCalculator(){}
+    ScientificCalculator::~ScientificCalculator(){
+        delete this->contentUi;
+    }
 
     void ScientificCalculator::setup(){
-        SETUP_UI(contentUi, contentWidget)
+        SETUP_UI_CAL(contentUi, contentWidget)
     }
 
     void ScientificCalculator::buttonConnect(){
@@ -60,9 +61,7 @@ namespace Template{
             if(this->Operators.contains(funcName))
                 (this->*(this->Operators[funcName]))();
             else{
-                std::cout << "Map Operators does not have a key : " << funcName.toStdString() << "\n";
-                std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
-                exit(1);
+                Q_ASSERT(this->Operators.contains(funcName));
             }
         }
     }

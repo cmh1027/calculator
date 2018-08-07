@@ -1,3 +1,4 @@
+#include <QtCore/QString>
 #include "calculation.h"
 #include "operator.h"
 #include "constant.h"
@@ -90,7 +91,7 @@ namespace Calculation{
         foreach(const QString &chunk, expr.split(" ")){
             if(isOperand(chunk)){
                 if(chunk.indexOf("{") != -1 && chunk.indexOf("}") != -1)
-                    stack.push(doubleList[chunk]);
+                    stack.push(doubleList.value(chunk));
                 else
                     stack.push(chunk.toDouble());
             }

@@ -1,3 +1,4 @@
+#include <QString>
 #include "dataobject.h"
 DataObject::DataObject(const QString& des, const bool& flag) : description(des), defaultFlag(flag)
 {}

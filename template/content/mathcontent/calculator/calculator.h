@@ -1,11 +1,12 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QString>
 #include "../mathcontent.h"
 
+class QPushButton;
+class QLabel;
+class QLineEdit;
+class QString;
+class ConstMenuLayout;
 namespace Ui {
     class Calculator;
 }
@@ -23,6 +24,7 @@ namespace Template{
         void precisionChanged();
         void enableLineEdit();
         void disableLineEdit();
+        void constant(const QString &constant);
 
     private:
         Ui::Calculator *contentUi;
@@ -30,6 +32,7 @@ namespace Template{
         QLabel *interLabel;
         QLineEdit *interLineEdit;
         QLabel *resultLabel;
+
 
     protected:
         bool calculated;
@@ -63,11 +66,13 @@ namespace Template{
         bool isLastOpOperator() const;
         void replaceLastOp(const QString &str);
         void addNumber(const QString &str);
-        void constant(const QString &constant);
         void changeButton(const QString &targetName, const QString &buttonName, const QString &icon);
         void clearDoubleList();
         bool isModifying;
+        void installMenu() override;
 
+    public slots:
+        virtual void buttonPushed() = 0;
     };
 }
 #endif // CALCULATOR_H

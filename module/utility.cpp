@@ -1,3 +1,4 @@
+#include <QString>
 #include "utility.h"
 #include "../config/config.h"
 #include "exception.h"
@@ -33,7 +34,7 @@ namespace Utility{
                 throw std::InvalidExprException();
             }
             key = result.mid(left, right-left+1);
-            result.replace(left, right-left+1, Utility::doubleToString(list[key]));
+            result.replace(left, right-left+1, Utility::doubleToString(list.value(key)));
         }
         return result;
     }

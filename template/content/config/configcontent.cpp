@@ -1,9 +1,10 @@
+#include <QWidget>
+#include <QIntValidator>
 #include "configcontent.h"
 #include "ui_config_content.h"
 #include "../content.h"
 #include "../../../config/config.h"
 #include "../../mainwindow.h"
-#include <QIntValidator>
 extern Configuration* config;
 
 namespace Template{
@@ -12,7 +13,9 @@ namespace Template{
     {
     }
 
-    Configuration::~Configuration(){}
+    Configuration::~Configuration(){
+        delete this->contentUi;
+    }
 
     void Configuration::setup(){
         SETUP_UI(contentUi, contentWidget)

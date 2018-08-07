@@ -2,10 +2,12 @@
 #define CALCULATION_H
 
 #include <QtCore/QQueue>
-#include <QtCore/QString>
 #include "../ctl.h"
 #include "constant.h"
-
+namespace Const{
+    class ConstObject;
+}
+class QString;
 namespace Calculation{
     QString calculateExpr(QString& expr, CMap<QString, Const::ConstObject>& doubleList);
     QString changeToPostfix(const QString& expr);

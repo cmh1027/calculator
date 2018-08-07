@@ -1,3 +1,4 @@
+#include <QString>
 #include "constant.h"
 #define _USE_MATH_DEFINES
 #include <cmath>

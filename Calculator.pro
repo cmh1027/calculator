@@ -10,7 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Calculator
 TEMPLATE = app
-
+RESOURCES += qrc/resources.qrc
+CONFIG += C++14
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -31,17 +32,24 @@ HEADERS += \
     module/calculator/operator.h \
     template/mainwindow.h \
     template/templates.h \
-    template/sidemenu/menuItem.h \
-    template/sidemenu/menuLayout.h \
     template/content/content.h \
-    template/content/calculator/calculator.h \
-    template/content/calculator/general/general.h \
-    template/content/calculator/scientific/scientific.h \
+    template/content/mathcontent/calculator/calculator.h \
+    template/content/mathcontent/calculator/general/general.h \
+    template/content/mathcontent/calculator/scientific/scientific.h \
+    template/content/mathcontent/mathcontent.h \
+    template/content/config/configcontent.h \
     module/exception.h \
     module/ctl.h \
-    template/content/mathcontent.h \
-    template/content/config/configcontent.h \
-    module/calculator/dataobject.h
+    module/calculator/dataobject.h \
+    template/content/mathcontent/graph/graph.h \
+    template/content/mathcontent/matrix/matrix.h \
+    template/content/mathcontent/table/table.h \
+    template/sidemenu/sidemenuitem.h \
+    template/sidemenu/sidemenulayout.h \
+    template/menuitem.h \
+    template/menulayout.h \
+    template/content/mathcontent/constmenuitem.h \
+    template/content/mathcontent/constmenulayout.h
 
 SOURCES += \
     config/config.cpp \
@@ -51,21 +59,31 @@ SOURCES += \
     module/calculator/operation.cpp \
     module/calculator/operator.cpp \
     template/mainwindow.cpp \
-    template/sidemenu/menuItem.cpp \
-    template/sidemenu/menuLayout.cpp \
     template/content/content.cpp \
-    template/content/calculator/calculator.cpp \
-    template/content/calculator/general/general.cpp \
-    template/content/calculator/scientific/scientific.cpp \
+    template/content/mathcontent/calculator/calculator.cpp \
+    template/content/mathcontent/calculator/general/general.cpp \
+    template/content/mathcontent/calculator/scientific/scientific.cpp \
+    template/content/mathcontent/mathcontent.cpp \
+    template/content/config/configcontent.cpp \
     main.cpp \
     module/exception.cpp \
-    template/content/mathcontent.cpp \
-    template/content/config/configcontent.cpp \
-    module/calculator/dataobject.cpp
+    module/calculator/dataobject.cpp \
+    template/content/mathcontent/graph/graph.cpp \
+    template/content/mathcontent/matrix/matrix.cpp \
+    template/content/mathcontent/table/table.cpp \
+    template/sidemenu/sidemenuitem.cpp \
+    template/sidemenu/sidemenulayout.cpp \
+    template/menuitem.cpp \
+    template/menulayout.cpp \
+    template/content/mathcontent/constmenuitem.cpp \
+    template/content/mathcontent/constmenulayout.cpp
 
 FORMS += \
     template/mainwindow.ui \
-    template/content/calculator/calculator.ui \
-    template/content/calculator/general/general.ui \
-    template/content/calculator/scientific/scientific.ui \
-    template/content/config/configcontent.ui
+    template/content/mathcontent/calculator/calculator.ui \
+    template/content/mathcontent/calculator/general/general.ui \
+    template/content/mathcontent/calculator/scientific/scientific.ui \
+    template/content/config/configcontent.ui \
+    template/content/mathcontent/graph/graph.ui \
+    template/content/mathcontent/table/table.ui \
+    template/content/mathcontent/matrix/matrix.ui

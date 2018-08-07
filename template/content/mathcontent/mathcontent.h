@@ -1,12 +1,15 @@
 #ifndef MATHCONTENT_H
 #define MATHCONTENT_H
-#include <QtWidgets/QWidget>
-#include <QString>
-#include "content.h"
-#include "../../module/ctl.h"
-#include "../../module/calculator/constant.h"
+#include <QVector>
+#include "../content.h"
+#include "constmenulayout.h"
+#include "../../../module/ctl.h"
+#include "../../../module/calculator/constant.h"
 
 class MainWindow;
+class QWidget;
+class QString;
+class MenuLayout;
 
 namespace Template{
     class MathContent : public Content{
@@ -14,18 +17,20 @@ namespace Template{
 
     public:
         MathContent(MainWindow*);
-        virtual ~MathContent();
+        virtual ~MathContent() = default;
         void addConstant(const QString &str, const Const::ConstObject& num);
         void removeConstant(const QString &str);
+        const CMap<QString, Const::ConstObject>* getDoubleList();
+        void hideAllMenus();
 
     protected:
         CMap<QString, Const::ConstObject> doubleList; // constant & repeating decimal symbolic calculation
+        QVector<MenuLayout*> menus;
+        virtual void installMenu() = 0;
 
     private:
         QWidget* contentWidget;
-
-    public slots:
-        virtual void buttonPushed() = 0;
+        void mousePressEvent(QMouseEvent*);
     };
 }
 #endif // MATHCONTENT_H

@@ -1,3 +1,10 @@
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QScrollArea>
+#include <QMouseEvent>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "templates.h"
@@ -13,7 +20,7 @@ MainWindow::MainWindow() :
     this->installSidebar();
     this->contentWidget = this->findChild<QStackedWidget*>("contentWidget");
     this->loadContents();
-    connect(this->findChild<QToolButton*>("menuButton"), &QToolButton::clicked, this, &this->showMenu);
+    connect(this->findChild<QToolButton*>("menuButton"), &QToolButton::clicked, this, &this->showSideMenu);
 }
 
 MainWindow::~MainWindow()
@@ -25,9 +32,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::loadContents(){
     Template::Content* content;
-    LOAD_CONTENT(Template::GeneralCalculator)
-    LOAD_CONTENT(Template::ScientificCalculator)
-    LOAD_CONFIG(Template::Configuration)
+    LOAD_CONTENT(Template::GeneralCalculator, 0)
+    LOAD_CONTENT(Template::ScientificCalculator, 1)
+    LOAD_CONTENT(Template::Table, 2) // Table
+    LOAD_CONTENT(Template::Graph, 3) // Graph
+    LOAD_CONTENT(Template::Matrix, 4)
+    LOAD_CONFIG(Template::Configuration, 5)
 }
 
 void MainWindow::setTitle(const QString &str){
@@ -35,20 +45,17 @@ void MainWindow::setTitle(const QString &str){
 }
 
 void MainWindow::installSidebar(){
-    this->sidebar = this->findChild<QWidget*>("menubarWidget");
-    this->sidebar->setParent(this);
-    this->sidebar->setFixedHeight(this->height() + 11);
-    connect(this->sidebar->findChild<QToolButton*>("menuCloseButton"), &QToolButton::clicked, this, &this->hideMenu);
-    MenuLayout *sidebarLayout = new MenuLayout(this, this->sidebar->findChild<QWidget*>("scrollAreaWidgetContents"));
-    sidebarLayout->applyLayout();
-    this->sidebar->hide();
+    this->sidebar = this->findChild<QScrollArea*>("menubarScrollArea");
+    SideMenuLayout sidebarLayout(this, this->sidebar);
+    sidebarLayout.applyLayout();
 }
 
-void MainWindow::showMenu(){
+void MainWindow::showSideMenu(){
+    this->hideAllContentMenu();
     this->sidebar->show();
 }
 
-void MainWindow::hideMenu(){
+void MainWindow::hideSideMenu(){
     this->sidebar->hide();
 }
 
@@ -63,7 +70,7 @@ void MainWindow::changeContent(const int& menuNum){
                                      "QPushButton:hover{background-color: rgb(144, 144, 255);}");
     this->contentWidget->setCurrentIndex(menuNum);
     this->currentIndex = menuNum;
-    this->hideMenu();
+    this->hideSideMenu();
 }
 
 
@@ -103,10 +110,21 @@ void MainWindow::precisionChanged(){
 
 void MainWindow::mousePressEvent(QMouseEvent*){
     if(!this->sidebar->underMouse()){
-        this->hideMenu();
+        this->hideSideMenu();
+    }
+    if(!this->contentWidget->underMouse()){
+        this->hideAllContentMenu();
     }
 }
 
 void MainWindow::resizeEvent(QResizeEvent*){
     this->sidebar->setFixedHeight(this->height() + 11);
+}
+
+void MainWindow::hideAllContentMenu(){
+    Template::MathContent* ptr;
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
+            ptr->hideAllMenus();
+    }
 }

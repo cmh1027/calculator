@@ -1,24 +1,42 @@
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
+#include <QString>
 #include "calculator.h"
 #include "ui_calculator.h"
-#include "../../mainwindow.h"
-#include "../../../module/calculator/operator.h"
-#include "../../../module/utility.h"
-#include "../../../config/config.h"
-#include "../../../module/exception.h"
+#include "../../../mainwindow.h"
+#include "../../../../module/calculator/operator.h"
+#include "../../../../module/utility.h"
+#include "../../../../config/config.h"
+#include "../../../../module/exception.h"
 
 extern Configuration* config;
 namespace Template{
     Calculator::Calculator(MainWindow* window) : Template::MathContent(window),
-        contentUi(new Ui::Calculator), contentWidget(this), calculated(false), specialStart(false), isModifying(false)
+        contentUi(new Ui::Calculator), contentWidget(this),
+        calculated(false), specialStart(false), result("0"), isModifying(false)
     {
         contentUi->setupUi(this);
         this->resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
         this->interLabel = contentWidget->findChild<QLabel*>("interLabel");
         this->interLineEdit = contentWidget->findChild<QLineEdit*>("interLineEdit");
         this->interLineEdit->hide();
+        this->setResult(this->result);
     }
 
-    Calculator::~Calculator(){}
+    Calculator::~Calculator(){
+        delete this->contentUi;
+    }
+
+    void Calculator::installMenu(){
+        QScrollArea *scrollArea = this->findChild<QScrollArea*>("constMenuScrollArea");
+        ConstMenuLayout* constMenuLayout = new ConstMenuLayout(this->mainWindow, this, scrollArea);
+        constMenuLayout->applyLayout();
+        this->menus.push_back(constMenuLayout);
+        connect(this->findChild<QPushButton*>("constButton"), &QPushButton::clicked, this, [constMenuLayout](){
+            constMenuLayout->show();
+        });
+    }
 
     QString Calculator::getResult(const bool &chopDot){
         if(chopDot && this->result != ""){

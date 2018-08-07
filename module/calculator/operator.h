@@ -1,9 +1,8 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
-#include <QString>
 #include "../ctl.h"
 #include "operation.h"
-
+class QString;
 namespace Operator{
     namespace Normal{
         extern const QString plus;

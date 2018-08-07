@@ -1,3 +1,4 @@
+#include <QString>
 #include "operator.h"
 namespace Operator{
     namespace Normal{

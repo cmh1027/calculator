@@ -1,6 +1,5 @@
 #ifndef CONFIG_H
 #define CONFIG_H
-#include <QWidget>
 #include "../content.h"
 
 namespace Ui {

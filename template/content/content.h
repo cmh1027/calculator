@@ -3,7 +3,11 @@
 #include <QWidget>
 #define SETUP_UI(ui, widget) \
         ui->setupUi(widget); \
-        this->buttonConnect();
+        this->buttonConnect(); \
+
+#define SETUP_UI_CAL(ui, widget) \
+        SETUP_UI(ui, widget) \
+        this->installMenu(); \
 
 class MainWindow;
 
@@ -13,15 +17,16 @@ namespace Template{
 
     public:
         Content(MainWindow*);
-        virtual ~Content();
+        virtual ~Content() = default;
         virtual void setup() = 0;
 
     protected:
-        virtual void buttonConnect() = 0;
+        virtual void buttonConnect() = 0; // must be in setup() function
         MainWindow* mainWindow;
 
     private:
         QWidget* contentWidget;
+
     };
 }
 

@@ -1,8 +1,7 @@
 #ifndef CONSTANT_H
 #define CONSTANT_H
-#include <QString>
 #include "dataobject.h"
-
+class QString;
 namespace Const{
     class ConstObject : public DataObject{
     private:
@@ -10,6 +9,7 @@ namespace Const{
 
     public:
         ConstObject() = default;
+        virtual ~ConstObject() = default;
         ConstObject(const double&, const QString& = "Temporary", const bool& = true);
         operator double() const;
     };

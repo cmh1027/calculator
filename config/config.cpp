@@ -1,3 +1,4 @@
+#include <QString>
 #include "config.h"
 #include "../module/calculator/constant.h"
 #include "../template/mainwindow.h"
@@ -7,10 +8,6 @@ Configuration::Configuration(MainWindow* window) :
                {"{e}", Const::ConstObject(Const::E, "Euler's number")}}),
     mainWindow(window), radian(false), precision(-1)
 {
-
-}
-
-Configuration::~Configuration(){
 
 }
 

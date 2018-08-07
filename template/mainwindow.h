@@ -2,28 +2,29 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QStackedWidget>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QLabel>
-#include <QtWidgets/QLineEdit>
-#include <QMouseEvent>
 #include "module/calculator/constant.h"
 
-#define LOAD_CONFIG(ui) \
+#define LOAD_CONFIG(ui, index) \
     content = new ui(this); \
     content->setup(); \
-    this->contentWidget->addWidget(content); \
+    this->contentWidget->insertWidget(index, content); \
 
-#define LOAD_CONTENT(ui) \
+#define LOAD_CONTENT(ui, index) \
     content = new ui(this); \
     content->setup(); \
-    this->contentWidget->addWidget(content); \
+    this->contentWidget->insertWidget(index, content); \
 
 namespace Ui {
     class MainWindow;
 }
-
+class QWidget;
+class QStackedWidget;
+class QPushButton;
+class QLabel;
+class QLineEdit;
+class QScrollArea;
+class QMoustEvent;
+class SideMenuLayout;
 
 class MainWindow : public QMainWindow
 {
@@ -31,15 +32,15 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow();
-    ~MainWindow();
+    virtual ~MainWindow();
     QPushButton *currentMenu;
     void degreeUnitChanged();
     void precisionChanged();
+    QStackedWidget *contentWidget;
 
 private:
     Ui::MainWindow *mainWindowUi;
-    QStackedWidget *contentWidget;
-    QWidget *sidebar;
+    QScrollArea *sidebar;
     void loadContents();
     void installSidebar();
     void generalCalculator();
@@ -50,10 +51,11 @@ private:
     void mousePressEvent(QMouseEvent*);
     void resizeEvent(QResizeEvent*);
     int currentIndex;
+    void hideAllContentMenu();
 
 public slots:
-    void showMenu();
-    void hideMenu();
+    void showSideMenu();
+    void hideSideMenu();
     void changeContent(const int& menuNum);
 
 };

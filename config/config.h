@@ -1,12 +1,13 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 #include <QObject>
-#include <QString>
 #include "../module/ctl.h"
 #include "../module/calculator/constant.h"
+
 namespace Template{
     class Configuration;
 }
+class QString;
 class MainWindow;
 
 class Configuration : public QObject{
@@ -16,7 +17,7 @@ friend class Template::Configuration;
 
 public:
     Configuration(MainWindow*);
-    ~Configuration();
+    virtual ~Configuration() = default;
     void addConstant(const QString &str, const Const::ConstObject& num);
     double getConstant(const QString &str) const;
     void removeConstant(const QString &str);

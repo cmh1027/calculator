@@ -1,12 +1,13 @@
+#include <QString>
 #include <QtCore/QRegExp>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include "general.h"
 #include "ui_general.h"
-#include "../../../../module/calculator/operator.h"
-#include "../../../../module/calculator/calculation.h"
-#include "../../../../module/utility.h"
-#include "../../../mainwindow.h"
-#include <iostream>
+#include "../../../../../module/calculator/operator.h"
+#include "../../../../../module/calculator/calculation.h"
+#include "../../../../../module/utility.h"
+#include "../../../../mainwindow.h"
 
 namespace Template{
     GeneralCalculator::GeneralCalculator(MainWindow* window) :
@@ -31,10 +32,12 @@ namespace Template{
          Operators["rightBracket"] = this->rightBracket;
     }
 
-    GeneralCalculator::~GeneralCalculator(){}
+    GeneralCalculator::~GeneralCalculator(){
+        delete this->contentUi;
+    }
 
     void GeneralCalculator::setup(){
-        SETUP_UI(contentUi, contentWidget)
+        SETUP_UI_CAL(contentUi, contentWidget)
     }
 
     void GeneralCalculator::buttonConnect(){
@@ -57,8 +60,7 @@ namespace Template{
             if(this->Operators.contains(funcName))
                 (this->*(this->Operators[funcName]))();
             else{
-                std::cout << "Map Operators does not have a key : " << funcName.toStdString() << "\n";
-                std::cout << "in " << __FILE__ << " : " << __LINE__ << "\n";
+                Q_ASSERT(this->Operators.contains(funcName));
             }
         }
     }
@@ -162,6 +164,9 @@ namespace Template{
     void GeneralCalculator::erase(){
         if(!this->getResult().isEmpty() && !this->calculated){
             this->chopResult(1);
+        }
+        if(this->getResult().isEmpty()){
+            this->setResult("0");
         }
     }
 
