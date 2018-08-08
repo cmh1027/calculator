@@ -4,21 +4,6 @@
 #include <QtWidgets/QMainWindow>
 #include "module/calculator/constant.h"
 
-#define LOAD_CONFIG(ui, index) \
-{ \
-    Template::Content* content; \
-    content = new ui(this); \
-    content->setup(); \
-    this->contentWidget->insertWidget(index, content); \
-} \
-
-#define LOAD_CONTENT(ui, index) \
-{ \
-    Template::Content* content; \
-    content = new ui(this); \
-    content->setup(); \
-    this->contentWidget->insertWidget(index, content); \
-} \
 
 namespace Ui {
     class MainWindow;
@@ -47,6 +32,7 @@ public:
 private:
     Ui::MainWindow *mainWindowUi;
     QScrollArea *sidebar;
+    SideMenuLayout *sideMenuLayout;
     void loadContents();
     void installSidebar();
     void generalCalculator();
@@ -58,6 +44,8 @@ private:
     void resizeEvent(QResizeEvent*);
     int currentIndex;
     void hideAllContentMenu();
+    template <class T>
+    void loadContent(int index);
 
 public slots:
     void showSideMenu();

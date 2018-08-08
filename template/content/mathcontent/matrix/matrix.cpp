@@ -14,6 +14,7 @@ namespace Template{
 
     void Matrix::setup(){
         SETUP_UI(contentUi, contentWidget);
+        this->installMenu();
     }
 
     void Matrix::buttonConnect(){

@@ -1,13 +1,13 @@
 #ifndef FUNCMENU_H
 #define FUNCMENU_H
-#include "../../../../menulayout.h"
+#include "../../mathmenulayout.h"
 class MainWindow;
 class QString;
 namespace Template{
     class Calculator;
 }
 
-class FuncMenuLayout : public MenuLayout{
+class FuncMenuLayout : public MathMenuLayout{
     Q_OBJECT
 
 private:

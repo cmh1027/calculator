@@ -20,6 +20,8 @@ namespace Template{
         void setup() override;
         void calculateAgain();
         void disableLineEdit();
+        void arithmetic(const QString &op);
+        void unarySpecial(const QString &format);
 
     private:
         Ui::GeneralCalculator *contentUi;
@@ -30,8 +32,6 @@ namespace Template{
         void calculate();
         void calculate(const QString &op);
         QString calculateExpression(QString expr);
-        void arithmetic(const QString &op);
-        void unarySpecial(const QString &format);
         void plus();
         void minus();
         void multiply();

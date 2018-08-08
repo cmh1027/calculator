@@ -17,6 +17,7 @@ namespace Template{
         ScientificCalculator(MainWindow*);
         virtual ~ScientificCalculator();
         void setup() override;
+        void binarySpecial(const QString &format);
 
     private:
         Ui::ScientificCalculator *contentUi;
@@ -27,7 +28,6 @@ namespace Template{
         void buttonConnect() override;
 
     protected:
-        void binarySpecial(const QString &format);
         void change();
         void cube();
         void root();

@@ -13,7 +13,8 @@ namespace Template{
     }
 
     void Graph::setup(){
-        SETUP_UI(contentUi, contentWidget)
+        SETUP_UI(contentUi, contentWidget);
+        this->installMenu();
     }
 
     void Graph::buttonConnect(){

@@ -19,9 +19,12 @@ public:
     QScrollArea* scrollArea;
     void show();
     void hide();
+    void moveToStandard();
+    void resizeToStandard(int length);
 
 private:
     bool isOpen;
+    int maxMenuCount;
 
 protected:
     MainWindow *mainWindow;
@@ -30,8 +33,6 @@ protected:
     QVector<MenuItem*> items;
     void setWidth(int width);
     void setHeight(int height);
-    void moveToStandard();
-    void resizeToStandard(int length);
     bool toggleOpen();
 
 };

@@ -1,15 +1,19 @@
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QScrollArea>
 #include <QtWidgets/QStackedWidget>
+#include <QStyle>
 #include "menulayout.h"
 #include "mainwindow.h"
 #include "menuitem.h"
 MenuLayout::MenuLayout(MainWindow* window, QScrollArea* scrollArea, QWidget* std) : scrollArea(scrollArea),
-    isOpen(false), mainWindow(window), parent(scrollArea->findChild<QWidget*>()), standard(std){
+    isOpen(false), maxMenuCount(7), mainWindow(window),
+    parent(scrollArea->findChild<QWidget*>()->findChild<QWidget*>()), standard(std){
     scrollArea->setParent(window);
     scrollArea->hide();
-    if(std != nullptr)
+    if(std != nullptr){
         this->setWidth(std->width()-25);
+
+    }
 }
 
 MenuLayout::~MenuLayout(){
@@ -71,12 +75,13 @@ void MenuLayout::resizeToStandard(int length){
         return;
     }
     int height = this->standard->height();
-    int threshold = 7;
-    if(length <= threshold){
+    if(length <= this->maxMenuCount){
         this->setHeight(height*length);
+        this->parent->setStyleSheet("");
     }
     else{
-        scrollArea->setFixedHeight(height*threshold);
+        scrollArea->setFixedHeight(height*this->maxMenuCount);
         this->parent->setFixedHeight(height*length);
+        this->parent->setStyleSheet(QString("QWidget{padding-right:%1px}").arg(QStyle::PM_ScrollBarExtent));
     }
 }

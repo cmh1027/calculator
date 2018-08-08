@@ -3,9 +3,11 @@
 #include "funcmenuitem.h"
 #include "../../../../mainwindow.h"
 #include "../../calculator/calculator.h"
+#include "../../calculator/general/general.h"
+#include "../../calculator/scientific/scientific.h"
 #include "../../../../../module/calculator/operator.h"
 FuncMenuLayout::FuncMenuLayout(MainWindow* window, Template::Calculator* cal, QScrollArea *scrollArea, QWidget* standard) :
-    MenuLayout(window, scrollArea, standard), calculator(cal){
+    MathMenuLayout(window, scrollArea, standard), calculator(cal){
 }
 
 
@@ -15,18 +17,30 @@ void FuncMenuLayout::click(){
     }
     else{
         int index = 0;
-        int length = Operator::operateFuncs.count();
         FuncMenuItem *menuItem;
-        this->moveToStandard();
-        this->resizeToStandard(length);
         for(auto it = Operator::operateFuncs.begin(); it != Operator::operateFuncs.end(); ++it, ++index){
+            if(it.value().getArity() == Operation::Arithmetic){
+                --index;
+                continue;
+            }
             menuItem = new FuncMenuItem(calculator, this->parent, it.key(), index);
             menuItem->setToolTip(it.value().getDescription());
             connect(menuItem, &MenuItem::clicked, calculator, [this, it](){
-
+                switch(it.value().getArity()){
+                    case Operation::Arithmetic:
+                        break;
+                    case Operation::Unary:
+                        static_cast<Template::GeneralCalculator*>(this->calculator)->unarySpecial(it.key());
+                        break;
+                    case Operation::Binary:
+                        static_cast<Template::ScientificCalculator*>(this->calculator)->binarySpecial(it.key());
+                        break;
+                }
             });
             this->addItem(menuItem);
         }
-        MenuLayout::show();
+        this->moveToStandard();
+        this->resizeToStandard(index);
+        this->show();
     }
 }

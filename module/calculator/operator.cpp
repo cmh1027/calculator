@@ -67,3 +67,4 @@ namespace Operator{
         {Operator::Special::tanh, Operation::OperationObject(Operation::tanh, "Hyperbolic tangent", Operation::Unary)}
     };
 }
+

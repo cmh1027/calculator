@@ -1,13 +1,13 @@
 #ifndef CONSTMENUITEM_H
 #define CONSTMENUITEM_H
-#include "../../../../menuitem.h"
+#include "../../mathmenuitem.h"
 
 namespace Template{
     class Calculator;
 }
 
 
-class ConstMenuItem : public MenuItem{
+class ConstMenuItem : public MathMenuItem{
     Q_OBJECT
 
 public:

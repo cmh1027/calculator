@@ -2,6 +2,7 @@
 #include <QtWidgets/QScrollArea>
 #include <QString>
 #include "mathcontent.h"
+#include "mathmenulayout.h"
 #include "../../../config/config.h"
 extern Configuration* config;
 
@@ -10,7 +11,7 @@ namespace Template{
         doubleList(*config->getConstantList()), contentWidget(this){}
 
     MathContent::~MathContent(){
-        foreach(MenuLayout* layout, this->menus){
+        foreach(MathMenuLayout* layout, this->menus){
             delete layout;
         }
     }
@@ -24,12 +25,12 @@ namespace Template{
             this->doubleList.remove(str);
     }
 
-    const CMap<QString, Const::ConstObject>* MathContent::getDoubleList(){
-        return &this->doubleList;
+    const CMap<QString, Const::ConstObject>& MathContent::getDoubleList(){
+        return this->doubleList;
     }
 
     void MathContent::mousePressEvent(QMouseEvent*){
-        foreach(MenuLayout *menu, this->menus){
+        foreach(MathMenuLayout *menu, this->menus){
             if(menu->scrollArea->underMouse())
                 return;
         }
@@ -37,8 +38,14 @@ namespace Template{
     }
 
     void MathContent::hideAllMenus(){
-        foreach(MenuLayout *menu, this->menus){
+        foreach(MathMenuLayout *menu, this->menus){
             menu->hide();
+        }
+    }
+
+    void MathContent::moveAllMenus(){
+        foreach(MathMenuLayout *menu, this->menus){
+            menu->moveToStandard();
         }
     }
 }

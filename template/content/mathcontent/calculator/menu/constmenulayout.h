@@ -1,14 +1,13 @@
 #ifndef CONSTMENU_H
 #define CONSTMENU_H
-#include "../../../../menulayout.h"
+#include "../../mathmenulayout.h"
 class MainWindow;
 class QString;
 namespace Template{
     class Calculator;
 }
 
-
-class ConstMenuLayout : public MenuLayout{
+class ConstMenuLayout : public MathMenuLayout{
     Q_OBJECT
 
 private:

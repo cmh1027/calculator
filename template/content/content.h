@@ -5,10 +5,6 @@
         ui->setupUi(widget); \
         this->buttonConnect(); \
 
-#define SETUP_UI_CAL(ui, widget) \
-        SETUP_UI(ui, widget) \
-        this->installMenu(); \
-
 class MainWindow;
 
 namespace Template{

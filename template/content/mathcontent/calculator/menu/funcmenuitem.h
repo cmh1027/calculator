@@ -1,12 +1,12 @@
 #ifndef FUNCMENUITEM_H
 #define FUNCMENUITEM_H
-#include "../../../../menuitem.h"
+#include "../../mathmenuitem.h"
 
 namespace Template{
     class Calculator;
 }
 
-class FuncMenuItem : public MenuItem{
+class FuncMenuItem : public MathMenuItem{
     Q_OBJECT
 
 public:

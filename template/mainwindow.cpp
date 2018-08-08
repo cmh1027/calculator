@@ -25,18 +25,27 @@ MainWindow::MainWindow() :
 
 MainWindow::~MainWindow()
 {
+    delete sideMenuLayout;
     delete mainWindowUi;
     for(int i = 0; i < this->contentWidget->count(); i++)
         delete this->contentWidget->widget(i);
 }
 
+template <class T>
+void MainWindow::loadContent(int index){
+    Template::Content* content;
+    content = new T(this); \
+    content->setup(); \
+    this->contentWidget->insertWidget(index, content); \
+}
+
 void MainWindow::loadContents(){
-    LOAD_CONTENT(Template::GeneralCalculator, 0);
-    LOAD_CONTENT(Template::ScientificCalculator, 1);
-    LOAD_CONTENT(Template::Table, 2);
-    LOAD_CONTENT(Template::Graph, 3);
-    LOAD_CONTENT(Template::Matrix, 4);
-    LOAD_CONFIG(Template::Configuration, 5);
+    this->loadContent<Template::GeneralCalculator>(0);
+    this->loadContent<Template::ScientificCalculator>(1);
+    this->loadContent<Template::Table>(2);
+    this->loadContent<Template::Graph>(3);
+    this->loadContent<Template::Matrix>(4);
+    this->loadContent<Template::Configuration>(5);
 }
 
 void MainWindow::setTitle(const QString &str){
@@ -45,8 +54,8 @@ void MainWindow::setTitle(const QString &str){
 
 void MainWindow::installSidebar(){
     this->sidebar = this->findChild<QScrollArea*>("menubarScrollArea");
-    SideMenuLayout sidebarLayout(this, this->sidebar);
-    sidebarLayout.applyLayout();
+    this->sideMenuLayout = new SideMenuLayout(this, this->sidebar);
+    sideMenuLayout->applyLayout();
 }
 
 void MainWindow::showSideMenu(){
@@ -117,7 +126,11 @@ void MainWindow::mousePressEvent(QMouseEvent*){
 }
 
 void MainWindow::resizeEvent(QResizeEvent*){
-    this->sidebar->setFixedHeight(this->height() + 11);
+    Template::MathContent* ptr;
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
+            ptr->moveAllMenus();
+    }
 }
 
 void MainWindow::hideAllContentMenu(){

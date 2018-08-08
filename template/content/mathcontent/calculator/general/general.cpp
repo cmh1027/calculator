@@ -8,7 +8,6 @@
 #include "../../../../../module/calculator/calculation.h"
 #include "../../../../../module/utility.h"
 #include "../../../../mainwindow.h"
-
 namespace Template{
     GeneralCalculator::GeneralCalculator(MainWindow* window) :
         Template::Calculator(window), contentUi(new Ui::GeneralCalculator),
@@ -37,7 +36,8 @@ namespace Template{
     }
 
     void GeneralCalculator::setup(){
-        SETUP_UI_CAL(contentUi, contentWidget);
+        SETUP_UI(contentUi, contentWidget);
+        this->installMenu();
     }
 
     void GeneralCalculator::buttonConnect(){
@@ -45,6 +45,7 @@ namespace Template{
             connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
         }
     }
+
 
     void GeneralCalculator::buttonPushed(){
         if(this->isModifying)

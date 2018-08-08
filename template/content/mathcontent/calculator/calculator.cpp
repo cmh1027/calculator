@@ -9,6 +9,8 @@
 #include "../../../../module/utility.h"
 #include "../../../../config/config.h"
 #include "../../../../module/exception.h"
+#include "menu/constmenulayout.h"
+#include "menu/funcmenulayout.h"
 
 extern Configuration* config;
 namespace Template{
@@ -29,9 +31,12 @@ namespace Template{
     }
 
     void Calculator::installMenu(){
-        INSTALL_MENU(ConstMenuLayout, "constMenuScrollArea", this->findChild<QPushButton*>("constButton"));
-        INSTALL_MENU(FuncMenuLayout, "funcMenuScrollArea", this->findChild<QPushButton*>("functionButton"));
+        this->install<ConstMenuLayout, Template::Calculator>("constMenuScrollArea", this->findChild<QPushButton*>("constButton"));
+        this->install<FuncMenuLayout, Template::Calculator>("funcMenuScrollArea", this->findChild<QPushButton*>("functionButton"));
     }
+
+
+
     QString Calculator::getResult(const bool &chopDot){
         if(chopDot && this->result != ""){
             if(this->result.back() == "."){
