@@ -1,12 +1,16 @@
 #include "operation.h"
 
 namespace Operation{
-    OperationObject::OperationObject(const funcType& function, const QString& des, const bool& flag) :
-        DataObject(des, flag), func(function)
+    OperationObject::OperationObject(const funcType& function, const QString& des, const Arity& t, const bool& flag) :
+        DataObject(des, flag), func(function), type(t)
     {}
 
     void OperationObject::operator()(CStack<double>& stack){
         func(stack);
+    }
+
+    Arity OperationObject::getArity() const{
+        return this->type;
     }
 
     void plus(CStack<double>& stack){

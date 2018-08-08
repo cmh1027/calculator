@@ -1,12 +1,12 @@
 #ifndef CONSTMENU_H
 #define CONSTMENU_H
-#include "../../menulayout.h"
-#include <functional>
+#include "../../../../menulayout.h"
 class MainWindow;
 class QString;
 namespace Template{
     class Calculator;
 }
+
 
 class ConstMenuLayout : public MenuLayout{
     Q_OBJECT
@@ -15,10 +15,9 @@ private:
     Template::Calculator *calculator;
 
 public:
-    ConstMenuLayout(MainWindow*, Template::Calculator*, QScrollArea*);
+    ConstMenuLayout(MainWindow*, Template::Calculator*, QScrollArea*, QWidget*);
     virtual ~ConstMenuLayout() = default;
-    void applyLayout() override;
-    void show();
+    void click();
 };
 
 #endif // CONSTMENU_H

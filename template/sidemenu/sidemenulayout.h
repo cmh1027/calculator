@@ -15,7 +15,7 @@ private:
 public:
     SideMenuLayout(MainWindow*, QScrollArea*);
     virtual ~SideMenuLayout() = default;
-    void applyLayout() override;
+    void applyLayout();
 
 };
 #endif // SIDEMENULAYOUT_H

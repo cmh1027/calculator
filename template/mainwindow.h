@@ -5,14 +5,20 @@
 #include "module/calculator/constant.h"
 
 #define LOAD_CONFIG(ui, index) \
+{ \
+    Template::Content* content; \
     content = new ui(this); \
     content->setup(); \
     this->contentWidget->insertWidget(index, content); \
+} \
 
 #define LOAD_CONTENT(ui, index) \
+{ \
+    Template::Content* content; \
     content = new ui(this); \
     content->setup(); \
     this->contentWidget->insertWidget(index, content); \
+} \
 
 namespace Ui {
     class MainWindow;

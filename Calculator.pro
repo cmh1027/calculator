@@ -48,8 +48,10 @@ HEADERS += \
     template/sidemenu/sidemenulayout.h \
     template/menuitem.h \
     template/menulayout.h \
-    template/content/mathcontent/constmenuitem.h \
-    template/content/mathcontent/constmenulayout.h
+    template/content/mathcontent/calculator/menu/constmenuitem.h \
+    template/content/mathcontent/calculator/menu/constmenulayout.h \
+    template/content/mathcontent/calculator/menu/funcmenuitem.h \
+    template/content/mathcontent/calculator/menu/funcmenulayout.h
 
 SOURCES += \
     config/config.cpp \
@@ -75,8 +77,10 @@ SOURCES += \
     template/sidemenu/sidemenulayout.cpp \
     template/menuitem.cpp \
     template/menulayout.cpp \
-    template/content/mathcontent/constmenuitem.cpp \
-    template/content/mathcontent/constmenulayout.cpp
+    template/content/mathcontent/calculator/menu/constmenuitem.cpp \
+    template/content/mathcontent/calculator/menu/constmenulayout.cpp \
+    template/content/mathcontent/calculator/menu/funcmenuitem.cpp \
+    template/content/mathcontent/calculator/menu/funcmenulayout.cpp
 
 FORMS += \
     template/mainwindow.ui \

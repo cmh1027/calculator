@@ -206,6 +206,34 @@ QPushButton:hover{
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="functionButton">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>75</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{
+	border: none;
+	background-color: rgb(209, 209, 209);
+}
+QPushButton:hover{
+	background-color: rgb(200, 200, 200);
+}</string>
+        </property>
+        <property name="text">
+         <string>Functions</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="advancedButton">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -238,6 +266,42 @@ QPushButton:hover{
    </item>
    <item>
     <widget class="QWidget" name="buttonWidget" native="true"/>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="funcMenuScrollArea">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: none;
+background-color: rgb(239, 239, 239);</string>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAsNeeded</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>69</width>
+        <height>69</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="QScrollArea" name="constMenuScrollArea">

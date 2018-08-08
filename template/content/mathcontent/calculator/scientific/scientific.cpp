@@ -38,7 +38,7 @@ namespace Template{
     }
 
     void ScientificCalculator::setup(){
-        SETUP_UI_CAL(contentUi, contentWidget)
+        SETUP_UI_CAL(contentUi, contentWidget);
     }
 
     void ScientificCalculator::buttonConnect(){

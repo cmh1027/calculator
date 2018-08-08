@@ -18,7 +18,7 @@ namespace Template{
     }
 
     void Configuration::setup(){
-        SETUP_UI(contentUi, contentWidget)
+        SETUP_UI(contentUi, contentWidget);
     }
 
     void Configuration::buttonConnect(){

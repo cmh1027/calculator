@@ -6,12 +6,23 @@ class QPushButton;
 class QLabel;
 class QLineEdit;
 class QString;
-class ConstMenuLayout;
 namespace Ui {
     class Calculator;
 }
 
 class MainWindow;
+
+#define INSTALL_MENU(layoutClass, scrollAreaName, standard) \
+{ \
+    QScrollArea* scrollArea; \
+    MenuLayout* menuLayout; \
+    scrollArea = this->findChild<QScrollArea*>(scrollAreaName); \
+    menuLayout = new layoutClass(this->mainWindow, this, scrollArea, standard); \
+    this->menus.push_back(menuLayout); \
+    connect(standard, &QPushButton::clicked, this, [menuLayout](){ \
+        static_cast<layoutClass*>(menuLayout)->click(); \
+    }); \
+} \
 
 namespace Template{
     class Calculator : public Template::MathContent
@@ -32,6 +43,7 @@ namespace Template{
         QLabel *interLabel;
         QLineEdit *interLineEdit;
         QLabel *resultLabel;
+
 
 
     protected:

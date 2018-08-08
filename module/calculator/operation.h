@@ -4,16 +4,20 @@
 #include "dataobject.h"
 
 namespace Operation{
+    enum Arity{Arithmetic, Unary, Binary};
+
     class OperationObject : public DataObject{
     private:
         using funcType = void(*)(CStack<double>&);
         funcType func;
+        Arity type;
 
     public:
         OperationObject() = default;
         virtual ~OperationObject() = default;
-        OperationObject(const funcType&, const QString&, const bool& = true);
+        OperationObject(const funcType&, const QString&, const Arity&, const bool& = true);
         void operator()(CStack<double>&);
+        Arity getArity() const;
     };
 
     void plus(CStack<double>& stack);

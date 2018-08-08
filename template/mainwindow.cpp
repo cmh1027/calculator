@@ -31,13 +31,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::loadContents(){
-    Template::Content* content;
-    LOAD_CONTENT(Template::GeneralCalculator, 0)
-    LOAD_CONTENT(Template::ScientificCalculator, 1)
-    LOAD_CONTENT(Template::Table, 2) // Table
-    LOAD_CONTENT(Template::Graph, 3) // Graph
-    LOAD_CONTENT(Template::Matrix, 4)
-    LOAD_CONFIG(Template::Configuration, 5)
+    LOAD_CONTENT(Template::GeneralCalculator, 0);
+    LOAD_CONTENT(Template::ScientificCalculator, 1);
+    LOAD_CONTENT(Template::Table, 2);
+    LOAD_CONTENT(Template::Graph, 3);
+    LOAD_CONTENT(Template::Matrix, 4);
+    LOAD_CONFIG(Template::Configuration, 5);
 }
 
 void MainWindow::setTitle(const QString &str){

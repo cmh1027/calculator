@@ -37,7 +37,7 @@ namespace Template{
     }
 
     void GeneralCalculator::setup(){
-        SETUP_UI_CAL(contentUi, contentWidget)
+        SETUP_UI_CAL(contentUi, contentWidget);
     }
 
     void GeneralCalculator::buttonConnect(){

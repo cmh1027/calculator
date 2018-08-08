@@ -29,15 +29,9 @@ namespace Template{
     }
 
     void Calculator::installMenu(){
-        QScrollArea *scrollArea = this->findChild<QScrollArea*>("constMenuScrollArea");
-        ConstMenuLayout* constMenuLayout = new ConstMenuLayout(this->mainWindow, this, scrollArea);
-        constMenuLayout->applyLayout();
-        this->menus.push_back(constMenuLayout);
-        connect(this->findChild<QPushButton*>("constButton"), &QPushButton::clicked, this, [constMenuLayout](){
-            constMenuLayout->show();
-        });
+        INSTALL_MENU(ConstMenuLayout, "constMenuScrollArea", this->findChild<QPushButton*>("constButton"));
+        INSTALL_MENU(FuncMenuLayout, "funcMenuScrollArea", this->findChild<QPushButton*>("functionButton"));
     }
-
     QString Calculator::getResult(const bool &chopDot){
         if(chopDot && this->result != ""){
             if(this->result.back() == "."){

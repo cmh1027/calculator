@@ -9,6 +9,12 @@ namespace Template{
     MathContent::MathContent(MainWindow* window) : Content(window),
         doubleList(*config->getConstantList()), contentWidget(this){}
 
+    MathContent::~MathContent(){
+        foreach(MenuLayout* layout, this->menus){
+            delete layout;
+        }
+    }
+
     void MathContent::addConstant(const QString &str, const Const::ConstObject& num){
         this->doubleList[str] = num;
     }

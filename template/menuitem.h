@@ -10,9 +10,10 @@ class MenuItem : public QPushButton{
 
 protected:
     void font(int, bool);
+    QWidget* standard;
 
 public:
-    MenuItem(QWidget* parent, const QString &text);
+    MenuItem(QWidget* parent, const QString &text, QWidget* standard = nullptr, const int &num = -1);
     virtual ~MenuItem() = default;
 };
 #endif // MENUITEM_H
