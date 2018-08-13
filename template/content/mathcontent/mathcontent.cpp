@@ -17,7 +17,8 @@ namespace Template{
     }
 
     void MathContent::addConstant(const QString &str, const Const::ConstObject& num){
-        this->doubleList[str] = num;
+        if(!this->doubleList.contains(str))
+            this->doubleList[str] = num;
     }
 
     void MathContent::removeConstant(const QString &str){

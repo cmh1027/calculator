@@ -1,6 +1,6 @@
 #include <QString>
 #include "dataobject.h"
-DataObject::DataObject(const QString& des, const bool& flag) : description(des), defaultFlag(flag)
+DataObject::DataObject(const QString& des, const bool& flag) : description(des), tempFlag(!flag), defaultFlag(flag)
 {}
 
 void DataObject::setDescription(const QString& str){
@@ -17,4 +17,12 @@ void DataObject::setDefault(const bool& flag){
 
 bool DataObject::isDefault() const{
     return this->defaultFlag;
+}
+
+void DataObject::setTemp(const bool& flag){
+    this->tempFlag = flag;
+}
+
+bool DataObject::isTemp() const{
+    return this->tempFlag;
 }

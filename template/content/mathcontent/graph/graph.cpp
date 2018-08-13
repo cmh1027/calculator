@@ -21,6 +21,10 @@ namespace Template{
 
     }
 
+    void Graph::refresh(){
+
+    }
+
     void Graph::installMenu(){
 
     }

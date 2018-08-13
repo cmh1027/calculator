@@ -12,6 +12,8 @@ namespace Const{
         virtual ~ConstObject() = default;
         ConstObject(const double&, const QString& = "Temporary", const bool& = true);
         operator double() const;
+        double getValue() const;
+        void setValue(const double&);
     };
 
     extern const double PI;

@@ -25,18 +25,16 @@ MainWindow::MainWindow() :
 
 MainWindow::~MainWindow()
 {
-    delete sideMenuLayout;
     delete mainWindowUi;
-    for(int i = 0; i < this->contentWidget->count(); i++)
-        delete this->contentWidget->widget(i);
+    this->deleteLater();
 }
 
 template <class T>
 void MainWindow::loadContent(int index){
     Template::Content* content;
-    content = new T(this); \
-    content->setup(); \
-    this->contentWidget->insertWidget(index, content); \
+    content = new T(this);
+    content->setup();
+    this->contentWidget->insertWidget(index, content);
 }
 
 void MainWindow::loadContents(){
@@ -85,16 +83,20 @@ void MainWindow::changeContent(const int& menuNum){
 void MainWindow::addConstant(const QString &str, const Const::ConstObject& num){
     Template::MathContent* ptr;
     for(int i = 0; i < this->contentWidget->count(); i++){
-        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr){
             ptr->addConstant(str, num);
+            ptr->refresh();
+        }
     }
 }
 
 void MainWindow::removeConstant(const QString &str){
     Template::MathContent* ptr;
     for(int i = 0; i < this->contentWidget->count(); i++){
-        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr){
             ptr->removeConstant(str);
+            ptr->refresh();
+        }
     }
 }
 

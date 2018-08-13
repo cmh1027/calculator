@@ -21,6 +21,10 @@ namespace Template{
 
     }
 
+    void Table::refresh(){
+
+    }
+
     void Table::installMenu(){
 
     }

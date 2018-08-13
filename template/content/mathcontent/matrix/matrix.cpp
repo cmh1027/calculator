@@ -21,6 +21,10 @@ namespace Template{
 
     }
 
+    void Matrix::refresh(){
+
+    }
+
     void Matrix::installMenu(){
 
     }

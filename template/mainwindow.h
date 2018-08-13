@@ -25,6 +25,8 @@ public:
     explicit MainWindow();
     virtual ~MainWindow();
     QPushButton *currentMenu;
+    void addConstant(const QString &str, const Const::ConstObject& num);
+    void removeConstant(const QString &str);
     void degreeUnitChanged();
     void precisionChanged();
     QStackedWidget *contentWidget;
@@ -38,8 +40,6 @@ private:
     void generalCalculator();
     void scientificCalculator();
     void setTitle(const QString &str);
-    void addConstant(const QString &str, const Const::ConstObject& num);
-    void removeConstant(const QString &str);
     void mousePressEvent(QMouseEvent*);
     void resizeEvent(QResizeEvent*);
     int currentIndex;

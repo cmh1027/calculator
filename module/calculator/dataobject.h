@@ -9,11 +9,14 @@ public:
     ~DataObject() = default;
     void setDescription(const QString&);
     QString getDescription() const;
+    void setTemp(const bool&);
+    bool isTemp() const;
     void setDefault(const bool&);
     bool isDefault() const;
 
 private:
     QString description;
+    bool tempFlag;
     bool defaultFlag;
 };
 #endif // DATAOBJECT_H

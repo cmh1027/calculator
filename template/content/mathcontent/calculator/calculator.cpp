@@ -11,6 +11,7 @@
 #include "../../../../module/exception.h"
 #include "menu/constmenulayout.h"
 #include "menu/funcmenulayout.h"
+#include "../../../dialog/mathcontent/advanced.h"
 
 extern Configuration* config;
 namespace Template{
@@ -33,9 +34,16 @@ namespace Template{
     void Calculator::installMenu(){
         this->install<ConstMenuLayout, Template::Calculator>("constMenuScrollArea", this->findChild<QPushButton*>("constButton"));
         this->install<FuncMenuLayout, Template::Calculator>("funcMenuScrollArea", this->findChild<QPushButton*>("functionButton"));
+        connect(this->findChild<QPushButton*>("advancedButton"), &QPushButton::clicked, this, [this](){
+            Dialog::Advanced *dialog = new Dialog::Advanced(this, this->mainWindow);
+            dialog->show();
+        });
     }
 
-
+    void Calculator::refresh(){
+        this->setResult(this->getResult());
+        this->setInter(this->getInter());
+    }
 
     QString Calculator::getResult(const bool &chopDot){
         if(chopDot && this->result != ""){
@@ -315,7 +323,7 @@ namespace Template{
 
     void Calculator::clearDoubleList(){
         for(auto it = doubleList.begin(); it != doubleList.end();){
-            if((*it).isDefault())
+            if((*it).isTemp())
                 ++it;
             else
                 it = doubleList.erase(it);

@@ -24,6 +24,7 @@ namespace Template{
         void enableLineEdit();
         void disableLineEdit();
         void constant(const QString &constant);
+        void refresh() override;
 
     private:
         Ui::Calculator *contentUi;

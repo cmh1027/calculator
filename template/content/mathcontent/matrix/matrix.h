@@ -16,6 +16,7 @@ namespace Template{
         Matrix(MainWindow*);
         virtual ~Matrix();
         void setup() override;
+        void refresh() override;
 
     private:
         Ui::Matrix *contentUi;

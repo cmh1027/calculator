@@ -53,7 +53,8 @@ HEADERS += \
     template/content/mathcontent/calculator/menu/funcmenuitem.h \
     template/content/mathcontent/calculator/menu/funcmenulayout.h \
     template/content/mathcontent/mathmenuitem.h \
-    template/content/mathcontent/mathmenulayout.h
+    template/content/mathcontent/mathmenulayout.h \
+    template/dialog/mathcontent/advanced.h
 
 SOURCES += \
     config/config.cpp \
@@ -84,7 +85,8 @@ SOURCES += \
     template/content/mathcontent/calculator/menu/funcmenuitem.cpp \
     template/content/mathcontent/calculator/menu/funcmenulayout.cpp \
     template/content/mathcontent/mathmenuitem.cpp \
-    template/content/mathcontent/mathmenulayout.cpp
+    template/content/mathcontent/mathmenulayout.cpp \
+    template/dialog/mathcontent/advanced.cpp
 
 FORMS += \
     template/mainwindow.ui \
@@ -94,4 +96,5 @@ FORMS += \
     template/content/config/configcontent.ui \
     template/content/mathcontent/graph/graph.ui \
     template/content/mathcontent/table/table.ui \
-    template/content/mathcontent/matrix/matrix.ui
+    template/content/mathcontent/matrix/matrix.ui \
+    template/dialog/mathcontent/advanced.ui

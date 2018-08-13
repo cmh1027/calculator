@@ -11,6 +11,14 @@ namespace Const{
         return this->value;
     }
 
+    double ConstObject::getValue() const{
+        return this->value;
+    }
+
+    void ConstObject::setValue(const double& value){
+        this->value = value;
+    }
+
     const double PI = M_PI;
     const double E = M_E;
 }

@@ -25,6 +25,7 @@ namespace Template{
         const CMap<QString, Const::ConstObject>& getDoubleList();
         void hideAllMenus();
         void moveAllMenus();
+        virtual void refresh() = 0;
 
     protected:
         CMap<QString, Const::ConstObject> doubleList; // constant & repeating decimal symbolic calculation

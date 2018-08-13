@@ -16,6 +16,7 @@ namespace Template{
         Table(MainWindow*);
         virtual ~Table();
         void setup() override;
+        void refresh() override;
 
     private:
         Ui::Table *contentUi;

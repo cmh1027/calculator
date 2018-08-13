@@ -13,6 +13,7 @@ Configuration::Configuration(MainWindow* window) :
 
 void Configuration::addConstant(const QString &str, const Const::ConstObject& num){
     this->constants[str] = num;
+    this->mainWindow->addConstant(str, num);
 }
 
 double Configuration::getConstant(const QString &str) const{
@@ -20,8 +21,10 @@ double Configuration::getConstant(const QString &str) const{
 }
 
 void Configuration::removeConstant(const QString &str){
-    if(this->constants.contains(str))
+    if(this->constants.contains(str)){
         this->constants.remove(str);
+        this->mainWindow->removeConstant(str);
+    }
 }
 
 const CMap<QString, Const::ConstObject>* Configuration::getConstantList(){
@@ -32,14 +35,20 @@ bool Configuration::getRadian(){
     return this->radian;
 }
 
-void Configuration::setRadian(bool radian){
-    this->radian = radian;
+void Configuration::setRadian(const bool& radian){
+    if(this->radian != radian){
+        this->radian = radian;
+        this->mainWindow->degreeUnitChanged();
+    }
 }
 
 int Configuration::getPrecision(){
     return this->precision;
 }
 
-void Configuration::setPrecision(int precision){
-    this->precision = precision;
+void Configuration::setPrecision(const int& precision){
+    if(this->precision != precision){
+        this->precision = precision;
+        this->mainWindow->precisionChanged();
+    }
 }

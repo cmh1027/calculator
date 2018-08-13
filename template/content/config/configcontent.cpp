@@ -26,9 +26,9 @@ namespace Template{
         QLineEdit *decimalPoint = this->contentWidget->findChild<QLineEdit*>("decimalLineEdit");
         decimalPoint->setValidator(new QIntValidator(0, 99));
         connect(contentWidget->findChild<QRadioButton*>("degreeRadioButton"), &QRadioButton::clicked,
-                this, [this]() mutable {config->setRadian(false); this->mainWindow->degreeUnitChanged();});
+                this, [this]() mutable {config->setRadian(false);});
         connect(contentWidget->findChild<QRadioButton*>("radianRadioButton"), &QRadioButton::clicked,
-                this, [this]() mutable {config->setRadian(true); this->mainWindow->degreeUnitChanged();});
+                this, [this]() mutable {config->setRadian(true);});
         connect(defaultCheckBox, &QCheckBox::clicked, this,
                 [this, defaultCheckBox, decimalPoint]() mutable {
                     if(defaultCheckBox->isChecked()){
@@ -43,7 +43,6 @@ namespace Template{
                         else
                             config->setPrecision(point.toInt());
                     }
-                    this->mainWindow->precisionChanged();
                 });
         connect(decimalPoint, &QLineEdit::textChanged, this,
                 [this, decimalPoint]() mutable {
@@ -52,8 +51,6 @@ namespace Template{
                         config->setPrecision(-1);
                     else
                         config->setPrecision(point.toInt());
-                    this->mainWindow->precisionChanged();
                 });
-
     }
 }

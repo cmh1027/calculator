@@ -16,6 +16,7 @@ namespace Template{
         Graph(MainWindow*);
         virtual ~Graph();
         void setup() override;
+        void refresh() override;
 
     private:
         Ui::Graph *contentUi;

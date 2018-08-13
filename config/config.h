@@ -31,7 +31,7 @@ private:
     MainWindow* mainWindow;
     bool radian;
     int precision;
-    void setRadian(bool);
-    void setPrecision(int);
+    void setRadian(const bool&);
+    void setPrecision(const int&);
 };
 #endif // CONFIGURATION_H
