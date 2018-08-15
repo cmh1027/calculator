@@ -8,15 +8,19 @@ extern Configuration* config;
 
 namespace Template{
     MathContent::MathContent(MainWindow* window) : Content(window),
-        doubleList(*config->getConstantList()), contentWidget(this){}
+        doubleList(config->getConstantList()), contentWidget(this){}
 
     MathContent::~MathContent(){
         foreach(MathMenuLayout* layout, this->menus){
             delete layout;
         }
+        for(auto it = this->doubleList.begin(); it != this->doubleList.end(); ++it){
+            if((*it)->isTemp())
+                delete (*it);
+        }
     }
 
-    void MathContent::addConstant(const QString &str, const Const::ConstObject& num){
+    void MathContent::addConstant(const QString &str, Const::ConstObject* num){
         if(!this->doubleList.contains(str))
             this->doubleList[str] = num;
     }
@@ -26,7 +30,7 @@ namespace Template{
             this->doubleList.remove(str);
     }
 
-    const CMap<QString, Const::ConstObject>& MathContent::getDoubleList(){
+    CMap<QString, Const::ConstObject*>& MathContent::getDoubleList(){
         return this->doubleList;
     }
 

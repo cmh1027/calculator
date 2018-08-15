@@ -14,18 +14,6 @@ public:
 
 };
 
-template <typename K, typename V>
-class CMap : public QMap<K, V>{
-public:
-    using QMap<K, V>::QMap;
-    virtual ~CMap() = default;
-    const V value(const K &key) const;
-    V& operator[](const K &key);
-    const V operator[](const K &key) const;
-
-};
-
-
 template <typename T>
 T CStack<T>::pop(){
     if(QStack<T>::empty()){
@@ -56,7 +44,16 @@ const T& CStack<T>::top() const{
     }
 }
 
+template <typename K, typename V>
+class CMap : public QMap<K, V>{
+public:
+    using QMap<K, V>::QMap;
+    virtual ~CMap() = default;
+    const V value(const K &key) const;
+    V& operator[](const K &key);
+    const V operator[](const K &key) const;
 
+};
 
 template <typename K, typename V>
 const V CMap<K, V>::value(const K &key) const{

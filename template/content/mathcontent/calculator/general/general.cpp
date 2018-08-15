@@ -4,8 +4,8 @@
 #include <QtWidgets/QLineEdit>
 #include "general.h"
 #include "ui_general.h"
-#include "../../../../../module/calculator/operator.h"
-#include "../../../../../module/calculator/calculation.h"
+#include "../../../../../module/mathcontent/operator.h"
+#include "../../../../../module/mathcontent/calculation.h"
 #include "../../../../../module/utility.h"
 #include "../../../../mainwindow.h"
 namespace Template{
@@ -64,6 +64,11 @@ namespace Template{
                 Q_ASSERT(this->Operators.contains(funcName));
             }
         }
+    }
+
+    void GeneralCalculator::refresh(){
+        this->setInter(this->getInter());
+        this->calculateAgain();
     }
 
     void GeneralCalculator::calculateAgain(){
@@ -160,13 +165,14 @@ namespace Template{
 
     void GeneralCalculator::equal(){
         this->calculate();
+        this->clearDoubleListEqual();
     }
 
     void GeneralCalculator::erase(){
         if(!this->getResult().isEmpty() && !this->calculated){
             this->chopResult(1);
         }
-        if(this->getResult().isEmpty()){
+        else{
             this->setResult("0");
         }
     }

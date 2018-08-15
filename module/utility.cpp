@@ -25,7 +25,7 @@ namespace Utility{
         return QString::fromStdString(str);
     }
 
-    QString transformExpr(const QString& str, CMap<QString, Const::ConstObject>& list){
+    QString transformExpr(const QString& str, CMap<QString, Const::ConstObject*>& list){
         int left, right;
         QString &&key = "";
         QString result = str;
@@ -34,7 +34,7 @@ namespace Utility{
                 throw std::InvalidExprException();
             }
             key = result.mid(left, right-left+1);
-            result.replace(left, right-left+1, Utility::doubleToString(list.value(key)));
+            result.replace(left, right-left+1, Utility::doubleToString(*list.value(key)));
         }
         return result;
     }

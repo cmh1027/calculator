@@ -22,6 +22,7 @@ namespace Template{
         void disableLineEdit();
         void arithmetic(const QString &op);
         void unarySpecial(const QString &format);
+        void refresh() override;
 
     private:
         Ui::GeneralCalculator *contentUi;

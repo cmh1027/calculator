@@ -1,6 +1,6 @@
 #include "scientific.h"
 #include "ui_scientific.h"
-#include "../../../../../module/calculator/operator.h"
+#include "../../../../../module/mathcontent/operator.h"
 #include "../../../../mainwindow.h"
 #include "../../../../../module/ctl.h"
 

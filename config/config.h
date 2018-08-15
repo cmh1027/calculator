@@ -2,7 +2,7 @@
 #define CONFIGURATION_H
 #include <QObject>
 #include "../module/ctl.h"
-#include "../module/calculator/constant.h"
+#include "../module/mathcontent/constant.h"
 
 namespace Template{
     class Configuration;
@@ -17,17 +17,17 @@ friend class Template::Configuration;
 
 public:
     Configuration(MainWindow*);
-    virtual ~Configuration() = default;
-    void addConstant(const QString &str, const Const::ConstObject& num);
+    virtual ~Configuration();
+    void addConstant(const QString &str, Const::ConstObject* num);
     double getConstant(const QString &str) const;
     void removeConstant(const QString &str);
-    const CMap<QString, Const::ConstObject>* getConstantList();
+    const CMap<QString, Const::ConstObject*>& getConstantList();
     bool getRadian();
     int getPrecision();
 
 
 private:
-    CMap<QString, Const::ConstObject> constants;
+    CMap<QString, Const::ConstObject*> constants;
     MainWindow* mainWindow;
     bool radian;
     int precision;

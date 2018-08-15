@@ -80,7 +80,7 @@ void MainWindow::changeContent(const int& menuNum){
 }
 
 
-void MainWindow::addConstant(const QString &str, const Const::ConstObject& num){
+void MainWindow::addConstant(const QString &str, Const::ConstObject* num){
     Template::MathContent* ptr;
     for(int i = 0; i < this->contentWidget->count(); i++){
         if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr){

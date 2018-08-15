@@ -26,10 +26,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS += \
     config/config.h \
     module/utility.h \
-    module/calculator/calculation.h \
-    module/calculator/constant.h \
-    module/calculator/operation.h \
-    module/calculator/operator.h \
+    module/mathcontent/calculation.h \
+    module/mathcontent/constant.h \
+    module/mathcontent/operation.h \
+    module/mathcontent/operator.h \
     template/mainwindow.h \
     template/templates.h \
     template/content/content.h \
@@ -40,7 +40,7 @@ HEADERS += \
     template/content/config/configcontent.h \
     module/exception.h \
     module/ctl.h \
-    module/calculator/dataobject.h \
+    module/mathcontent/dataobject.h \
     template/content/mathcontent/graph/graph.h \
     template/content/mathcontent/matrix/matrix.h \
     template/content/mathcontent/table/table.h \
@@ -54,15 +54,16 @@ HEADERS += \
     template/content/mathcontent/calculator/menu/funcmenulayout.h \
     template/content/mathcontent/mathmenuitem.h \
     template/content/mathcontent/mathmenulayout.h \
-    template/dialog/mathcontent/advanced.h
+    template/dialog/mathcontent/advanced.h \
+    module/table.h
 
 SOURCES += \
     config/config.cpp \
     module/utility.cpp \
-    module/calculator/calculation.cpp \
-    module/calculator/constant.cpp \
-    module/calculator/operation.cpp \
-    module/calculator/operator.cpp \
+    module/mathcontent/calculation.cpp \
+    module/mathcontent/constant.cpp \
+    module/mathcontent/operation.cpp \
+    module/mathcontent/operator.cpp \
     template/mainwindow.cpp \
     template/content/content.cpp \
     template/content/mathcontent/calculator/calculator.cpp \
@@ -72,7 +73,7 @@ SOURCES += \
     template/content/config/configcontent.cpp \
     main.cpp \
     module/exception.cpp \
-    module/calculator/dataobject.cpp \
+    module/mathcontent/dataobject.cpp \
     template/content/mathcontent/graph/graph.cpp \
     template/content/mathcontent/matrix/matrix.cpp \
     template/content/mathcontent/table/table.cpp \

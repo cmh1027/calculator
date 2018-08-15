@@ -4,6 +4,7 @@
 #include "constant.h"
 #include "../../config/config.h"
 #include "../exception.h"
+#include <iostream>
 extern Configuration* config;
 
 namespace Calculation{
@@ -60,7 +61,7 @@ namespace Calculation{
         }
     }
 
-    QString calculateExpr(QString& expr, CMap<QString, Const::ConstObject>& doubleList){
+    QString calculateExpr(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList){
         QString &&result = "";
         try{
             result = calculatePostfix(changeToPostfix(expr), doubleList, expr);
@@ -85,13 +86,14 @@ namespace Calculation{
         return result.trimmed();
     }
 
-    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject>& doubleList, const QString& originalExpr){
+    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList, const QString& originalExpr){
         CStack<double> stack;
         if(expr.isEmpty()) return QString("0");
         foreach(const QString &chunk, expr.split(" ")){
             if(isOperand(chunk)){
-                if(chunk.indexOf("{") != -1 && chunk.indexOf("}") != -1)
-                    stack.push(doubleList.value(chunk));
+                if(chunk.indexOf("{") != -1 && chunk.indexOf("}") != -1){
+                    stack.push(*doubleList.value(chunk));
+                }
                 else
                     stack.push(chunk.toDouble());
             }
@@ -112,12 +114,18 @@ namespace Calculation{
                 return QString::number(static_cast<long>(stack.top()));
             }
             else{
-                for(auto it = doubleList.begin(); it != doubleList.end(); it++){
-                    if(stack.top() == it.value())
+                for(auto it = doubleList.begin(); it != doubleList.end(); ++it){
+                    if(!(*it)->getExpr().isEmpty() && (*it)->getExpr().trimmed() == originalExpr.trimmed() &&
+                            (*it)->getValue() == stack.top())
                         return it.key();
                 }
-                QString format = QString("{%1}").arg(doubleList.size());
-                doubleList[format] = Const::ConstObject(stack.top(), originalExpr, false);
+                int num = 0;
+                while(doubleList.contains(QString("{%1}").arg(num)))
+                    ++num;
+                QString &&format = QString("{%1}").arg(num);
+                auto constObject = new Const::ConstObject(stack.top());
+                constObject->setExpr(originalExpr);
+                doubleList[format] = constObject;
                 return format;
             }
         }

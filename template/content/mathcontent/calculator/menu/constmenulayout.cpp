@@ -17,7 +17,7 @@ void ConstMenuLayout::click(){
         ConstMenuItem *menuItem;
         for(auto it = calculator->getDoubleList().begin(); it != calculator->getDoubleList().end(); ++it, ++index){
             menuItem = new ConstMenuItem(calculator, this->parent, it.key(), index);
-            menuItem->setToolTip(it.value().getDescription());
+            menuItem->setToolTip(it.value()->getDescription());
             connect(menuItem, &MenuItem::clicked, calculator, [this, it](){
                 this->calculator->constant(it.key());
             });

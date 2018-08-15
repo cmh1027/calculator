@@ -24,7 +24,6 @@ namespace Template{
         void enableLineEdit();
         void disableLineEdit();
         void constant(const QString &constant);
-        void refresh() override;
 
     private:
         Ui::Calculator *contentUi;
@@ -67,6 +66,7 @@ namespace Template{
         void addNumber(const QString &str);
         void changeButton(const QString &targetName, const QString &buttonName, const QString &icon);
         void clearDoubleList();
+        void clearDoubleListEqual();
         bool isModifying;
         void installMenu() override;
 

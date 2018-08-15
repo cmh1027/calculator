@@ -5,7 +5,7 @@
 #include <QtWidgets/QScrollArea>
 #include "../content.h"
 #include "../../../module/ctl.h"
-#include "../../../module/calculator/constant.h"
+#include "../../../module/mathcontent/constant.h"
 
 class MainWindow;
 class QWidget;
@@ -20,15 +20,15 @@ namespace Template{
     public:
         MathContent(MainWindow*);
         virtual ~MathContent();
-        void addConstant(const QString &str, const Const::ConstObject& num);
+        void addConstant(const QString &str, Const::ConstObject* num);
         void removeConstant(const QString &str);
-        const CMap<QString, Const::ConstObject>& getDoubleList();
+        CMap<QString, Const::ConstObject*>& getDoubleList();
         void hideAllMenus();
         void moveAllMenus();
         virtual void refresh() = 0;
 
     protected:
-        CMap<QString, Const::ConstObject> doubleList; // constant & repeating decimal symbolic calculation
+        CMap<QString, Const::ConstObject*> doubleList; // constant & repeating decimal symbolic calculation
         QVector<MathMenuLayout*> menus;
         virtual void installMenu() = 0;
         template <class T, class Self>

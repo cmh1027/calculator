@@ -5,7 +5,7 @@
 #include "calculator.h"
 #include "ui_calculator.h"
 #include "../../../mainwindow.h"
-#include "../../../../module/calculator/operator.h"
+#include "../../../../module/mathcontent/operator.h"
 #include "../../../../module/utility.h"
 #include "../../../../config/config.h"
 #include "../../../../module/exception.h"
@@ -40,11 +40,6 @@ namespace Template{
         });
     }
 
-    void Calculator::refresh(){
-        this->setResult(this->getResult());
-        this->setInter(this->getInter());
-    }
-
     QString Calculator::getResult(const bool &chopDot){
         if(chopDot && this->result != ""){
             if(this->result.back() == "."){
@@ -65,6 +60,10 @@ namespace Template{
     }
 
     void Calculator::appendResult(const QString &str){
+        bool isValue;
+        this->result.toDouble(&isValue);
+        if(!isValue && !(this->result.indexOf("{") == 0 && this->result.indexOf("}") == this->result.length()-1))
+            return;
         this->setResult(this->getResult(false)+str);
     }
 
@@ -99,6 +98,10 @@ namespace Template{
     }
 
     void Calculator::appendInter(const QString &str, const bool &autoSpace){
+        bool isValue;
+        this->result.toDouble(&isValue);
+        if(!isValue && !(this->result.indexOf("{") == 0 && this->result.indexOf("}") == this->result.length()-1))
+            return;
         if(this->getInter().isEmpty())
             this->setInter(str);
         else{
@@ -323,7 +326,16 @@ namespace Template{
 
     void Calculator::clearDoubleList(){
         for(auto it = doubleList.begin(); it != doubleList.end();){
-            if((*it).isTemp())
+            if(!(*it)->isTemp())
+                ++it;
+            else
+                it = doubleList.erase(it);
+        }
+    }
+
+    void Calculator::clearDoubleListEqual(){
+        for(auto it = doubleList.begin(); it != doubleList.end();){
+            if(!(*it)->isTemp() || it.key() == this->result)
                 ++it;
             else
                 it = doubleList.erase(it);

@@ -9,9 +9,9 @@ namespace Const{
 }
 class QString;
 namespace Calculation{
-    QString calculateExpr(QString& expr, CMap<QString, Const::ConstObject>& doubleList);
+    QString calculateExpr(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList);
     QString changeToPostfix(const QString& expr);
-    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject>& doubleList, const QString& originalExpr);
+    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList, const QString& originalExpr);
     bool chunking(const QString& expr, QString& chunk, int& start);
     void numberChunk(const QString& expr, QString& chunk, int& start);
     void symbolChunk(const QString& expr, QString& chunk, int& start);

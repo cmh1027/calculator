@@ -5,7 +5,7 @@
 #include "../../calculator/calculator.h"
 #include "../../calculator/general/general.h"
 #include "../../calculator/scientific/scientific.h"
-#include "../../../../../module/calculator/operator.h"
+#include "../../../../../module/mathcontent/operator.h"
 FuncMenuLayout::FuncMenuLayout(MainWindow* window, Template::Calculator* cal, QScrollArea *scrollArea, QWidget* standard) :
     MathMenuLayout(window, scrollArea, standard), calculator(cal){
 }
