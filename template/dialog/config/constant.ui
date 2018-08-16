@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Advanced</class>
- <widget class="QDialog" name="Advanced">
+ <class>Constant</class>
+ <widget class="QDialog" name="Constant">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -43,13 +43,9 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QTableWidget" name="tempConstantTableWidget">
+    <widget class="QTableWidget" name="permanentConstantTableWidget">
      <property name="styleSheet">
-      <string notr="true">QTableWidget{border: none;}
-</string>
-     </property>
-     <property name="sortingEnabled">
-      <bool>false</bool>
+      <string notr="true">QTableWidget{border: none;}</string>
      </property>
      <column>
       <property name="text">
@@ -101,22 +97,6 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="promoteButton">
-       <property name="font">
-        <font>
-         <family>Agency FB</family>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Promote a constant&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>↓</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QToolButton" name="deleteButton">
        <property name="font">
         <font>
@@ -136,33 +116,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="permanentConstantTableWidget">
-     <property name="styleSheet">
-      <string notr="true">QTableWidget{border: none;}</string>
-     </property>
-     <column>
-      <property name="text">
-       <string>Symbol</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Description</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Value</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Expression</string>
-      </property>
-     </column>
-    </widget>
    </item>
   </layout>
  </widget>

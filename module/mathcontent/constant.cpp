@@ -6,8 +6,8 @@
 #include <cmath>
 
 namespace Const{
-    ConstObject::ConstObject(const double& val, const bool& flag, const QString& str) :
-        DataObject(str, flag), value(val) {
+    ConstObject::ConstObject(const double& val, const bool& defaultFlag, const bool& tempFlag, const QString& str) :
+        DataObject(str, defaultFlag, tempFlag), value(val) {
     }
 
     ConstObject::operator double() const{

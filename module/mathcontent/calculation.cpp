@@ -5,7 +5,7 @@
 #include "../../config/config.h"
 #include "../exception.h"
 #include <iostream>
-extern Configuration* config;
+extern Configuration::Configuration* config;
 
 namespace Calculation{
     bool isOperand(const QString& expr){

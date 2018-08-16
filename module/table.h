@@ -1,14 +1,15 @@
 #ifndef TABLE_H
 #define TABLE_H
 #include <QVector>
+#include <iostream>
 template <typename T>
 class Table{
 public:
     Table() = default;
     Table(const int&);
     ~Table();
-    int row() const;
-    int column() const;
+    int rowCount() const;
+    int columnCount() const;
     T* at(int, int) const;
     void insert(const T, int, int);
     void eraseRow(int);
@@ -42,12 +43,12 @@ Table<T>::~Table(){
 }
 
 template <typename T>
-Table<T>::row() const{
+Table<T>::rowCount() const{
     return this->rowLength;
 }
 
 template <typename T>
-Table<T>::column() const{
+Table<T>::columnCount() const{
     return this->columnLength;
 }
 
@@ -117,6 +118,7 @@ void Table<T>::removeRow(int row){
         delete it->at(row);
         it->remove(row);
     }
+    this->rowLength -= 1;
 }
 
 template <typename T>
@@ -129,6 +131,7 @@ void Table<T>::removeColumn(int column){
         delete (*it);
     }
     this->data.remove(column);
+    this->columnLength -= 1;
 }
 
 template <typename T>

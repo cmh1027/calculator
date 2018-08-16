@@ -9,6 +9,7 @@ SideMenuLayout::SideMenuLayout(MainWindow* window, QScrollArea* scrollArea) : Me
     mainWindow(window){
     int width = scrollArea->findChild<QWidget*>("menuTitleWidget")->width();
     this->setWidth(width);
+    this->setHeight(this->mainWindow->height());
     connect(scrollArea->findChild<QToolButton*>("menuCloseButton"), &QToolButton::clicked, window, &window->hideSideMenu);
 }
 

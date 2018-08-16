@@ -5,7 +5,7 @@ class QString;
 class DataObject{
 public:
     DataObject() = default;
-    DataObject(const QString&, const bool& = true);
+    DataObject(const QString&, const bool& = false, const bool& = true);
     ~DataObject() = default;
     void setDescription(const QString&);
     QString getDescription() const;

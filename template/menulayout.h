@@ -21,6 +21,8 @@ public:
     void hide();
     void moveToStandard();
     void resizeToStandard(int length);
+    void setWidth(int width);
+    void setHeight(int height);
 
 private:
     bool isOpen;
@@ -31,8 +33,6 @@ protected:
     QWidget* parent;
     QWidget* standard;
     QVector<MenuItem*> items;
-    void setWidth(int width);
-    void setHeight(int height);
     bool toggleOpen();
 
 };

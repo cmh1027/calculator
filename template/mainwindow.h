@@ -27,6 +27,7 @@ public:
     QPushButton *currentMenu;
     void addConstant(const QString &str, Const::ConstObject* num);
     void removeConstant(const QString &str);
+    void refreshAllContents();
     void degreeUnitChanged();
     void precisionChanged();
     QStackedWidget *contentWidget;

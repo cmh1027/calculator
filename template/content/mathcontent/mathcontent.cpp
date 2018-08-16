@@ -4,7 +4,7 @@
 #include "mathcontent.h"
 #include "mathmenulayout.h"
 #include "../../../config/config.h"
-extern Configuration* config;
+extern Configuration::Configuration* config;
 
 namespace Template{
     MathContent::MathContent(MainWindow* window) : Content(window),

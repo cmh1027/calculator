@@ -15,7 +15,7 @@ namespace Operation{
     public:
         OperationObject() = default;
         virtual ~OperationObject() = default;
-        OperationObject(const funcType&, const QString&, const Arity&, const bool& = true);
+        OperationObject(const funcType&, const QString&, const Arity&, const bool& = false, const bool& = true);
         void operator()(CStack<double>&);
         Arity getArity() const;
     };

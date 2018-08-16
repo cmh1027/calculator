@@ -5,7 +5,7 @@
 #include <sstream>
 #include <iomanip>
 
-extern Configuration* config;
+extern Configuration::Configuration* config;
 
 namespace Utility{
     QString doubleToString(const double &number){

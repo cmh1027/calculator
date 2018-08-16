@@ -12,7 +12,6 @@ MenuLayout::MenuLayout(MainWindow* window, QScrollArea* scrollArea, QWidget* std
     scrollArea->hide();
     if(std != nullptr){
         this->setWidth(std->width()-25);
-
     }
 }
 

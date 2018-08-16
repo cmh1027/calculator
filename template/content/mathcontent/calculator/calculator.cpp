@@ -13,7 +13,7 @@
 #include "menu/funcmenulayout.h"
 #include "../../../dialog/mathcontent/advanced.h"
 
-extern Configuration* config;
+extern Configuration::Configuration* config;
 namespace Template{
     Calculator::Calculator(MainWindow* window) : Template::MathContent(window),
         contentUi(new Ui::Calculator), contentWidget(this),
@@ -35,7 +35,7 @@ namespace Template{
         this->install<ConstMenuLayout, Template::Calculator>("constMenuScrollArea", this->findChild<QPushButton*>("constButton"));
         this->install<FuncMenuLayout, Template::Calculator>("funcMenuScrollArea", this->findChild<QPushButton*>("functionButton"));
         connect(this->findChild<QPushButton*>("advancedButton"), &QPushButton::clicked, this, [this](){
-            Dialog::Advanced *dialog = new Dialog::Advanced(this, this->mainWindow);
+            Dialog::Advanced *dialog = new Dialog::Advanced(this);
             dialog->show();
         });
     }

@@ -1,11 +1,16 @@
-#include <QWidget>
-#include <QIntValidator>
-#include "configcontent.h"
-#include "ui_config_content.h"
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QLineEdit>
+#include <QtWidgets/QRadioButton>
+#include <QtGui/QIntValidator>
+#include "config.h"
+#include "ui_config.h"
 #include "../content.h"
 #include "../../../config/config.h"
 #include "../../mainwindow.h"
-extern Configuration* config;
+#include "../../dialog/config/constant.h"
+extern Configuration::Configuration* config;
 
 namespace Template{
     Configuration::Configuration(MainWindow* window) : Content(window),
@@ -52,5 +57,9 @@ namespace Template{
                     else
                         config->setPrecision(point.toInt());
                 });
+        connect(contentWidget->findChild<QPushButton*>("constButton"), &QPushButton::clicked, this, [](){
+            Dialog::Constant* dialog = new Dialog::Constant();
+            dialog->show();
+        });
     }
 }

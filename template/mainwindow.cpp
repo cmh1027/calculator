@@ -10,12 +10,12 @@
 #include "templates.h"
 #include "../config/config.h"
 
-Configuration* config;
+Configuration::Configuration* config;
 
 MainWindow::MainWindow() :
     currentMenu(nullptr), mainWindowUi(new Ui::MainWindow), currentIndex(0)
 {
-    config = new Configuration(this);
+    config = new Configuration::Configuration(this);
     mainWindowUi->setupUi(this);
     this->installSidebar();
     this->contentWidget = this->findChild<QStackedWidget*>("contentWidget");
@@ -100,6 +100,15 @@ void MainWindow::removeConstant(const QString &str){
     }
 }
 
+void MainWindow::refreshAllContents(){
+    Template::MathContent* ptr;
+    for(int i = 0; i < this->contentWidget->count(); i++){
+        if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr){
+            ptr->refresh();
+        }
+    }
+}
+
 void MainWindow::degreeUnitChanged(){
     Template::GeneralCalculator* ptr;
     for(int i = 0; i < this->contentWidget->count(); i++){
@@ -133,6 +142,7 @@ void MainWindow::resizeEvent(QResizeEvent*){
         if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr)
             ptr->moveAllMenus();
     }
+    this->sideMenuLayout->setHeight(this->height());
 }
 
 void MainWindow::hideAllContentMenu(){

@@ -1,8 +1,9 @@
 #include "operation.h"
 
 namespace Operation{
-    OperationObject::OperationObject(const funcType& function, const QString& des, const Arity& t, const bool& flag) :
-        DataObject(des, flag), func(function), type(t)
+    OperationObject::OperationObject(const funcType& function, const QString& des, const Arity& t,
+                                     const bool& defaultFlag, const bool& tempFlag) :
+        DataObject(des, defaultFlag, tempFlag), func(function), type(t)
     {}
 
     void OperationObject::operator()(CStack<double>& stack){

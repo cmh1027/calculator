@@ -12,7 +12,7 @@ namespace Const{
     public:
         ConstObject() = default;
         virtual ~ConstObject() = default;
-        ConstObject(const double&, const bool& = false, const QString& = "Temporary");
+        ConstObject(const double&, const bool& = false, const bool& = true, const QString& = "Temporary");
         operator double() const;
         double getValue() const;
         void setValue(const double&);
