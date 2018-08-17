@@ -26,6 +26,7 @@ MainWindow::MainWindow() :
 MainWindow::~MainWindow()
 {
     delete mainWindowUi;
+    delete config;
     this->deleteLater();
 }
 
@@ -85,7 +86,6 @@ void MainWindow::addConstant(const QString &str, Const::ConstObject* num){
     for(int i = 0; i < this->contentWidget->count(); i++){
         if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr){
             ptr->addConstant(str, num);
-            ptr->refresh();
         }
     }
 }
@@ -95,7 +95,6 @@ void MainWindow::removeConstant(const QString &str){
     for(int i = 0; i < this->contentWidget->count(); i++){
         if((ptr = dynamic_cast<Template::MathContent*>(this->contentWidget->widget(i))) != nullptr){
             ptr->removeConstant(str);
-            ptr->refresh();
         }
     }
 }

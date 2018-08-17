@@ -27,7 +27,7 @@ namespace Template{
 
     void MathContent::removeConstant(const QString &str){
         if(this->doubleList.contains(str))
-            this->doubleList.remove(str);
+            this->doubleList.simpleRemove(str);
     }
 
     CMap<QString, Const::ConstObject*>& MathContent::getDoubleList(){

@@ -1,7 +1,9 @@
 #ifndef OPERATION_H
 #define OPERATION_H
+#include <QString>
 #include "../ctl.h"
 #include "dataobject.h"
+#include "constant.h"
 
 namespace Operation{
     enum Arity{Arithmetic, Unary, Binary};
@@ -10,14 +12,21 @@ namespace Operation{
     private:
         using funcType = void(*)(CStack<double>&);
         funcType func;
+        QString expression;
         Arity type;
 
     public:
         OperationObject() = default;
         virtual ~OperationObject() = default;
-        OperationObject(const funcType&, const QString&, const Arity&, const bool& = false, const bool& = true);
-        void operator()(CStack<double>&);
+        OperationObject(const funcType&, const QString&, const Arity&, const bool& = false);
+        OperationObject(const QString&, const QString&, const Arity&, const bool& = false);
+        void operator()(CStack<double>&, CMap<QString, Const::ConstObject*>&);
+        void setExpr(const QString&);
+        QString getExpr() const;
+        void setArity(Arity);
         Arity getArity() const;
+        QString getArityString() const;
+        QString funcShape(const QString&) const;
     };
 
     void plus(CStack<double>& stack);

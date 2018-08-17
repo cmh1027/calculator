@@ -7,29 +7,23 @@
 #include "../../content/mathcontent/mathcontent.h"
 #include "../../../config/config.h"
 #include "../../../module/utility.h"
-
+#include <iostream>
 extern Configuration::Configuration* config;
 
 namespace Dialog{
-    Advanced::Advanced(Template::MathContent* mathContent) : parent(mathContent),
+    Advanced::Advanced(Template::MathContent* mathContent) : Dialog::Dialog(), parent(mathContent),
         contentUi(new Ui::Advanced), doubleList(mathContent->getDoubleList()),
-        tempDataTable(Column::Count), permanentDataTable(Column::Count), lock(false){
+        tempDataTable(Column::Count), permanentDataTable(Column::Count){
         contentUi->setupUi(this);
-        this->tempTable = this->findChild<QTableWidget*>("tempConstantTableWidget");
-        this->permanentTable = this->findChild<QTableWidget*>("permanentConstantTableWidget");
-        this->tempDataTable = Table<QString>(this->tempTable->columnCount());
-        this->permanentDataTable = Table<QString>(this->permanentTable->columnCount());
-        this->tempTable->horizontalHeader()->setStretchLastSection(true);
-        this->permanentTable->horizontalHeader()->setStretchLastSection(true);
-        this->tempTable->setCurrentItem(nullptr);
-        this->permanentTable->setCurrentItem(nullptr);
+        INIT_TABLE(this->tempTable, "tempConstantTableWidget", this->tempDataTable);
+        INIT_TABLE(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
+        this->installCells();
         connect(this->tempTable, &QTableWidget::currentItemChanged, this, [this]{
            this->permanentTable->setCurrentItem(nullptr);
         });
         connect(this->permanentTable, &QTableWidget::currentItemChanged, this, [this]{
            this->tempTable->setCurrentItem(nullptr);
         });
-        this->installCells();
         connect(this->findChild<QToolButton*>("addButton"), &QPushButton::clicked, this, static_cast<void(Advanced::*)()>(this->addItem));
         connect(this->findChild<QToolButton*>("promoteButton"), &QPushButton::clicked, this, this->promoteItem);
         connect(this->findChild<QToolButton*>("deleteButton"), &QPushButton::clicked, this, this->removeItem);
@@ -39,29 +33,23 @@ namespace Dialog{
         delete contentUi;
     }
 
-    void Advanced::closeEvent(QCloseEvent*){
-        this->deleteLater();
-    }
-
     void Advanced::installCells(){
         int temp = 0;
         int permanent = 0;
         disconnect(this->tempTable, &QTableWidget::itemChanged, nullptr, nullptr);
         disconnect(this->permanentTable, &QTableWidget::itemChanged, nullptr, nullptr);
-        while(this->tempTable->rowCount() > 0)
-            this->tempTable->removeRow(0);
-        while(this->permanentTable->rowCount() > 0)
-            this->permanentTable->removeRow(0);
+        this->cleanTable(this->tempTable);
+        this->cleanTable(this->permanentTable);
         this->tempDataTable.rowClear();
         this->permanentDataTable.rowClear();
         for(auto it = this->doubleList.begin(); it != this->doubleList.end(); it++){
             if((*it)->isTemp()){
-                this->addItem(this->tempTable, it.key(), (*it)->getDescription(),
-                              Utility::doubleToString((*it)->getValue()), (*it)->getExpr(), temp);
+                this->addItem(this->tempTable, it.key(), (*it), temp);
             }
             else{
-                this->addItem(this->permanentTable, it.key(), (*it)->getDescription(),
-                              Utility::doubleToString((*it)->getValue()),(*it)->getExpr(), permanent);
+                this->addItem(this->permanentTable, it.key(), (*it), permanent);
+                if((*it)->isDefault())
+                    this->setRowDisable(this->permanentTable, permanent-1);
             }
         }
         connect(this->tempTable, &QTableWidget::itemChanged, [this](QTableWidgetItem* item){
@@ -84,12 +72,12 @@ namespace Dialog{
                     this->lockedChangeContent(item, *table.at(item->row(), item->column()));
                 else{
                     if(tableWidget == this->tempTable){
-                        this->doubleList[text] = this->doubleList.value(*table.at(item->row(), item->column()));
+                        this->doubleList[text] = this->doubleList.clone(*table.at(item->row(), item->column()));
                         this->doubleList.remove(*table.at(item->row(), item->column()));
                         this->parent->refresh();
                     }
                     else{
-                        config->addConstant(text, this->doubleList.value(*table.at(item->row(), item->column())));
+                        config->addConstant(text, this->doubleList.clone(*table.at(item->row(), item->column())));
                         config->removeConstant(*table.at(item->row(), item->column()));
                     }
                     this->updateRows();
@@ -142,24 +130,6 @@ namespace Dialog{
         }
     }
 
-    void Advanced::lockedChangeContent(QTableWidget* widget, int row, int column, QTableWidgetItem* item){
-        this->lock = true;
-        widget->setItem(row, column, item);
-        this->lock = false;
-    }
-
-    void Advanced::lockedChangeContent(QTableWidget* widget, int row, int column, const QString& str){
-        this->lock = true;
-        widget->item(row, column)->setText(str);
-        this->lock = false;
-    }
-
-    void Advanced::lockedChangeContent(QTableWidgetItem* item, const QString& str){
-        this->lock = true;
-        item->setText(str);
-        this->lock = false;
-    }
-
     void Advanced::updateRows(){
         bool isUpdated = false;
         while(true){
@@ -173,32 +143,21 @@ namespace Dialog{
         this->installCells();
     }
 
-    void Advanced::addItem(QTableWidget* table, const QString& symbol, const QString& description,
-                                const QString& value, const QString& expr, int& index){
+    void Advanced::addItem(QTableWidget* table, const QString& symbol, const Const::ConstObject* object, int& index){
         table->setRowCount(table->rowCount() + 1);
-        this->addItem(index, Column::Symbol, table, symbol);
-        this->addItem(index, Column::Description, table, description);
-        this->addItem(index, Column::Value, table, value);
-        this->addItem(index, Column::Expression, table, expr);
+        Dialog::addItem(table, index, Column::Symbol, symbol);
+        Dialog::addItem(table, index, Column::Description, object->getDescription());
+        Dialog::addItem(table, index, Column::Value, Utility::doubleToString(object->getValue()));
+        Dialog::addItem(table, index, Column::Expression, object->getExpr());
         ++index;
     }
 
-    void Advanced::addItem(QTableWidget* table, const QString& symbol, const QString& description,
-                                const QString& value, const QString& expr, int&& index){
+    void Advanced::addItem(QTableWidget* table, const QString& symbol, const Const::ConstObject* object, int&& index){
         table->setRowCount(table->rowCount() + 1);
-        this->addItem(index, Column::Symbol, table, symbol);
-        this->addItem(index, Column::Description, table, description);
-        this->addItem(index, Column::Value, table, value);
-        this->addItem(index, Column::Expression, table, expr);
-    }
-
-    void Advanced::addItem(const int& row, const int& column, QTableWidget* table, const QString& str){
-        QTableWidgetItem *item = new QTableWidgetItem(str);
-        this->lockedChangeContent(table, row, column, item);
-        if(table == this->tempTable)
-            this->tempDataTable.insert(str, row, column);
-        else if(table == this->permanentTable)
-            this->permanentDataTable.insert(str, row, column);
+        Dialog::addItem(table, index, Column::Symbol, symbol);
+        Dialog::addItem(table, index, Column::Description, object->getDescription());
+        Dialog::addItem(table, index, Column::Value, Utility::doubleToString(object->getValue()));
+        Dialog::addItem(table, index, Column::Expression, object->getExpr());
     }
 
     void Advanced::addItem(){
@@ -207,8 +166,9 @@ namespace Dialog{
         while(this->doubleList.contains(symbol.arg(QString::number(number))))
             ++number;
         symbol = symbol.arg(QString::number(number));
-        config->addConstant(symbol, new Const::ConstObject(0, false, false, ""));
-        this->addItem(this->permanentTable, symbol, "", "0", "", this->permanentTable->rowCount());
+        auto object = new Const::ConstObject(0, false, false, "");
+        config->addConstant(symbol, object);
+        this->addItem(this->permanentTable, symbol, object, this->permanentTable->rowCount());
     }
 
     void Advanced::removeItem(){
@@ -234,7 +194,7 @@ namespace Dialog{
         int row;
         if((row = this->tempTable->currentRow()) != -1){
             QString &&key = this->tempTable->item(row, Column::Symbol)->text();
-            auto object = this->doubleList[key];
+            auto object = this->doubleList.clone(key);
             object->setTemp(false);
             this->doubleList.remove(key);
             config->addConstant(key, object);

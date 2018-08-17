@@ -8,6 +8,6 @@
 #include "content/mathcontent/graph/graph.h"
 #include "content/mathcontent/matrix/matrix.h"
 #include "content/mathcontent/table/table.h"
-#include "content/config/config.h"
+#include "content/config/config_content.h"
 #include "sidemenu/sidemenulayout.h"
 #endif // TEMPLATES_H

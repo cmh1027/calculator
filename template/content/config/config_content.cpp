@@ -4,12 +4,13 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>
 #include <QtGui/QIntValidator>
-#include "config.h"
-#include "ui_config.h"
+#include "config_content.h"
+#include "ui_config_content.h"
 #include "../content.h"
 #include "../../../config/config.h"
 #include "../../mainwindow.h"
-#include "../../dialog/config/constant.h"
+#include "../../dialog/config/constant_dialog.h"
+#include "../../dialog/config/function_dialog.h"
 extern Configuration::Configuration* config;
 
 namespace Template{
@@ -59,6 +60,10 @@ namespace Template{
                 });
         connect(contentWidget->findChild<QPushButton*>("constButton"), &QPushButton::clicked, this, [](){
             Dialog::Constant* dialog = new Dialog::Constant();
+            dialog->show();
+        });
+        connect(contentWidget->findChild<QPushButton*>("functionButton"), &QPushButton::clicked, this, [](){
+            Dialog::Function* dialog = new Dialog::Function();
             dialog->show();
         });
     }

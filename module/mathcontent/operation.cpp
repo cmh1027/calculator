@@ -1,17 +1,89 @@
 #include "operation.h"
+#include "calculation.h"
 
 namespace Operation{
     OperationObject::OperationObject(const funcType& function, const QString& des, const Arity& t,
-                                     const bool& defaultFlag, const bool& tempFlag) :
-        DataObject(des, defaultFlag, tempFlag), func(function), type(t)
+                                     const bool& defaultFlag) :
+        DataObject(des, defaultFlag, false), func(function), type(t)
     {}
 
-    void OperationObject::operator()(CStack<double>& stack){
-        func(stack);
+    OperationObject::OperationObject(const QString& function, const QString& des, const Arity& t,
+                                     const bool& defaultFlag) :
+        DataObject(des, defaultFlag, false), func(nullptr), expression(function), type(t)
+    {}
+
+    void OperationObject::operator()(CStack<double>& stack, CMap<QString, Const::ConstObject*>& doubleList){
+        if(this->func != nullptr)
+            this->func(stack);
+        else{
+            int num1 = 0;
+            int num2 = 0;
+            double x;
+            double y;
+            QString &&key = "{temp%1}";
+            QString replaced = this->expression;
+            while(doubleList.contains(key.arg(num1)))
+                ++num1;
+            while(doubleList.contains(key.arg(num2)) || num1 == num2)
+                ++num2;
+            if(this->type == Arity::Unary){
+                x = stack.pop();
+                doubleList[key.arg(num1)] = new Const::ConstObject(x);
+                replaced.replace("X", key.arg(num1));
+                stack.push(Calculation::calculatePostfix(Calculation::changeToPostfix(replaced), doubleList));
+                doubleList.remove(key.arg(num1));
+            }
+            else if(this->type == Arity::Binary){
+                y = stack.pop();
+                doubleList[key.arg(num1)] = new Const::ConstObject(y);
+                x = stack.pop();
+                doubleList[key.arg(num2)] = new Const::ConstObject(x);
+                replaced.replace("X", key.arg(num2)).replace("Y", key.arg(num1));
+                stack.push(Calculation::calculatePostfix(Calculation::changeToPostfix(replaced), doubleList));
+                doubleList.remove(key.arg(num1));
+                doubleList.remove(key.arg(num2));
+            }
+        }
+    }
+
+    void OperationObject::setExpr(const QString& expr){
+        this->expression = expr;
+    }
+
+    void OperationObject::setArity(Arity type){
+        this->type = type;
+    }
+
+    QString OperationObject::getExpr() const{
+        return this->expression;
     }
 
     Arity OperationObject::getArity() const{
         return this->type;
+    }
+
+    QString OperationObject::getArityString() const{
+        switch(this->type){
+            case Arity::Arithmetic:
+                return "Arithmetic";
+            case Arity::Unary:
+                return "Unary";
+            case Arity::Binary:
+                return "Binary";
+            default:
+                return "";
+        }
+    }
+
+    QString OperationObject::funcShape(const QString& name) const{
+        switch(this->type){
+            case Arity::Unary:
+                return QString("%1(x)").arg(name);
+            case Arity::Binary:
+                return QString("x %1 y").arg(name);
+            default:
+                return "";
+        }
     }
 
     void plus(CStack<double>& stack){

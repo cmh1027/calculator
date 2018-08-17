@@ -1,5 +1,5 @@
-#ifndef ADVANCED_H
-#define ADVANCED_H
+#ifndef CONSTANT_DIALOG
+#define CONSTANT_DIALOG
 #include <QtWidgets/QTableWidget>
 #include "../dialog.h"
 #include "../../../module/ctl.h"
@@ -7,29 +7,23 @@
 #include "../../../module/table.h"
 
 namespace Ui {
-    class Advanced;
-}
-namespace Template{
-    class MathContent;
+    class Constant;
 }
 class QString;
 
 namespace Dialog{
-    class Advanced : public Dialog::Dialog{
+    class Constant : public Dialog::Dialog{
         Q_OBJECT
 
     public:
-        Advanced(Template::MathContent*);
-        virtual ~Advanced();
+        Constant();
+        virtual ~Constant();
 
     private:
         enum Column{Symbol, Description, Value, Expression, Count};
-        Template::MathContent *parent;
-        Ui::Advanced *contentUi;
+        Ui::Constant *contentUi;
         CMap<QString, Const::ConstObject*>& doubleList;
-        QTableWidget *tempTable;
         QTableWidget *permanentTable;
-        Table<QString> tempDataTable;
         Table<QString> permanentDataTable;
         void installCells() override;
         void contentChanged(QTableWidgetItem*, QTableWidget*, Table<QString>&) override;
@@ -40,8 +34,7 @@ namespace Dialog{
     private slots:
         void addItem() override;
         void removeItem() override;
-        void promoteItem();
 
     };
 }
-#endif // ADVANCED_H
+#endif

@@ -3,6 +3,7 @@
 #include <QObject>
 #include "../module/ctl.h"
 #include "../module/mathcontent/constant.h"
+#include "../module/mathcontent/operator.h"
 
 namespace Template{
     class Configuration;
@@ -21,7 +22,10 @@ namespace Configuration{
         void addConstant(const QString &str, Const::ConstObject* num);
         double getConstant(const QString &str) const;
         void removeConstant(const QString &str);
+        void addFunction(const QString &str, Operation::OperationObject& num);
+        void removeFunction(const QString &str);
         CMap<QString, Const::ConstObject*>& getConstantList();
+        CMap<QString, Operation::OperationObject>& getFuncList();
         bool getRadian();
         int getPrecision();
         void refreshAllContents();
@@ -29,6 +33,8 @@ namespace Configuration{
 
     private:
         CMap<QString, Const::ConstObject*> constants;
+        CMap<QString, Operation::OperationObject> operateFuncs;
+        QVector<Const::ConstObject*> deleted;
         MainWindow* mainWindow;
         bool radian;
         int precision;

@@ -11,7 +11,7 @@ class QString;
 namespace Calculation{
     QString calculateExpr(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList);
     QString changeToPostfix(const QString& expr);
-    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList, const QString& originalExpr);
+    double calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList);
     bool chunking(const QString& expr, QString& chunk, int& start);
     void numberChunk(const QString& expr, QString& chunk, int& start);
     void symbolChunk(const QString& expr, QString& chunk, int& start);

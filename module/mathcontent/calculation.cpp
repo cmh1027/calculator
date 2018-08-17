@@ -62,14 +62,34 @@ namespace Calculation{
     }
 
     QString calculateExpr(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList){
-        QString &&result = "";
+        double value;
         try{
-            result = calculatePostfix(changeToPostfix(expr), doubleList, expr);
+            value = calculatePostfix(changeToPostfix(expr), doubleList);
+            if(std::isnan(value)){
+                return "Invalid input";
+            }
+            else if(isInt(value)){
+                return QString::number(static_cast<long>(value));
+            }
+            else{
+                for(auto it = doubleList.begin(); it != doubleList.end(); ++it){
+                    if(!(*it)->getExpr().isEmpty() && (*it)->getExpr().trimmed() == expr.trimmed() &&
+                            (*it)->getValue() == value)
+                        return it.key();
+                }
+                int num = 0;
+                while(doubleList.contains(QString("{%1}").arg(num)))
+                    ++num;
+                QString &&format = QString("{%1}").arg(num);
+                auto constObject = new Const::ConstObject(value);
+                constObject->setExpr(expr);
+                doubleList[format] = constObject;
+                return format;
+            }
         }
         catch(std::InvalidExprException &e){
-            result = e.what();
+            return e.what();
         }
-        return result;
     }
 
     QString changeToPostfix(const QString& expr){
@@ -86,9 +106,9 @@ namespace Calculation{
         return result.trimmed();
     }
 
-    QString calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList, const QString& originalExpr){
+    double calculatePostfix(const QString& expr, CMap<QString, Const::ConstObject*>& doubleList){
         CStack<double> stack;
-        if(expr.isEmpty()) return QString("0");
+        if(expr.isEmpty()) return 0;
         foreach(const QString &chunk, expr.split(" ")){
             if(isOperand(chunk)){
                 if(chunk.indexOf("{") != -1 && chunk.indexOf("}") != -1){
@@ -103,32 +123,10 @@ namespace Calculation{
                    double degree = stack.pop()*Const::PI/180;
                    stack.push(degree);
                 }
-                Operator::operateFuncs[chunk](stack);
+                config->getFuncList()[chunk](stack, doubleList);
             }
         }
-        if(std::isnan(stack.top())){
-            return "Invalid input";
-        }
-        else{
-            if(isInt(stack.top())){
-                return QString::number(static_cast<long>(stack.top()));
-            }
-            else{
-                for(auto it = doubleList.begin(); it != doubleList.end(); ++it){
-                    if(!(*it)->getExpr().isEmpty() && (*it)->getExpr().trimmed() == originalExpr.trimmed() &&
-                            (*it)->getValue() == stack.top())
-                        return it.key();
-                }
-                int num = 0;
-                while(doubleList.contains(QString("{%1}").arg(num)))
-                    ++num;
-                QString &&format = QString("{%1}").arg(num);
-                auto constObject = new Const::ConstObject(stack.top());
-                constObject->setExpr(originalExpr);
-                doubleList[format] = constObject;
-                return format;
-            }
-        }
+        return stack.top();
     }
 
     bool chunking(const QString& expr, QString& chunk, int& start){

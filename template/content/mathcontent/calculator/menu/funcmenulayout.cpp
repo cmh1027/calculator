@@ -5,7 +5,10 @@
 #include "../../calculator/calculator.h"
 #include "../../calculator/general/general.h"
 #include "../../calculator/scientific/scientific.h"
+#include "../../../../../config/config.h"
 #include "../../../../../module/mathcontent/operator.h"
+extern Configuration::Configuration* config;
+
 FuncMenuLayout::FuncMenuLayout(MainWindow* window, Template::Calculator* cal, QScrollArea *scrollArea, QWidget* standard) :
     MathMenuLayout(window, scrollArea, standard), calculator(cal){
 }
@@ -18,7 +21,7 @@ void FuncMenuLayout::click(){
     else{
         int index = 0;
         FuncMenuItem *menuItem;
-        for(auto it = Operator::operateFuncs.begin(); it != Operator::operateFuncs.end(); ++it, ++index){
+        for(auto it = config->getFuncList().begin(); it != config->getFuncList().end(); ++it, ++index){
             if(it.value().getArity() == Operation::Arithmetic){
                 --index;
                 continue;

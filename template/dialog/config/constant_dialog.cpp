@@ -2,21 +2,18 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QToolButton>
-#include "constant.h"
-#include "ui_constant.h"
+#include "constant_dialog.h"
+#include "ui_constant_dialog.h"
 #include "../../../config/config.h"
 #include "../../../module/utility.h"
 
 extern Configuration::Configuration* config;
 
 namespace Dialog{
-    Constant::Constant() : contentUi(new Ui::Constant), doubleList(config->getConstantList()),
-        permanentDataTable(Column::Count), lock(false){
+    Constant::Constant() : Dialog::Dialog(), contentUi(new Ui::Constant),
+        doubleList(config->getConstantList()), permanentDataTable(Column::Count){
         contentUi->setupUi(this);
-        this->permanentTable = this->findChild<QTableWidget*>("permanentConstantTableWidget");
-        this->permanentDataTable = Table<QString>(this->permanentTable->columnCount());
-        this->permanentTable->horizontalHeader()->setStretchLastSection(true);
-        this->permanentTable->setCurrentItem(nullptr);
+        INIT_TABLE(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
         this->installCells();
         connect(this->findChild<QToolButton*>("addButton"), &QPushButton::clicked, this, static_cast<void(Constant::*)()>(this->addItem));
         connect(this->findChild<QToolButton*>("deleteButton"), &QPushButton::clicked, this, this->removeItem);
@@ -26,19 +23,16 @@ namespace Dialog{
         delete contentUi;
     }
 
-    void Constant::closeEvent(QCloseEvent*){
-        this->deleteLater();
-    }
 
     void Constant::installCells(){
         int permanent = 0;
         disconnect(this->permanentTable, &QTableWidget::itemChanged, nullptr, nullptr);
-        while(this->permanentTable->rowCount() > 0)
-            this->permanentTable->removeRow(0);
+        this->cleanTable(this->permanentTable);
         this->permanentDataTable.rowClear();
         for(auto it = this->doubleList.begin(); it != this->doubleList.end(); it++){
-            this->addItem(this->permanentTable, it.key(), (*it)->getDescription(),
-                          Utility::doubleToString((*it)->getValue()),(*it)->getExpr(), permanent);
+            this->addItem(this->permanentTable, it.key(), (*it), permanent);
+            if((*it)->isDefault())
+                this->setRowDisable(this->permanentTable, permanent-1);
 
         }
         connect(this->permanentTable, &QTableWidget::itemChanged, [this](QTableWidgetItem* item){
@@ -102,23 +96,6 @@ namespace Dialog{
         config->refreshAllContents();
     }
 
-    void Constant::lockedChangeContent(QTableWidget* widget, int row, int column, QTableWidgetItem* item){
-        this->lock = true;
-        widget->setItem(row, column, item);
-        this->lock = false;
-    }
-
-    void Constant::lockedChangeContent(QTableWidget* widget, int row, int column, const QString& str){
-        this->lock = true;
-        widget->item(row, column)->setText(str);
-        this->lock = false;
-    }
-
-    void Constant::lockedChangeContent(QTableWidgetItem* item, const QString& str){
-        this->lock = true;
-        item->setText(str);
-        this->lock = false;
-    }
 
     void Constant::updateRows(){
         bool isUpdated = false;
@@ -133,30 +110,23 @@ namespace Dialog{
         this->installCells();
     }
 
-    void Constant::addItem(QTableWidget* table, const QString& symbol, const QString& description,
-                                const QString& value, const QString& expr, int& index){
+    void Constant::addItem(QTableWidget* table, const QString& symbol, const Const::ConstObject* object, int& index){
         table->setRowCount(table->rowCount() + 1);
-        this->addItem(index, Column::Symbol, table, symbol);
-        this->addItem(index, Column::Description, table, description);
-        this->addItem(index, Column::Value, table, value);
-        this->addItem(index, Column::Expression, table, expr);
+        Dialog::addItem(table, index, Column::Symbol, symbol);
+        Dialog::addItem(table, index, Column::Description, object->getDescription());
+        Dialog::addItem(table, index, Column::Value, Utility::doubleToString(object->getValue()));
+        Dialog::addItem(table, index, Column::Expression, object->getExpr());
         ++index;
     }
 
-    void Constant::addItem(QTableWidget* table, const QString& symbol, const QString& description,
-                                const QString& value, const QString& expr, int&& index){
+    void Constant::addItem(QTableWidget* table, const QString& symbol, const Const::ConstObject* object, int&& index){
         table->setRowCount(table->rowCount() + 1);
-        this->addItem(index, Column::Symbol, table, symbol);
-        this->addItem(index, Column::Description, table, description);
-        this->addItem(index, Column::Value, table, value);
-        this->addItem(index, Column::Expression, table, expr);
+        Dialog::addItem(table, index, Column::Symbol, symbol);
+        Dialog::addItem(table, index, Column::Description, object->getDescription());
+        Dialog::addItem(table, index, Column::Value, Utility::doubleToString(object->getValue()));
+        Dialog::addItem(table, index, Column::Expression, object->getExpr());
     }
 
-    void Constant::addItem(const int& row, const int& column, QTableWidget* table, const QString& str){
-        QTableWidgetItem *item = new QTableWidgetItem(str);
-        this->lockedChangeContent(table, row, column, item);
-        this->permanentDataTable.insert(str, row, column);
-    }
 
     void Constant::addItem(){
         QString symbol = "{new%1}";
@@ -164,8 +134,9 @@ namespace Dialog{
         while(this->doubleList.contains(symbol.arg(QString::number(number))))
             ++number;
         symbol = symbol.arg(QString::number(number));
-        config->addConstant(symbol, new Const::ConstObject(0, false, false, ""));
-        this->addItem(this->permanentTable, symbol, "", "0", "", this->permanentTable->rowCount());
+        auto object = new Const::ConstObject(0, false, false, "");
+        config->addConstant(symbol, object);
+        this->addItem(this->permanentTable, symbol, object, this->permanentTable->rowCount());
     }
 
     void Constant::removeItem(){

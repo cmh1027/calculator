@@ -10,10 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Calculator
 TEMPLATE = app
-RESOURCES += qrc/resources.qrc \
-    qrc/resources.qrc
+RESOURCES += qrc/resources.qrc
 CONFIG += C++14
-CONFIG += object_parallel_to_source
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -42,7 +40,6 @@ HEADERS += \
     template/templates.h \
     template/sidemenu/sidemenuitem.h \
     template/sidemenu/sidemenulayout.h \
-    template/dialog/config/constant.h \
     template/dialog/mathcontent/advanced.h \
     template/content/content.h \
     template/content/mathcontent/mathcontent.h \
@@ -58,7 +55,10 @@ HEADERS += \
     template/content/mathcontent/graph/graph.h \
     template/content/mathcontent/matrix/matrix.h \
     template/content/mathcontent/table/table.h \
-    template/content/config/config.h
+    template/content/config/config_content.h \
+    template/dialog/config/constant_dialog.h \
+    template/dialog/config/function_dialog.h \
+    template/dialog/dialog.h
 
 SOURCES += \
     config/config.cpp \
@@ -74,7 +74,6 @@ SOURCES += \
     template/menuLayout.cpp \
     template/sidemenu/sidemenuitem.cpp \
     template/sidemenu/sidemenulayout.cpp \
-    template/dialog/config/constant.cpp \
     template/dialog/mathcontent/advanced.cpp \
     template/content/content.cpp \
     template/content/mathcontent/mathcontent.cpp \
@@ -91,14 +90,16 @@ SOURCES += \
     template/content/mathcontent/matrix/matrix.cpp \
     template/content/mathcontent/table/table.cpp \
     main.cpp \
-    template/content/config/config.cpp
+    template/content/config/config_content.cpp \
+    template/dialog/config/constant_dialog.cpp \
+    template/dialog/config/function_dialog.cpp \
+    template/dialog/dialog.cpp
 
 DISTFILES += \
     resource/icon.ico
 
 FORMS += \
     template/mainwindow.ui \
-    template/dialog/config/constant.ui \
     template/dialog/mathcontent/advanced.ui \
     template/content/mathcontent/calculator/calculator.ui \
     template/content/mathcontent/calculator/general/general.ui \
@@ -106,4 +107,6 @@ FORMS += \
     template/content/mathcontent/graph/graph.ui \
     template/content/mathcontent/matrix/matrix.ui \
     template/content/mathcontent/table/table.ui \
-    template/content/config/config.ui
+    template/content/config/config_content.ui \
+    template/dialog/config/constant_dialog.ui \
+    template/dialog/config/function_dialog.ui

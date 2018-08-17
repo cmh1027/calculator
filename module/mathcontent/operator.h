@@ -37,6 +37,5 @@ namespace Operator{
         extern const QString negate;
         extern const QString abs;
     }
-    extern CMap<QString, Operation::OperationObject> operateFuncs;
 }
 #endif // OPERATOR_H
