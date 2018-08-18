@@ -36,13 +36,13 @@ namespace Template{
     }
 
     void GeneralCalculator::setup(){
-        SETUP_UI(contentUi, contentWidget);
+        this->setupUi<decltype(this->contentUi), decltype(this->contentWidget)>(this, this->contentUi, this->contentWidget);
         this->installMenu();
     }
 
     void GeneralCalculator::buttonConnect(){
-        foreach(QPushButton* button, contentWidget->findChildren<QPushButton*>()){ \
-            connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
+        foreach(QPushButton* button, contentWidget->findChildren<QPushButton*>()){
+            connect(button, &QPushButton::clicked, this, &this->buttonPushed);
         }
     }
 

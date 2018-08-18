@@ -15,6 +15,8 @@ namespace Dialog{
     class Constant : public Dialog::Dialog{
         Q_OBJECT
 
+        friend class Dialog::Dialog;
+
     public:
         Constant();
         virtual ~Constant();

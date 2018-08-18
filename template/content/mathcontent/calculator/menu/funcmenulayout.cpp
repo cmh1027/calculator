@@ -22,14 +22,14 @@ void FuncMenuLayout::click(){
         int index = 0;
         FuncMenuItem *menuItem;
         for(auto it = config->getFuncList().begin(); it != config->getFuncList().end(); ++it, ++index){
-            if(it.value().getArity() == Operation::Arithmetic){
+            if((*it)->getArity() == Operation::Arithmetic){
                 --index;
                 continue;
             }
             menuItem = new FuncMenuItem(calculator, this->parent, it.key(), index);
-            menuItem->setToolTip(it.value().getDescription());
+            menuItem->setToolTip((*it)->getDescription());
             connect(menuItem, &MenuItem::clicked, calculator, [this, it](){
-                switch(it.value().getArity()){
+                switch((*it)->getArity()){
                     case Operation::Arithmetic:
                         break;
                     case Operation::Unary:

@@ -4,7 +4,6 @@
 #include "constant.h"
 #include "../../config/config.h"
 #include "../exception.h"
-#include <iostream>
 extern Configuration::Configuration* config;
 
 namespace Calculation{
@@ -123,7 +122,7 @@ namespace Calculation{
                    double degree = stack.pop()*Const::PI/180;
                    stack.push(degree);
                 }
-                config->getFuncList()[chunk](stack, doubleList);
+                config->getFuncList().value(chunk)->call(stack, doubleList);
             }
         }
         return stack.top();

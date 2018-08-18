@@ -11,12 +11,12 @@
 extern Configuration::Configuration* config;
 
 namespace Dialog{
-    Advanced::Advanced(Template::MathContent* mathContent) : Dialog::Dialog(), parent(mathContent),
+    Advanced::Advanced(Template::MathContent* mathContent) : Dialog::Dialog(this), parent(mathContent),
         contentUi(new Ui::Advanced), doubleList(mathContent->getDoubleList()),
         tempDataTable(Column::Count), permanentDataTable(Column::Count){
         contentUi->setupUi(this);
-        INIT_TABLE(this->tempTable, "tempConstantTableWidget", this->tempDataTable);
-        INIT_TABLE(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
+        this->tableInitialize(this->tempTable, "tempConstantTableWidget", this->tempDataTable);
+        this->tableInitialize(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
         this->installCells();
         connect(this->tempTable, &QTableWidget::currentItemChanged, this, [this]{
            this->permanentTable->setCurrentItem(nullptr);
@@ -36,8 +36,7 @@ namespace Dialog{
     void Advanced::installCells(){
         int temp = 0;
         int permanent = 0;
-        disconnect(this->tempTable, &QTableWidget::itemChanged, nullptr, nullptr);
-        disconnect(this->permanentTable, &QTableWidget::itemChanged, nullptr, nullptr);
+        this->disableChangeEvent();
         this->cleanTable(this->tempTable);
         this->cleanTable(this->permanentTable);
         this->tempDataTable.rowClear();
@@ -52,33 +51,27 @@ namespace Dialog{
                     this->setRowDisable(this->permanentTable, permanent-1);
             }
         }
-        connect(this->tempTable, &QTableWidget::itemChanged, [this](QTableWidgetItem* item){
-            this->contentChanged(item, this->tempTable, this->tempDataTable);
-        });
-        connect(this->permanentTable, &QTableWidget::itemChanged, [this](QTableWidgetItem* item){
-            this->contentChanged(item, this->permanentTable, this->permanentDataTable);
-        });
+        this->enableChangeEvent();
     }
 
     void Advanced::contentChanged(QTableWidgetItem* item, QTableWidget* tableWidget, Table<QString>& table){
-        if(lock)
-            return;
         QString &&text = item->text();
         auto constObject = this->doubleList.value(*table.at(item->row(), Column::Symbol));
+        QString str = *table.at(item->row(), item->column());
         switch(item->column()){
             case Column::Symbol:{
                 if(text.indexOf("{") != 0 || text.indexOf("}") != text.length()-1 || text.mid(1, text.length()-2).isEmpty()
                         || this->doubleList.contains(text) || text.mid(1).indexOf("{") != -1)
-                    this->lockedChangeContent(item, *table.at(item->row(), item->column()));
+                    this->changeWithoutEvent(item, str);
                 else{
                     if(tableWidget == this->tempTable){
-                        this->doubleList[text] = this->doubleList.clone(*table.at(item->row(), item->column()));
-                        this->doubleList.remove(*table.at(item->row(), item->column()));
+                        this->doubleList[text] = this->doubleList.clone(str);
+                        this->doubleList.remove(str);
                         this->parent->refresh();
                     }
                     else{
-                        config->addConstant(text, this->doubleList.clone(*table.at(item->row(), item->column())));
-                        config->removeConstant(*table.at(item->row(), item->column()));
+                        config->addConstant(text, this->doubleList.clone(str));
+                        config->removeConstant(str);
                     }
                     this->updateRows();
                 }
@@ -101,7 +94,7 @@ namespace Dialog{
                         config->refreshAllContents();
                 }
                 else
-                    this->lockedChangeContent(item, *table.at(item->row(), item->column()));
+                    this->changeWithoutEvent(item, str);
             }
             break;
             case Column::Expression:{
@@ -113,7 +106,7 @@ namespace Dialog{
                     if(this->doubleList.contains(key)){
                        auto object = this->doubleList.value(key);
                        if(object->getExpr().indexOf(tableWidget->item(item->row(), Column::Symbol)->text()) != -1){
-                           this->lockedChangeContent(item, *table.at(item->row(), item->column()));
+                           this->changeWithoutEvent(item, str);
                            return;
                        }
                     }

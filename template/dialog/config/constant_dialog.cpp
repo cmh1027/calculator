@@ -10,10 +10,10 @@
 extern Configuration::Configuration* config;
 
 namespace Dialog{
-    Constant::Constant() : Dialog::Dialog(), contentUi(new Ui::Constant),
+    Constant::Constant() : Dialog::Dialog(this), contentUi(new Ui::Constant),
         doubleList(config->getConstantList()), permanentDataTable(Column::Count){
         contentUi->setupUi(this);
-        INIT_TABLE(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
+        this->tableInitialize(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
         this->installCells();
         connect(this->findChild<QToolButton*>("addButton"), &QPushButton::clicked, this, static_cast<void(Constant::*)()>(this->addItem));
         connect(this->findChild<QToolButton*>("deleteButton"), &QPushButton::clicked, this, this->removeItem);
@@ -26,33 +26,30 @@ namespace Dialog{
 
     void Constant::installCells(){
         int permanent = 0;
-        disconnect(this->permanentTable, &QTableWidget::itemChanged, nullptr, nullptr);
+        this->disableChangeEvent();
         this->cleanTable(this->permanentTable);
         this->permanentDataTable.rowClear();
         for(auto it = this->doubleList.begin(); it != this->doubleList.end(); it++){
             this->addItem(this->permanentTable, it.key(), (*it), permanent);
             if((*it)->isDefault())
                 this->setRowDisable(this->permanentTable, permanent-1);
-
         }
-        connect(this->permanentTable, &QTableWidget::itemChanged, [this](QTableWidgetItem* item){
-            this->contentChanged(item, this->permanentTable, this->permanentDataTable);
-        });
+        this->enableChangeEvent();
+
     }
 
     void Constant::contentChanged(QTableWidgetItem* item, QTableWidget* tableWidget, Table<QString>& table){
-        if(lock)
-            return;
         QString &&text = item->text();
         auto constObject = this->doubleList.value(*table.at(item->row(), Column::Symbol));
+        QString str = *table.at(item->row(), item->column());
         switch(item->column()){
             case Column::Symbol:{
                 if(text.indexOf("{") != 0 || text.indexOf("}") != text.length()-1 || text.mid(1, text.length()-2).isEmpty()
                         || this->doubleList.contains(text) || text.mid(1).indexOf("{") != -1)
-                    this->lockedChangeContent(item, *table.at(item->row(), item->column()));
+                    this->changeWithoutEvent(item, str);
                 else{
-                    config->addConstant(text, this->doubleList.value(*table.at(item->row(), item->column())));
-                    config->removeConstant(*table.at(item->row(), item->column()));
+                    config->addConstant(text, constObject);
+                    config->removeConstant(str);
                     this->updateRows();
                 }
             }
@@ -70,7 +67,7 @@ namespace Dialog{
                     this->updateRows();
                 }
                 else
-                    this->lockedChangeContent(item, *table.at(item->row(), item->column()));
+                    this->changeWithoutEvent(item, str);
             }
             break;
             case Column::Expression:{
@@ -82,7 +79,7 @@ namespace Dialog{
                     if(this->doubleList.contains(key)){
                        auto object = this->doubleList.value(key);
                        if(object->getExpr().indexOf(tableWidget->item(item->row(), Column::Symbol)->text()) != -1){
-                           this->lockedChangeContent(item, *table.at(item->row(), item->column()));
+                           this->changeWithoutEvent(item, str);
                            return;
                        }
                     }

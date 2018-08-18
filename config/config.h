@@ -19,13 +19,13 @@ namespace Configuration{
     public:
         Configuration(MainWindow*);
         virtual ~Configuration();
-        void addConstant(const QString &str, Const::ConstObject* num);
-        double getConstant(const QString &str) const;
-        void removeConstant(const QString &str);
-        void addFunction(const QString &str, Operation::OperationObject& num);
-        void removeFunction(const QString &str);
+        void addConstant(const QString&, Const::ConstObject*);
+        double getConstant(const QString&) const;
+        void removeConstant(const QString&);
+        void addFunction(const QString&, Operation::OperationObject*);
+        void removeFunction(const QString&);
         CMap<QString, Const::ConstObject*>& getConstantList();
-        CMap<QString, Operation::OperationObject>& getFuncList();
+        CMap<QString, Operation::OperationObject*>& getFuncList();
         bool getRadian();
         int getPrecision();
         void refreshAllContents();
@@ -33,7 +33,7 @@ namespace Configuration{
 
     private:
         CMap<QString, Const::ConstObject*> constants;
-        CMap<QString, Operation::OperationObject> operateFuncs;
+        CMap<QString, Operation::OperationObject*> operateFuncs;
         QVector<Const::ConstObject*> deleted;
         MainWindow* mainWindow;
         bool radian;

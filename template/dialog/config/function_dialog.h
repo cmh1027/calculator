@@ -16,6 +16,8 @@ namespace Dialog{
     class Function : public Dialog::Dialog{
         Q_OBJECT
 
+        friend class Dialog::Dialog;
+
     public:
         Function();
         virtual ~Function();
@@ -23,15 +25,16 @@ namespace Dialog{
     private:
         enum Column{Symbol, Description, Arity, Blank, Expression, Count};
         Ui::Function *contentUi;
-        CMap<QString, Operation::OperationObject>& funcList;
+        CMap<QString, Operation::OperationObject*>& funcList;
         QTableWidget *permanentTable;
         Table<QString> permanentDataTable;
         void installCells() override;
         void contentChanged(QTableWidgetItem*, QTableWidget*, Table<QString>&) override;
-        void addItem(QTableWidget*, const QString&, const Operation::OperationObject&, int& index);
-        void addItem(QTableWidget*, const QString&, const Operation::OperationObject&, int&& index);
-        void setArityTableItem(QTableWidget*, int, int, Operation::Arity arity);
-
+        void addItem(QTableWidget*, const QString&, Operation::OperationObject*, int& index);
+        void addItem(QTableWidget*, const QString&, Operation::OperationObject*, int&& index);
+        void setArityTableItem(QTableWidget*, int, int, Operation::OperationObject*);
+        void x();
+        void y();
 
     private slots:
         void addItem() override;

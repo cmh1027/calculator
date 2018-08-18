@@ -27,9 +27,6 @@
    <bool>true</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -46,8 +43,8 @@
     <widget class="QTableWidget" name="permanentFunctionTableWidget">
      <property name="minimumSize">
       <size>
-       <width>524</width>
-       <height>306</height>
+       <width>0</width>
+       <height>0</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -84,6 +81,9 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <property name="topMargin">
       <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
      </property>
      <property name="bottomMargin">
       <number>3</number>
@@ -123,6 +123,44 @@
        </property>
        <property name="text">
         <string>X</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="xButton">
+       <property name="font">
+        <font>
+         <family>Arial Narrow</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove a constant&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolButton{padding-left: 5px}</string>
+       </property>
+       <property name="text">
+        <string>𝒙</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="yButton">
+       <property name="font">
+        <font>
+         <family>Arial Narrow</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="toolTip">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove a constant&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QToolButton{padding-left: 5px}</string>
+       </property>
+       <property name="text">
+        <string>𝒚</string>
        </property>
       </widget>
      </item>

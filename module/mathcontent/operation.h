@@ -6,6 +6,11 @@
 #include "constant.h"
 
 namespace Operation{
+    namespace Unknown{
+        extern const QString X;
+        extern const QString Y;
+    }
+
     enum Arity{Arithmetic, Unary, Binary};
 
     class OperationObject : public DataObject{
@@ -21,6 +26,7 @@ namespace Operation{
         OperationObject(const funcType&, const QString&, const Arity&, const bool& = false);
         OperationObject(const QString&, const QString&, const Arity&, const bool& = false);
         void operator()(CStack<double>&, CMap<QString, Const::ConstObject*>&);
+        void call(CStack<double>&, CMap<QString, Const::ConstObject*>&);
         void setExpr(const QString&);
         QString getExpr() const;
         void setArity(Arity);

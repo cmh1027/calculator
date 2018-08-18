@@ -2,6 +2,11 @@
 #include "calculation.h"
 
 namespace Operation{
+    namespace Unknown{
+        const QString X = "𝒙";
+        const QString Y = "𝒚";
+    }
+
     OperationObject::OperationObject(const funcType& function, const QString& des, const Arity& t,
                                      const bool& defaultFlag) :
         DataObject(des, defaultFlag, false), func(function), type(t)
@@ -12,7 +17,8 @@ namespace Operation{
         DataObject(des, defaultFlag, false), func(nullptr), expression(function), type(t)
     {}
 
-    void OperationObject::operator()(CStack<double>& stack, CMap<QString, Const::ConstObject*>& doubleList){
+
+    void OperationObject::call(CStack<double>& stack, CMap<QString, Const::ConstObject*>& doubleList){
         if(this->func != nullptr)
             this->func(stack);
         else{
@@ -29,7 +35,7 @@ namespace Operation{
             if(this->type == Arity::Unary){
                 x = stack.pop();
                 doubleList[key.arg(num1)] = new Const::ConstObject(x);
-                replaced.replace("X", key.arg(num1));
+                replaced.replace(Operation::Unknown::X, key.arg(num1));
                 stack.push(Calculation::calculatePostfix(Calculation::changeToPostfix(replaced), doubleList));
                 doubleList.remove(key.arg(num1));
             }
@@ -38,12 +44,16 @@ namespace Operation{
                 doubleList[key.arg(num1)] = new Const::ConstObject(y);
                 x = stack.pop();
                 doubleList[key.arg(num2)] = new Const::ConstObject(x);
-                replaced.replace("X", key.arg(num2)).replace("Y", key.arg(num1));
+                replaced.replace(Operation::Unknown::X, key.arg(num2)).replace(Operation::Unknown::Y, key.arg(num1));
                 stack.push(Calculation::calculatePostfix(Calculation::changeToPostfix(replaced), doubleList));
                 doubleList.remove(key.arg(num1));
                 doubleList.remove(key.arg(num2));
             }
         }
+    }
+
+    void OperationObject::operator()(CStack<double>& stack, CMap<QString, Const::ConstObject*>& doubleList){
+        this->call(stack, doubleList);
     }
 
     void OperationObject::setExpr(const QString& expr){
@@ -77,10 +87,12 @@ namespace Operation{
 
     QString OperationObject::funcShape(const QString& name) const{
         switch(this->type){
+            case Arity::Arithmetic:
+                return QString("%1 %2 %3").arg(Operation::Unknown::X).arg(name).arg(Operation::Unknown::Y);
             case Arity::Unary:
-                return QString("%1(x)").arg(name);
+                return QString("%1(%2)").arg(name).arg(Operation::Unknown::X);
             case Arity::Binary:
-                return QString("x %1 y").arg(name);
+                return QString("%1 %2 %3").arg(Operation::Unknown::X).arg(name).arg(Operation::Unknown::Y);
             default:
                 return "";
         }

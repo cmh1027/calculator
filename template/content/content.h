@@ -1,9 +1,6 @@
 #ifndef CONTENT_H
 #define CONTENT_H
 #include <QWidget>
-#define SETUP_UI(ui, widget) \
-        ui->setupUi(widget); \
-        this->buttonConnect(); \
 
 class MainWindow;
 
@@ -19,6 +16,11 @@ namespace Template{
     protected:
         virtual void buttonConnect() = 0; // must be in setup() function
         MainWindow* mainWindow;
+        template <typename Ui, typename Widget>
+        void setupUi(Content* ptr, Ui ui, Widget widget){
+            ui->setupUi(widget);
+            ptr->buttonConnect();
+        }
 
     private:
         QWidget* contentWidget;

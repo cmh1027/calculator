@@ -18,6 +18,8 @@ namespace Dialog{
     class Advanced : public Dialog::Dialog{
         Q_OBJECT
 
+        friend class Dialog::Dialog;
+
     public:
         Advanced(Template::MathContent*);
         virtual ~Advanced();

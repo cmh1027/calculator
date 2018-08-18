@@ -24,7 +24,7 @@ namespace Template{
     }
 
     void Configuration::setup(){
-        SETUP_UI(contentUi, contentWidget);
+        this->setupUi<decltype(this->contentUi), decltype(this->contentWidget)>(this, this->contentUi, this->contentWidget);
     }
 
     void Configuration::buttonConnect(){
