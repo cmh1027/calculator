@@ -1,6 +1,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QScrollArea>
 #include <QString>
 #include "calculator.h"
 #include "ui_calculator.h"
@@ -22,6 +23,7 @@ namespace Template{
         contentUi->setupUi(this);
         this->resultLabel = contentWidget->findChild<QLabel*>("resultLabel");
         this->interLabel = contentWidget->findChild<QLabel*>("interLabel");
+        this->interScrollArea = contentWidget->findChild<QScrollArea*>("interScrollArea");
         this->interLineEdit = contentWidget->findChild<QLineEdit*>("interLineEdit");
         this->interLineEdit->hide();
         this->setResult(this->result);
@@ -350,7 +352,7 @@ namespace Template{
     void Calculator::enableLineEdit(){
         this->isModifying = true;
         this->interLineEdit->setText(this->inter);
-        this->interLabel->hide();
+        this->interScrollArea->hide();
         this->interLineEdit->show();
     }
 
@@ -358,6 +360,6 @@ namespace Template{
         this->isModifying = false;
         this->setInter(this->interLineEdit->text());
         this->interLineEdit->hide();
-        this->interLabel->show();
+        this->interScrollArea->show();
     }
 }

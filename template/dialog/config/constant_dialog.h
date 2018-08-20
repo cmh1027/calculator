@@ -27,7 +27,6 @@ namespace Dialog{
         CMap<QString, Const::ConstObject*>& doubleList;
         QTableWidget *permanentTable;
         Table<QString> permanentDataTable;
-        void installCells() override;
         void contentChanged(QTableWidgetItem*, QTableWidget*, Table<QString>&) override;
         void addItem(QTableWidget*, const QString&, const Const::ConstObject*, int& index);
         void addItem(QTableWidget*, const QString&, const Const::ConstObject*, int&& index);

@@ -14,7 +14,7 @@ namespace Dialog{
         doubleList(config->getConstantList()), permanentDataTable(Column::Count){
         contentUi->setupUi(this);
         this->tableInitialize(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
-        this->installCells();
+        this->installCells(this, this->doubleList, this->permanentTable);
         connect(this->findChild<QToolButton*>("addButton"), &QPushButton::clicked, this, static_cast<void(Constant::*)()>(this->addItem));
         connect(this->findChild<QToolButton*>("deleteButton"), &QPushButton::clicked, this, this->removeItem);
     }
@@ -24,19 +24,6 @@ namespace Dialog{
     }
 
 
-    void Constant::installCells(){
-        int permanent = 0;
-        this->disableChangeEvent();
-        this->cleanTable(this->permanentTable);
-        this->permanentDataTable.rowClear();
-        for(auto it = this->doubleList.begin(); it != this->doubleList.end(); it++){
-            this->addItem(this->permanentTable, it.key(), (*it), permanent);
-            if((*it)->isDefault())
-                this->setRowDisable(this->permanentTable, permanent-1);
-        }
-        this->enableChangeEvent();
-
-    }
 
     void Constant::contentChanged(QTableWidgetItem* item, QTableWidget* tableWidget, Table<QString>& table){
         QString &&text = item->text();
@@ -104,7 +91,7 @@ namespace Dialog{
             if(!isUpdated)
                 break;
         }
-        this->installCells();
+        this->installCells(this, this->doubleList, this->permanentTable);
     }
 
     void Constant::addItem(QTableWidget* table, const QString& symbol, const Const::ConstObject* object, int& index){

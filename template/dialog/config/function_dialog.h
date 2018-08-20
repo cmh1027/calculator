@@ -28,13 +28,12 @@ namespace Dialog{
         CMap<QString, Operation::OperationObject*>& funcList;
         QTableWidget *permanentTable;
         Table<QString> permanentDataTable;
-        void installCells() override;
         void contentChanged(QTableWidgetItem*, QTableWidget*, Table<QString>&) override;
         void addItem(QTableWidget*, const QString&, Operation::OperationObject*, int& index);
         void addItem(QTableWidget*, const QString&, Operation::OperationObject*, int&& index);
         void setArityTableItem(QTableWidget*, int, int, Operation::OperationObject*);
-        void x();
-        void y();
+        void setExprTableItem(QTableWidget*, int, int, Operation::OperationObject*);
+        void unknown(const QString&, Operation::Arity);
 
     private slots:
         void addItem() override;

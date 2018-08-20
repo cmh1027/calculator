@@ -6,6 +6,7 @@ class QPushButton;
 class QLabel;
 class QLineEdit;
 class QString;
+class QScrollArea;
 namespace Ui {
     class Calculator;
 }
@@ -29,6 +30,7 @@ namespace Template{
         Ui::Calculator *contentUi;
         QWidget *contentWidget;
         QLabel *interLabel;
+        QScrollArea *interScrollArea;
         QLineEdit *interLineEdit;
         QLabel *resultLabel;
 

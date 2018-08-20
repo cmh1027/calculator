@@ -13,7 +13,7 @@ namespace Template{
     }
 
     void Table::setup(){
-        this->setupUi<decltype(this->contentUi), decltype(this->contentWidget)>(this, this->contentUi, this->contentWidget);
+        this->setupUi(this, this->contentUi, this->contentWidget);
         this->installMenu();
     }
 

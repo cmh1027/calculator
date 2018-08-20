@@ -38,13 +38,13 @@ namespace Template{
     }
 
     void ScientificCalculator::setup(){
-        this->setupUi<decltype(this->contentUi), decltype(this->contentWidget)>(this, this->contentUi, this->contentWidget);
+        this->setupUi(this, this->contentUi, this->contentWidget);
         this->installMenu();
     }
 
     void ScientificCalculator::buttonConnect(){
-        foreach(QPushButton* button, contentWidget->findChildren<QPushButton*>()){ \
-            connect(button, &QPushButton::clicked, this, &this->buttonPushed); \
+        foreach(QPushButton* button, contentWidget->findChildren<QPushButton*>()){
+            connect(button, &QPushButton::clicked, this, &this->buttonPushed);
         }
     }
 

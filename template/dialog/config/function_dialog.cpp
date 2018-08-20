@@ -1,4 +1,5 @@
 #include <QString>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QTableWidget>
 #include <QtWidgets/QMessageBox>
@@ -19,11 +20,15 @@ namespace Dialog{
         this->permanentTable->setColumnWidth(Column::Symbol, 60);
         this->permanentTable->setColumnWidth(Column::Arity, 80);
         this->permanentTable->setColumnWidth(Column::Blank, 60);
-        this->installCells();
+        this->installCells(this, this->funcList, this->permanentTable);
         connect(this->findChild<QToolButton*>("addButton"), &QPushButton::clicked, this, static_cast<void(Function::*)()>(this->addItem));
         connect(this->findChild<QToolButton*>("deleteButton"), &QPushButton::clicked, this, this->removeItem);
-        connect(this->findChild<QToolButton*>("xButton"), &QPushButton::clicked, this, this->x);
-        connect(this->findChild<QToolButton*>("yButton"), &QPushButton::clicked, this, this->y);
+        connect(this->findChild<QToolButton*>("xButton"), &QPushButton::clicked, this, [&](){
+            this->unknown(Operation::Unknown::X, Operation::Arity::Unary);
+        });
+        connect(this->findChild<QToolButton*>("yButton"), &QPushButton::clicked, this, [&](){
+            this->unknown(Operation::Unknown::Y, Operation::Arity::Binary);
+        });
     }
 
     Function::~Function(){
@@ -31,20 +36,7 @@ namespace Dialog{
     }
 
 
-    void Function::installCells(){
-        int permanent = 0;
-        this->disableChangeEvent();
-        this->cleanTable(this->permanentTable);
-        this->permanentDataTable.rowClear();
-        for(auto it = this->funcList.begin(); it != this->funcList.end(); it++){
-            this->addItem(this->permanentTable, it.key(), (*it), permanent);
-            if((*it)->isDefault())
-                this->setRowDisable(this->permanentTable, permanent-1);
-        }
-        this->enableChangeEvent();
-    }
-
-    void Function::contentChanged(QTableWidgetItem* item, QTableWidget* tableWidget, Table<QString>& table){
+    void Function::contentChanged(QTableWidgetItem* item, QTableWidget*, Table<QString>& table){
         QString &&text = item->text();
         auto funcObject = this->funcList.value(*table.at(item->row(), Column::Symbol));
         QString str = *table.at(item->row(), item->column());
@@ -68,23 +60,7 @@ namespace Dialog{
             }
             break;
             case Column::Expression:{
-                QString &&expr = item->text();
-                QString &&key = "";
-                int front = 0;
-                for(int index = 0; index < expr.length(); ++index){
-                    if(!expr.at(index).isLower() && !expr.at(index).isUpper()){
-                        key = expr.mid(front, index-front);
-                        if(this->funcList.contains(key)){
-                            auto object = this->funcList.value(key);
-                            if(object->getExpr().indexOf(tableWidget->item(item->row(), Column::Symbol)->text()) != -1){
-                                this->changeWithoutEvent(item, str);
-                                return;
-                            }
-                        }
-                        front = index+1;
-                    }
-                }
-                funcObject->setExpr(item->text());
+                Q_ASSERT(false);
             }
             break;
         }
@@ -98,7 +74,7 @@ namespace Dialog{
         Dialog::addItem(table, index, Column::Description, object->getDescription());
         this->setArityTableItem(table, index, Column::Arity, object);
         Dialog::addItem(table, index, Column::Blank, object->funcShape(symbol));
-        Dialog::addItem(table, index, Column::Expression, object->getExpr());
+        this->setExprTableItem(table, index, Column::Expression, object);
         this->setItemDisable(table, index, Column::Blank);
         ++index;
     }
@@ -109,7 +85,7 @@ namespace Dialog{
         Dialog::addItem(table, index, Column::Description, object->getDescription());
         this->setArityTableItem(table, index, Column::Arity, object);
         Dialog::addItem(table, index, Column::Blank, object->funcShape(symbol));
-        Dialog::addItem(table, index, Column::Expression, object->getExpr());
+        this->setExprTableItem(table, index, Column::Expression, object);
         this->setItemDisable(table, index, Column::Blank);
     }
 
@@ -127,7 +103,8 @@ namespace Dialog{
                 comboBox->setCurrentIndex(0);
                 connect(comboBox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=](int index){
                     object->setArity(static_cast<Operation::Arity>(index+1));
-                    auto item = table->item(row, Column::Expression);
+                    auto item = dynamic_cast<QLineEdit*>(table->cellWidget(row, Column::Expression));
+                    Q_ASSERT(item != nullptr);
                     QString &&str = item->text();
                     if(str.indexOf(Operation::Unknown::Y) != -1){
                         item->setText("");
@@ -155,6 +132,39 @@ namespace Dialog{
         this->enableChangeEvent();
     }
 
+    void Function::setExprTableItem(QTableWidget* table, int row, int column, Operation::OperationObject* object){
+        this->disableChangeEvent();
+        QLineEdit *lineEdit = new QLineEdit();
+        if(object->isDefault())
+            lineEdit->setStyleSheet("QLineEdit{border: none; background-color: rgb(210, 210, 210);}");
+        else
+            lineEdit->setStyleSheet("QLineEdit{border: none;}");
+        lineEdit->setText(object->getExpr());
+        this->tableMap[table]->insert(object->getExpr(), row, column);
+        table->setCellWidget(row, column, lineEdit);
+        connect(lineEdit, static_cast<void(QLineEdit::*)(const QString&)>(&QLineEdit::textChanged), this, [=](const QString &text){
+            QString expr = text;
+            QString &&key = "";
+            int front = 0;
+            for(int index = 0; index < expr.length(); ++index){
+                if(!expr.at(index).isLower() && !expr.at(index).isUpper()){
+                    key = expr.mid(front, index-front);
+                    if(this->funcList.contains(key)){
+                        auto object = this->funcList.value(key);
+                        if(object->getExpr().indexOf(table->item(row, Column::Symbol)->text()) != -1){
+                            lineEdit->setText(*this->tableMap[table]->at(row, column));
+                            return;
+                        }
+                    }
+                    front = index+1;
+                }
+            }
+            this->funcList.value(table->item(row, Column::Symbol)->text())->setExpr(expr);
+            this->tableMap[table]->insert(object->getExpr(), row, column);
+        });
+        this->enableChangeEvent();
+    }
+
     void Function::addItem(){
         QString &&symbol = "a";
         while(this->funcList.contains(symbol)){
@@ -162,7 +172,7 @@ namespace Dialog{
         }
         auto object = new Operation::OperationObject("", "", Operation::Arity::Unary);
         config->addFunction(symbol, object);
-        this->installCells();
+        this->installCells(this, this->funcList, this->permanentTable);
     }
 
 
@@ -178,33 +188,19 @@ namespace Dialog{
         }
     }
 
-    void Function::x(){
+    void Function::unknown(const QString& _unknown, Operation::Arity arity){
         int row = this->permanentTable->currentRow();
         int column = this->permanentTable->currentColumn();
         if(row == -1 || column == -1)
             return;
-        auto item = this->permanentTable->item(row, column);
+        auto item = dynamic_cast<QLineEdit*>(this->permanentTable->cellWidget(row, Column::Expression));
+        Q_ASSERT(item != nullptr);
         auto object = this->funcList.value(this->permanentTable->item(row, Column::Symbol)->text());
         QString &&str = item->text();
-        if(column != Column::Expression || object->isDefault())
+        if(column != Column::Expression || object->isDefault() || object->getArity() < arity)
             return;
         if(!str.isEmpty() && (str.back() == Operation::Unknown::X || str.back() == Operation::Unknown::Y))
             return;
-        item->setText(str + Operation::Unknown::X);
-    }
-
-    void Function::y(){
-        int row = this->permanentTable->currentRow();
-        int column = this->permanentTable->currentColumn();
-        if(row == -1 || column == -1)
-            return;
-        auto item = this->permanentTable->item(row, column);
-        auto object = this->funcList.value(this->permanentTable->item(row, Column::Symbol)->text());
-        QString &&str = item->text();
-        if(column != Column::Expression || object->isDefault() || object->getArity() < Operation::Arity::Binary)
-            return;
-        if(!str.isEmpty() && (str.back() == Operation::Unknown::X || str.back() == Operation::Unknown::Y))
-            return;
-        item->setText(str + Operation::Unknown::Y);
+        item->setText(str + _unknown);
     }
 }

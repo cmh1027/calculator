@@ -17,7 +17,7 @@ namespace Dialog{
         contentUi->setupUi(this);
         this->tableInitialize(this->tempTable, "tempConstantTableWidget", this->tempDataTable);
         this->tableInitialize(this->permanentTable, "permanentConstantTableWidget", this->permanentDataTable);
-        this->installCells();
+        this->installCells(this, this->doubleList, this->permanentTable, this->tempTable);
         connect(this->tempTable, &QTableWidget::currentItemChanged, this, [this]{
            this->permanentTable->setCurrentItem(nullptr);
         });
@@ -31,27 +31,6 @@ namespace Dialog{
 
     Advanced::~Advanced(){
         delete contentUi;
-    }
-
-    void Advanced::installCells(){
-        int temp = 0;
-        int permanent = 0;
-        this->disableChangeEvent();
-        this->cleanTable(this->tempTable);
-        this->cleanTable(this->permanentTable);
-        this->tempDataTable.rowClear();
-        this->permanentDataTable.rowClear();
-        for(auto it = this->doubleList.begin(); it != this->doubleList.end(); it++){
-            if((*it)->isTemp()){
-                this->addItem(this->tempTable, it.key(), (*it), temp);
-            }
-            else{
-                this->addItem(this->permanentTable, it.key(), (*it), permanent);
-                if((*it)->isDefault())
-                    this->setRowDisable(this->permanentTable, permanent-1);
-            }
-        }
-        this->enableChangeEvent();
     }
 
     void Advanced::contentChanged(QTableWidgetItem* item, QTableWidget* tableWidget, Table<QString>& table){
@@ -133,7 +112,7 @@ namespace Dialog{
             if(!isUpdated)
                 break;
         }
-        this->installCells();
+        this->installCells(this, this->doubleList, this->permanentTable, this->tempTable);
     }
 
     void Advanced::addItem(QTableWidget* table, const QString& symbol, const Const::ConstObject* object, int& index){
